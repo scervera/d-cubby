@@ -3,7 +3,7 @@ name: Release
 # Push a tag like v0.1.0 to publish:
 #   ghcr.io/scervera/d-cubby-api:<version>, :<major>.<minor>, :latest  (linux/amd64 + arm64)
 #   ghcr.io/scervera/d-cubby-web:<same tags>
-#   a GitHub release with d-cubby-<version>.tar.gz (install.sh, docker-compose.yml, ...)
+#   a GitHub release with d-cubby-<version>.tar.gz and d-cubby.tar.gz (install.sh, docker-compose.yml, ...)
 on:
   push:
     tags: ["v*"]
@@ -60,17 +60,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build the install bundle
+      - name: Build the install bundles
         run: |
           version="${GITHUB_REF_NAME#v}"
-          dir="d-cubby-${version}"
-          mkdir -p "$dir/docker"
-          cp install.sh docker-compose.yml .env.example LICENSE.md "$dir/"
-          cp docker/Caddyfile "$dir/docker/"
-          echo "$version" > "$dir/VERSION"
-          cp DOCUMENTATION/01-INSTALL/README.md "$dir/README.md"
-          tar czf "$dir.tar.gz" "$dir"
-          sha256sum "$dir.tar.gz" > "$dir.tar.gz.sha256"
+          # bundle NAME: a folder NAME/ with the install files, packed as NAME.tar.gz
+          bundle() {
+            mkdir -p "$1/docker"
+            cp install.sh docker-compose.yml .env.example LICENSE.md "$1/"
+            cp docker/Caddyfile "$1/docker/"
+            echo "$version" > "$1/VERSION"
+            cp DOCUMENTATION/01-INSTALL/README.md "$1/README.md"
+            tar czf "$1.tar.gz" "$1"
+            sha256sum "$1.tar.gz" > "$1.tar.gz.sha256"
+          }
+          bundle "d-cubby-${version}"
+          # Same files under a fixed name, so .../releases/latest/download/d-cubby.tar.gz
+          # always fetches the newest release (used in the README).
+          bundle "d-cubby"
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
@@ -78,5 +84,7 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           prerelease=""
           case "$version" in *-*) prerelease="--prerelease" ;; esac
-          gh release create "$GITHUB_REF_NAME" "d-cubby-${version}.tar.gz" "d-cubby-${version}.tar.gz.sha256" \
+          gh release create "$GITHUB_REF_NAME" \
+            "d-cubby-${version}.tar.gz" "d-cubby-${version}.tar.gz.sha256" \
+            d-cubby.tar.gz d-cubby.tar.gz.sha256 \
             --title "D-cubby ${version}" --generate-notes $prerelease

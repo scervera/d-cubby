@@ -15,11 +15,13 @@ few Docker containers on one server.
 ## Install
 
 ```bash
-curl -LO https://github.com/scervera/d-cubby/releases/latest/download/d-cubby-<version>.tar.gz
-tar xzf d-cubby-<version>.tar.gz
-cd d-cubby-<version>
-./install.sh
+curl -fsSL https://github.com/scervera/d-cubby/releases/latest/download/d-cubby.tar.gz | tar xz
+cd d-cubby && ./install.sh
 ```
+
+This always fetches the newest release. To install a specific version, use its own file,
+e.g. `.../releases/download/v0.1.0/d-cubby-0.1.0.tar.gz` (folder `d-cubby-0.1.0`); each
+release also lists a `.sha256` checksum for every download.
 
 The installer asks a few questions and tests each answer live before saving:
 

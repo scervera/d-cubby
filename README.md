@@ -9,9 +9,8 @@ D-cubby is built on the [`dam`](https://github.com/scervera/dam) Rails engine an
 On a server with Docker:
 
 ```bash
-curl -LO https://github.com/scervera/d-cubby/releases/latest/download/d-cubby-<version>.tar.gz
-tar xzf d-cubby-<version>.tar.gz && cd d-cubby-<version>
-./install.sh
+curl -fsSL https://github.com/scervera/d-cubby/releases/latest/download/d-cubby.tar.gz | tar xz
+cd d-cubby && ./install.sh
 ```
 
 The installer asks for your address, storage, and optional email, AI and face detection,
