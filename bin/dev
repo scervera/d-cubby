@@ -30,8 +30,10 @@ fi
 for app in api web; do
     cmp -s .env.local "apps/${app}/.env.local" 2>/dev/null || cp .env.local "apps/${app}/.env.local"
 done
-# shellcheck disable=SC1091
-set -a; . ./.env.local; set +a
+set -a
+# shellcheck disable=SC1091  # created by bin/dev from env.development.example
+. ./.env.local
+set +a
 
 API_PORT="${DEV_API_PORT:-4081}"
 WEB_PORT="${DEV_WEB_PORT:-4080}"

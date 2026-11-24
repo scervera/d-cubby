@@ -7,8 +7,12 @@
 set -eo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
-# shellcheck disable=SC1091
-[ -f .env.local ] && { set -a; . ./.env.local; set +a; }
+if [ -f .env.local ]; then
+    set -a
+    # shellcheck disable=SC1091  # created by bin/dev from env.development.example
+    . ./.env.local
+    set +a
+fi
 
 echo "🛑 Stopping D-cubby dev processes"
 for name in nextjs jobs rails; do
