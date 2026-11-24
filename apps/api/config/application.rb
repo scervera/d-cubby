@@ -19,6 +19,9 @@ require "action_view/railtie"
 Bundler.require(*Rails.groups)
 
 module DCubby
+  # Set by the release build (docker build --build-arg APP_VERSION=...).
+  VERSION = ENV.fetch("APP_VERSION", "0.1.0-dev")
+
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
@@ -41,5 +44,11 @@ module DCubby
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.active_job.queue_adapter = :solid_queue
+
+    # STORAGE_PROVIDER=local|s3 (see config/storage.yml).
+    config.active_storage.service = ENV.fetch("STORAGE_PROVIDER", "local") == "s3" ? :s3 : :local
+    # Files are streamed through Rails rather than redirected to the storage service, so a
+    # private bucket or a bundled MinIO never needs to be reachable from browsers.
+    config.active_storage.resolve_model_to_route = :rails_storage_proxy
   end
 end

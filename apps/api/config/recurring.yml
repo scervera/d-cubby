@@ -1,15 +1,22 @@
-# examples:
-#   periodic_cleanup:
-#     class: CleanSoftDeletedRecordsJob
-#     queue: background
-#     args: [ 1000, { batch_size: 500 } ]
-#     schedule: every hour
-#   periodic_cleanup_with_command:
-#     command: "SoftDeletedRecord.due.delete_all"
-#     priority: 2
-#     schedule: at 5am every day
-
-production:
+# Solid Queue recurring tasks (run by the scheduler inside bin/jobs).
+default: &default
+  dam_watched_folders:
+    class: Dam::WatchedFolderSchedulerJob
+    schedule: every 30 seconds
+  # Safety net: the gem schedules each purge when an asset is deleted; this catches any
+  # whose job was lost.
+  dam_purge_due_assets:
+    command: "Dam::Asset.unscoped.purge_due.pluck(:id).each { |id| Dam::PurgeAssetJob.perform_later(id) }"
+    schedule: every day at 2am
+  purge_revoked_tokens:
+    command: "RevokedToken.expired.delete_all"
+    schedule: every day at 3am
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
+
+development:
+  <<: *default
+
+production:
+  <<: *default

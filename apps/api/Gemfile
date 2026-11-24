@@ -7,8 +7,6 @@ gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -44,3 +42,17 @@ gem "rspec-rails", "~> 8.1", groups: [ :development, :test ]
 
 gem "solid_queue", "~> 1.7"
 gem "solid_cache", "~> 1.0"
+
+# The DAM engine (assets, tags, search, smart folders, drop zones, AI tagging).
+# For local DAM work: bundle config set --local local.dam /path/to/your/dam/checkout
+gem "dam", git: "https://github.com/scervera/dam.git", tag: "v0.3.0"
+
+# Auth: bcrypt passwords + HS256 JWTs (see app/services/auth_token.rb).
+gem "bcrypt", "~> 3.1"
+gem "jwt", "~> 2.10"
+
+# AI providers for DAM auto-tagging; each is only loaded when selected.
+gem "ruby-openai", "~> 7.0", require: false
+gem "anthropic", "~> 2.13", require: false
+
+gem "webmock", "~> 3.40", group: :test

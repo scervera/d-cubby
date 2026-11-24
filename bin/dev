@@ -4,7 +4,7 @@
 #   bin/dev -v         start with output in this terminal as well
 #   bin/dev-stop       stop     bin/restart   stop + start     bin/dev-logs   follow logs
 #
-# Open http://localhost:4080. Next.js proxies /api, /users and /rails/active_storage to
+# Open http://localhost:4080. Next.js proxies /api and /rails/active_storage to
 # Rails, so the browser sees one origin, as it does behind Caddy in production.
 
 set -eo pipefail

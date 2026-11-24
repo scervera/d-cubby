@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
-// Paths served by Rails. In production Caddy routes these (docker/Caddyfile); in
+// Paths served by Rails (keep in sync with docker/Caddyfile). In production Caddy routes these (docker/Caddyfile); in
 // development Next.js proxies them so the browser still sees a single origin and the
 // API client can use the relative base URL /api/v1 with no CORS.
-const RAILS_PATHS = ["/api/:path*", "/users/:path*", "/rails/active_storage/:path*"];
+const RAILS_PATHS = ["/api/:path*", "/rails/active_storage/:path*"];
 
 const nextConfig: NextConfig = {
   // Required by apps/web/Dockerfile: produces .next/standalone with a minimal server.js.

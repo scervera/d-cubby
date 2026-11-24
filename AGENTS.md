@@ -26,7 +26,7 @@ Single source of truth for Claude Code, Cursor and other agents. Prefer linking 
 | Follow logs | `bin/dev-logs [rails\|jobs\|nextjs]` |
 | Env template | `env.development.example` → root `.env.local` (synced into apps by `bin/dev`) |
 
-Open http://localhost:4080 only. Next.js proxies `/api`, `/users` and `/rails/active_storage` to Rails in development (`apps/web/next.config.ts`); Caddy does the same in production.
+Open http://localhost:4080 only. Next.js proxies `/api` and `/rails/active_storage` to Rails in development (`apps/web/next.config.ts`); Caddy does the same in production.
 
 ### API (`cd apps/api`)
 
@@ -42,6 +42,20 @@ Open http://localhost:4080 only. Next.js proxies `/api`, `/users` and `/rails/ac
 |------|---------|
 | Dev / build | `npm run dev` / `npm run build` |
 | Lint / typecheck | `npm run lint` / `npx tsc --noEmit` |
+
+## API (host-owned, `apps/api/config/routes.rb`)
+
+| Area | Endpoints |
+|------|-----------|
+| Config (public; flags when signed in) | `GET /api/v1/config` |
+| First-run setup (needs `SETUP_TOKEN`, works once) | `GET/POST /api/v1/setup` |
+| Auth (HS256 JWT, `app/services/auth_token.rb`) | `POST /auth/login`, `DELETE /auth/logout`, `POST /auth/password/{forgot,reset}`, `POST /auth/invitation/accept` |
+| Users | `GET/PATCH /users/me`; `GET/POST /users`, `PATCH /users/:id`, `POST /users/:id/reset_password` |
+| Organization | `GET/PATCH /organization` (name, locale, retention days, logo) |
+| Dashboard / system | `GET /dashboard/stats`; `GET /system/status`, `POST /system/checks/:name` |
+| Integration checks (CLI) | `bin/rails d_cubby:check:{storage,smtp,ai,faces,all}` |
+
+Everything else under `/api/v1` is the dam gem. Roles: `owner` > `admin` > `editor` > `viewer`; `owner` and `admin` are `admin?` to the gem, and only the owner grants admin.
 
 ## Conventions
 
