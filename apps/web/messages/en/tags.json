@@ -1,0 +1,30 @@
+{
+  "title": "Tags",
+  "subtitle": "Manage tags for organizing your assets",
+  "createButton": "Create Tag",
+  "deleteTooltip": "Delete tag",
+  "searchButton": "Search",
+  "searchResultsTitle": "Assets with selected tags",
+  "selectTagsHint": "Select one or more tags, then click Search to view matching assets.",
+  "selectedCount": "{count, plural, one {# tag selected} other {# tags selected}}",
+  "emptyTitle": "No tags yet",
+  "emptyBody": "Create your first tag to start organizing assets",
+  "assetCount": "{count, plural, one {# asset} other {# assets}}",
+  "confirmDelete": "Are you sure you want to delete the tag \"{name}\"? This will remove it from all assets.",
+  "form": {
+    "createTitle": "Create New Tag",
+    "editTitle": "Edit Tag",
+    "nameLabel": "Tag Name",
+    "namePlaceholder": "Enter tag name...",
+    "createButton": "Create Tag",
+    "updateButton": "Update Tag"
+  },
+  "toasts": {
+    "loadFailed": "Failed to load tags",
+    "nameRequired": "Tag name is required",
+    "created": "Tag \"{name}\" created successfully",
+    "createFailed": "Failed to create tag",
+    "deleted": "Tag \"{name}\" deleted successfully",
+    "deleteFailed": "Failed to delete tag"
+  }
+}

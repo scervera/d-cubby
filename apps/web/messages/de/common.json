@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "loading": "Wird geladen...",
+  "beta": {
+    "regionLabel": "Beta-Programmhinweis",
+    "label": "Beta",
+    "message": "Vielen Dank, dass Sie uns beim Testen und Verbessern der Plattform helfen. In der Beta-Phase können sich Funktionen, Integrationen und Workflows weiterentwickeln oder gelegentlich unerwartet verhalten. Bitte bewahren Sie unabhängige Sicherungskopien aller wichtigen Videos, Medien und digitalen Assets auf, während Sie die Plattform nutzen.",
+    "linkLabel": "Beta-Programmhinweis lesen",
+    "back": "Zurück zum Dashboard"
+  },
+  "announcement": {
+    "regionLabel": "Plattformankündigung",
+    "moreDetails": "Weitere Details",
+    "dismiss": "Schließen",
+    "severity": {
+      "info": "Hinweis",
+      "maintenance": "Wartung",
+      "outage": "Ausfall",
+      "critical": "Kritisch"
+    }
+  },
+  "desktopRequired": {
+    "title": "Verwenden Sie einen Desktop für {featureName}",
+    "body": "{featureName} enthält Autorenwerkzeuge, breite Datenansichten und Drag-and-Drop-Abläufe, die einen Desktop-Bildschirm benötigen. Öffnen Sie diesen Bereich bitte auf einem Desktop oder Laptop.",
+    "features": {
+      "curriculum": "Lehrplan",
+      "audience": "Lernende und Analysen",
+      "authors": "Autoren"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Anzeige von {total, plural, one {# Element} other {# Elementen}}",
+    "showingRange": "Anzeige von {start} bis {end} von {total, plural, one {# Ergebnis} other {# Ergebnissen}}",
+    "perPage": "{count} pro Seite"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "downloadFolderLabel": "Download-Ordner",
+    "downloadFolderDescription": "Wählen Sie, wo heruntergeladene Dateien gespeichert werden sollen. Wenn nicht festgelegt, werden Dateien im standardmäßigen Downloads-Ordner gespeichert.",
+    "chooseFolder": "Ordner auswählen",
+    "reset": "Zurücksetzen",
+    "saved": "Einstellungen gespeichert!",
+    "userLabel": "Benutzer:",
+    "roleLabel": "Rolle:",
+    "defaultRole": "Benutzer",
+    "folderPickerUnsupported": "Ihr Browser unterstützt keine Ordnerauswahl. Downloads werden im standardmäßigen Downloads-Ordner gespeichert."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Grupos de usuarios",
+  "subtitle": "Administra grupos de usuarios para compartir carpetas inteligentes",
+  "createButton": "Crear grupo",
+  "emptyTitle": "No hay grupos",
+  "emptyBody": "Empieza creando tu primer grupo.",
+  "memberCount": "{count, plural, one {# miembro} other {# miembros}}",
+  "manageMembers": "Administrar miembros",
+  "adminRequiredTitle": "Se requiere acceso de administrador",
+  "adminRequiredBody": "Necesitas privilegios de administrador para gestionar grupos.",
+  "confirmDeleteGroup": "¿Seguro que quieres eliminar este grupo?",
+  "confirmRemoveMember": "¿Quitar a este usuario del grupo?",
+  "tooltips": {
+    "editGroup": "Editar grupo",
+    "deleteGroup": "Eliminar grupo"
+  },
+  "form": {
+    "editTitle": "Editar grupo",
+    "createTitle": "Crear grupo",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "p. ej., Equipo de marketing",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Descripción opcional",
+    "activeLabel": "Activo",
+    "update": "Actualizar",
+    "create": "Crear"
+  },
+  "members": {
+    "manageTitle": "Administrar miembros - {name}",
+    "currentTitle": "Miembros actuales ({count})",
+    "noneYet": "Aún no hay miembros",
+    "addTitle": "Agregar miembro",
+    "addAsMember": "Agregar como miembro",
+    "addAsAdmin": "Agregar como administrador",
+    "roles": {
+      "admin": "Administrador",
+      "member": "Miembro"
+    }
+  }
+}
+
+

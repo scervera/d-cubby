@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "loading": "Chargement...",
+  "beta": {
+    "regionLabel": "Avis du programme bêta",
+    "label": "Bêta",
+    "message": "Merci de nous aider à tester et améliorer la plateforme. Pendant cette période bêta, certaines fonctionnalités, intégrations et flux de travail peuvent évoluer ou se comporter parfois de manière inattendue. Veuillez conserver des sauvegardes indépendantes de toutes les vidéos, médias et actifs numériques importants pendant l'utilisation de la plateforme.",
+    "linkLabel": "Lire l'avis du programme bêta",
+    "back": "Retour au tableau de bord"
+  },
+  "announcement": {
+    "regionLabel": "Annonce de la plateforme",
+    "moreDetails": "Plus de détails",
+    "dismiss": "Fermer",
+    "severity": {
+      "info": "Avis",
+      "maintenance": "Maintenance",
+      "outage": "Panne",
+      "critical": "Critique"
+    }
+  },
+  "desktopRequired": {
+    "title": "Utilisez un ordinateur pour {featureName}",
+    "body": "{featureName} comprend des commandes d'édition, des vues de données larges et des flux de glisser-deposer qui nécessitent un écran de bureau. Ouvrez cette zone depuis un ordinateur de bureau ou portable.",
+    "features": {
+      "curriculum": "Programme",
+      "audience": "Apprenants et analytique",
+      "authors": "Auteurs"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Affichage de {total, plural, one {# élément} other {# éléments}}",
+    "showingRange": "Affichage de {start} à {end} sur {total, plural, one {# résultat} other {# résultats}}",
+    "perPage": "{count} par page"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "downloadFolderLabel": "Dossier de téléchargement",
+    "downloadFolderDescription": "Choisissez où enregistrer les fichiers téléchargés. Si non défini, les fichiers seront téléchargés dans votre dossier Téléchargements par défaut.",
+    "chooseFolder": "Choisir un dossier",
+    "reset": "Réinitialiser",
+    "saved": "Paramètres enregistrés !",
+    "userLabel": "Utilisateur :",
+    "roleLabel": "Rôle :",
+    "defaultRole": "Utilisateur",
+    "folderPickerUnsupported": "Votre navigateur ne prend pas en charge la sélection de dossiers. Les téléchargements iront dans le dossier Téléchargements par défaut."
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "welcomeBack": "Bem-vindo de volta, {name}",
+  "defaultName": "aí",
+  "welcomeSubtitle": "Gerencie seu conteúdo, acompanhe seu crescimento e crie currículos incríveis.",
+  "headerProductTitle": "Ativos digitais",
+  "quickActions": {
+    "title": "Ações rápidas",
+    "subtitle": "Comece tarefas comuns.",
+    "messageLibrary": "Enviar para a Mídia de lição",
+    "digitalAssets": "Enviar ativos digitais",
+    "createCurriculum": "Criar currículo",
+    "discovery": "Abrir descoberta",
+    "quickPublish": "Create & Publish"
+  },
+  "stats": {
+    "assets": "Ativos digitais",
+    "storageUsed": "Armazenamento Usado"
+  },
+  "featureLauncher": {
+    "title": "Áreas do produto",
+    "subtitle": "Abra um recurso do seu espaço de trabalho IGLESIUM.",
+    "media": "Catálogo de mídia de lição",
+    "assets": "Ativos digitais",
+    "curriculum": "Construtor de cursos",
+    "discovery": "Descoberta",
+    "users": "Gestão de usuários",
+    "analytics": "Análise de dados",
+    "intelligence": "Inteligência",
+    "videoTools": "Ferramentas de vídeo",
+    "podcasting": "Podcasting",
+    "teleprompter": "Teleprompter"
+  },
+  "metrics": {
+    "title": "Métricas Principais",
+    "subscribers": "Assinantes",
+    "subscribersSubtitle": "Pagos / Gratuitos",
+    "curriculumTitles": "Títulos de Currículos",
+    "mediaCatalogItems": "Mídia de lição",
+    "digitalAssets": "Ativos digitais",
+    "storageUsed": "Armazenamento Usado",
+    "revenue": "Receita Gerada",
+    "streamedMinutes": "Minutos transmitidos",
+    "streamedMinutesDay": "Dia",
+    "streamedMinutesMonth": "Mês",
+    "streamedMinutesYear": "Ano",
+    "streamedMinutesPeriodDay": "Hoje",
+    "streamedMinutesPeriodMonth": "Este mês",
+    "streamedMinutesPeriodYear": "Este ano",
+    "streamedMinutesUnit": "min"
+  },
+  "quickstart": {
+    "label": "Início rápido"
+  },
+  "tutorial": {
+    "title": "Vídeo de Início Rápido",
+    "placeholder": "Placeholder de vídeo - Como criar e publicar um currículo",
+    "description": "Assista a este breve tutorial para aprender como criar e publicar seu primeiro currículo em apenas alguns passos simples."
+  },
+  "steps": {
+    "title": "Criar um Currículo em 4 Passos Simples",
+    "startButton": "Começar a Criar",
+    "create": {
+      "title": "Crie Seu Currículo",
+      "description": "Comece criando um novo currículo com um título e descrição. Isso estabelece a base para seu conteúdo de aprendizagem."
+    },
+    "addContent": {
+      "title": "Adicionar mídia de lição",
+      "description": "Envie vídeos longos de mensagem para sua Mídia de lição. A IA gera transcrições, legendas e segmentos pesquisáveis."
+    },
+    "organize": {
+      "title": "Organize Lições",
+      "description": "Estruture seu currículo organizando o conteúdo em lições, módulos e sequências que guiam os alunos através do seu material."
+    },
+    "publish": {
+      "title": "Publique e Compartilhe",
+      "description": "Quando seu currículo estiver pronto, publique-o para torná-lo disponível para seus alunos. Você pode controlar o acesso e acompanhar o engajamento."
+    }
+  },
+  "aiUsage": {
+    "title": "Uso de tokens de IA",
+    "inputTokens": "Tokens de entrada",
+    "outputTokens": "Tokens de saída",
+    "requests": "Solicitações",
+    "date": "Data",
+    "period": "Período: {start} – {end}",
+    "noData": "Nenhum dado de uso de IA disponível.",
+    "noDailyData": "Nenhum uso diário neste período.",
+    "usageLog": "Registro de uso diário"
+  },
+  "modules": {
+    "title": "Acesso Rápido",
+    "subtitle": "Acesse suas ferramentas e comece a criar.",
+    "dam": {
+      "title": "Ativos digitais",
+      "description": "Imagens, vídeos curtos, documentos e arquivos de apoio para lições e mais.",
+      "primaryCta": "Abrir ativos digitais"
+    },
+    "videoTools": {
+      "title": "Mídia de lição",
+      "description": "Mídia de mensagem longa com transcrições, busca e processamento pronto para lições.",
+      "primaryCta": "Abrir Mídia de lição"
+    },
+    "curriculum": {
+      "title": "Construtor de currículo",
+      "description": "Crie e monte currículos com mídia de lição, blocos e recursos de apoio.",
+      "primaryCta": "Abrir biblioteca de currículos"
+    }
+  }
+}

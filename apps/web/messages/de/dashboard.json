@@ -1,0 +1,109 @@
+{
+  "welcomeBack": "Willkommen zurück, {name}",
+  "defaultName": "da",
+  "welcomeSubtitle": "Verwalten Sie Ihre Inhalte, verfolgen Sie Ihr Wachstum und erstellen Sie fantastische Lehrpläne.",
+  "headerProductTitle": "Digitale Assets",
+  "quickActions": {
+    "title": "Schnellaktionen",
+    "subtitle": "Häufige Aufgaben starten.",
+    "messageLibrary": "In die Lektionsmedien hochladen",
+    "digitalAssets": "Digitale Assets hochladen",
+    "createCurriculum": "Lehrplan erstellen",
+    "discovery": "Entdeckung öffnen",
+    "quickPublish": "Create & Publish"
+  },
+  "stats": {
+    "assets": "Digitale Assets",
+    "storageUsed": "Genutzter Speicher"
+  },
+  "featureLauncher": {
+    "title": "Produktbereiche",
+    "subtitle": "Öffnen Sie einen Bereich in Ihrem IGLESIUM-Arbeitsbereich.",
+    "media": "Lektionsmedien-Katalog",
+    "assets": "Digitale Assets",
+    "curriculum": "Kurs-Builder",
+    "discovery": "Entdeckung",
+    "users": "Benutzerverwaltung",
+    "analytics": "Datenanalyse",
+    "intelligence": "Intelligence",
+    "videoTools": "Video-Tools",
+    "podcasting": "Podcasting",
+    "teleprompter": "Teleprompter"
+  },
+  "metrics": {
+    "title": "Wichtige Kennzahlen",
+    "subscribers": "Abonnenten",
+    "subscribersSubtitle": "Bezahlt / Kostenlos",
+    "curriculumTitles": "Lehrplan-Titel",
+    "mediaCatalogItems": "Lektionsmedien",
+    "digitalAssets": "Digitale Assets",
+    "storageUsed": "Genutzter Speicher",
+    "revenue": "Erzielte Einnahmen",
+    "streamedMinutes": "Gestreamte Minuten",
+    "streamedMinutesDay": "Tag",
+    "streamedMinutesMonth": "Monat",
+    "streamedMinutesYear": "Jahr",
+    "streamedMinutesPeriodDay": "Heute",
+    "streamedMinutesPeriodMonth": "Dieser Monat",
+    "streamedMinutesPeriodYear": "Dieses Jahr",
+    "streamedMinutesUnit": "Min."
+  },
+  "quickstart": {
+    "label": "Schnellstart"
+  },
+  "tutorial": {
+    "title": "Schnellstart-Video",
+    "placeholder": "Video-Platzhalter - So erstellen und veröffentlichen Sie einen Lehrplan",
+    "description": "Sehen Sie sich dieses kurze Tutorial an, um zu erfahren, wie Sie Ihren ersten Lehrplan in nur wenigen einfachen Schritten erstellen und veröffentlichen."
+  },
+  "steps": {
+    "title": "Erstellen Sie einen Lehrplan in 4 einfachen Schritten",
+    "startButton": "Mit dem Erstellen beginnen",
+    "create": {
+      "title": "Erstellen Sie Ihren Lehrplan",
+      "description": "Beginnen Sie mit der Erstellung eines neuen Lehrplans mit Titel und Beschreibung. Dies legt den Grundstein für Ihre Lerninhalte."
+    },
+    "addContent": {
+      "title": "Lektionsmedien hinzufügen",
+      "description": "Laden Sie lange Unterrichtsvideos in Ihre Lektionsmedien. KI erzeugt Transkripte, Untertitel und durchsuchbare Segmente."
+    },
+    "organize": {
+      "title": "Lektionen organisieren",
+      "description": "Strukturieren Sie Ihren Lehrplan, indem Sie Inhalte in Lektionen, Module und Sequenzen organisieren, die Lernende durch Ihr Material führen."
+    },
+    "publish": {
+      "title": "Veröffentlichen & Teilen",
+      "description": "Sobald Ihr Lehrplan fertig ist, veröffentlichen Sie ihn, damit er für Ihre Lernenden verfügbar ist. Sie können den Zugriff steuern und das Engagement verfolgen."
+    }
+  },
+  "aiUsage": {
+    "title": "KI-Token-Nutzung",
+    "inputTokens": "Eingabe-Tokens",
+    "outputTokens": "Ausgabe-Tokens",
+    "requests": "Anfragen",
+    "date": "Datum",
+    "period": "Zeitraum: {start} – {end}",
+    "noData": "Keine KI-Nutzungsdaten verfügbar.",
+    "noDailyData": "Keine Tagesnutzung in diesem Zeitraum.",
+    "usageLog": "Tägliche Nutzungsübersicht"
+  },
+  "modules": {
+    "title": "Schnellzugriff",
+    "subtitle": "Steigen Sie in Ihre Tools ein und beginnen Sie zu erstellen.",
+    "dam": {
+      "title": "Digitale Assets",
+      "description": "Bilder, kurze Videos, Dokumente und unterstützende Dateien für Lektionen und mehr.",
+      "primaryCta": "Digitale Assets öffnen"
+    },
+    "videoTools": {
+      "title": "Lektionsmedien",
+      "description": "Langform-Unterrichtsmedien mit Transkripten, Suche und lektionsfertiger Verarbeitung.",
+      "primaryCta": "Lektionsmedien öffnen"
+    },
+    "curriculum": {
+      "title": "Curriculum-Builder",
+      "description": "Curricula aus Lektionsmedien, Inhaltsblöcken und unterstützenden Assets erstellen.",
+      "primaryCta": "Lehrplan-Bibliothek öffnen"
+    }
+  }
+}

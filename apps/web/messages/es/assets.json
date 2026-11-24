@@ -1,0 +1,234 @@
+{
+  "allAssetsTitle": "Todos los recursos",
+  "smartFolderWithAssets": "Carpeta inteligente con {count} recursos",
+  "tagsPrefix": "Etiquetas: {tags}",
+  "errorLoadingAssets": "Error al cargar recursos",
+  "tryAgain": "Reintentar",
+  "uploadFiles": "Subir archivos",
+  "bulkDelete": "Eliminación masiva",
+  "filters": {
+    "context": {
+      "all": "Filtrar recursos",
+      "dropZone": "Carpeta de entrega {id}",
+      "smartFolder": "Carpeta inteligente {id}"
+    },
+    "subtitle": "Filtra y organiza tus recursos",
+    "gridView": "Vista de cuadrícula",
+    "listView": "Vista de lista",
+    "toggleFilters": "Mostrar filtros",
+    "searchPlaceholder": "Buscar recursos",
+    "fileTypeLabel": "Tipo de archivo",
+    "categories": {
+      "allFiles": "Todos",
+      "allFilesShort": "Todos",
+      "images": "Imágenes",
+      "imagesShort": "Imágenes",
+      "videos": "Videos",
+      "videosShort": "Videos",
+      "audio": "Audio",
+      "audioShort": "Audio",
+      "documents": "Documentos",
+      "documentsShort": "Docs"
+    }
+  },
+  "thumbnailSize": {
+    "label": "Tamaño de miniatura:",
+    "small": "Pequeño",
+    "smallDesc": "Más miniaturas por fila",
+    "medium": "Mediano",
+    "mediumDesc": "Vista equilibrada",
+    "large": "Grande",
+    "largeDesc": "Miniaturas detalladas",
+    "full": "Completo",
+    "fullDesc": "Altura completa, ancho recortado"
+  },
+  "upload": {
+    "modalTitle": "Subir archivos",
+    "dropFilesHere": "Suelta los archivos aquí",
+    "clickToUpload": "Haz clic para subir archivos",
+    "dragAndDropHint": "Arrastra y suelta archivos aquí, o haz clic para seleccionar",
+    "supportsHint": "Soporta imágenes, videos, audio y documentos (máx. {maxSizeGB}GB cada uno)",
+    "selectedFiles": "Archivos seleccionados ({count})",
+    "uploading": "Subiendo...",
+    "processing": "Procesando...",
+    "uploadButton": "Subir {count, plural, one {# archivo} other {# archivos}}",
+    "invalidFileTypes": "Tipos de archivo inválidos:\n{details}",
+    "filesSelected": "{count, plural, one {# archivo válido seleccionado} other {# archivos válidos seleccionados}}",
+    "successfullyUploaded": "Se subieron {count, plural, one {# archivo} other {# archivos}} correctamente",
+    "failedToUpload": "No se pudieron subir {count, plural, one {# archivo} other {# archivos}}",
+    "uploadFailed": "Falló la carga",
+    "fileTooLarge": "El tamaño del archivo debe ser menor que {maxSizeGB}GB",
+    "fileTypeNotSupported": "Tipo de archivo no compatible",
+    "applyTagsLabel": "Aplicar etiquetas a todos los archivos",
+    "applyTagsHint": "Estas etiquetas se añadirán a cada archivo de esta carga.",
+    "tagPlaceholder": "Escribe el nombre de una etiqueta…",
+    "addTag": "Añadir"
+  },
+  "grid": {
+    "emptyTitle": "No se encontraron recursos",
+    "emptyAllHint": "Empieza subiendo tu primer archivo.",
+    "emptyCategoryHint": "No se encontraron {category}. Intenta subir algunos {category}.",
+    "assetCount": "{count, plural, one {# recurso} other {# recursos}}",
+    "confirmDeleteAsset": "¿Seguro que quieres eliminar este recurso?",
+    "tooltips": {
+      "tapToViewDetails": "Toca para ver detalles",
+      "doubleClickToViewDetails": "Doble clic para ver detalles",
+      "doubleClickToViewFullSize": "Doble clic para ver tamaño completo"
+    },
+    "bulk": {
+      "selected": "{count, plural, one {# recurso seleccionado} other {# recursos seleccionados}}",
+      "selectAll": "Seleccionar todo",
+      "clearSelection": "Limpiar selección",
+      "deleting": "Eliminando...",
+      "deleteCount": "Eliminar {count}",
+      "confirmBulkDelete": "¿Seguro que quieres eliminar {count, plural, one {# recurso} other {# recursos}}?",
+      "deletedSuccess": "Se eliminaron {count, plural, one {# recurso} other {# recursos}} correctamente",
+      "deleteFailed": "No se pudieron eliminar algunos recursos"
+    }
+  },
+  "details": {
+    "fileType": "Tipo de archivo:",
+    "fileSize": "Tamaño del archivo:",
+    "created": "Creado:",
+    "assetId": "ID del recurso:",
+    "exif": {
+      "imageResolution": "Resolución de imagen",
+      "videoResolution": "Resolución de video",
+      "dpi": "PPP",
+      "exifInformation": "Información EXIF",
+      "camera": "Cámara",
+      "lens": "Objetivo",
+      "aperture": "Apertura",
+      "shutter": "Obturación",
+      "iso": "ISO",
+      "focalLength": "Distancia focal",
+      "dateTaken": "Fecha de captura",
+      "location": "Ubicación",
+      "software": "Software"
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "addTag": "Agregar etiqueta",
+      "unknownTag": "Etiqueta desconocida",
+      "noneAssigned": "Sin etiquetas",
+      "enterTagName": "Escribe el nombre de la etiqueta...",
+      "adding": "Agregando...",
+      "add": "Agregar",
+      "availableTags": "Etiquetas disponibles",
+      "addSelected": "Agregar {count} seleccionadas",
+      "multiSelectHint": "Selecciona varias etiquetas y usa el botón de arriba para asignarlas todas a la vez.",
+      "failedToLoadTags": "No se pudieron cargar las etiquetas",
+      "addedTag": "Etiqueta “{name}” agregada",
+      "addTagInvalidResponse": "No se pudo agregar la etiqueta: respuesta inválida",
+      "addTagFailed": "No se pudo agregar la etiqueta",
+      "removedTag": "Etiqueta eliminada",
+      "removeTagFailed": "No se pudo eliminar la etiqueta",
+      "addedTags": "Se agregaron {count, plural, one {# etiqueta} other {# etiquetas}} correctamente",
+      "addTagsFailed": "No se pudieron agregar algunas etiquetas"
+    },
+    "actions": {
+      "setPosterFrame": "Elegir portada",
+      "setPosterFrameTooltip": "Elegir una portada personalizada",
+      "editImage": "Editar imagen",
+      "editImageTooltip": "Recorta, redimensiona, rota y guarda como derivado nuevo",
+      "autoTag": "Etiquetar con IA",
+      "autoTagTooltip": "Generar etiquetas para esta imagen con IA",
+      "autoTagging": "Etiquetando…",
+      "autoTagStarted": "Etiquetado automático iniciado. Las etiquetas se actualizarán en breve.",
+      "autoTagFailed": "No se pudo iniciar el etiquetado automático",
+      "view": "Ver",
+      "download": "Descargar",
+      "downloadTooltip": "Descargar recurso",
+      "delete": "Eliminar",
+      "deleteAsset": "Eliminar recurso",
+      "deleteTooltip": "Eliminar recurso"
+    }
+  },
+  "posterFrame": {
+    "title": "Elegir portada",
+    "selectedFrame": "Fotograma seleccionado: {seconds}s",
+    "instructions": "Busca el fotograma deseado en el video y luego haz clic en “{action}” para generar la portada",
+    "useCurrentFrame": "Usar fotograma actual",
+    "generating": "Generando...",
+    "selectFrameFirst": "Primero selecciona un fotograma del video",
+    "generatedAt": "Portada generada en {seconds}s",
+    "generateFailed": "No se pudo generar la portada"
+  },
+  "download": {
+    "noUrl": "No hay una URL disponible para descargar",
+    "success": "¡Archivo descargado correctamente!",
+    "failedTryAgain": "Falló la descarga. Intenta de nuevo.",
+    "unknownError": "Ocurrió un error desconocido",
+    "authRequired": "Autenticación requerida. Vuelve a iniciar sesión.",
+    "notFound": "No se encontró el archivo. Puede que haya sido eliminado.",
+    "accessDenied": "Acceso denegado. Puede que no tengas permisos para descargar este archivo.",
+    "failedWithError": "Falló la descarga: {error}"
+  },
+  "editor": {
+    "title": "Editor de imagen",
+    "preview": "Vista previa",
+    "previewUnavailable": "No hay vista previa disponible para esta imagen.",
+    "output": "Salida",
+    "crop": "Recorte",
+    "resize": "Redimensionar",
+    "rotate": "Rotar",
+    "format": "Formato",
+    "savedSuccess": "Imagen derivada creada correctamente",
+    "saveFailed": "No se pudo crear la imagen derivada",
+    "fields": {
+      "name": "Nombre del nuevo recurso",
+      "description": "Descripción",
+      "copyTags": "Copiar etiquetas de la imagen fuente",
+      "width": "Ancho",
+      "height": "Alto",
+      "lockAspectRatio": "Bloquear relación de aspecto",
+      "resizeMode": "Modo de redimensionado",
+      "degrees": "Rotación (grados)",
+      "outputFormat": "Formato de salida",
+      "quality": "Calidad"
+    },
+    "resizeModes": {
+      "exact": "Exacto",
+      "limit": "Límite",
+      "fill": "Rellenar"
+    },
+    "formats": {
+      "keep": "Mantener formato original"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "saveAsNew": "Guardar como nuevo",
+      "saving": "Guardando..."
+    }
+  },
+  "lineage": {
+    "title": "Versiones relacionadas",
+    "summary": "{count, plural, one {# imagen relacionada} other {# imágenes relacionadas}}",
+    "loading": "Cargando versiones relacionadas...",
+    "none": "Todavía no hay versiones relacionadas.",
+    "open": "Abrir",
+    "opening": "Abriendo...",
+    "failedToLoad": "No se pudo cargar la imagen relacionada",
+    "relations": {
+      "ancestor": "Antecesor",
+      "sibling": "Hermana",
+      "descendant": "Descendiente",
+      "relative": "Relacionada"
+    }
+  },
+  "viewer": {
+    "fullSizePreviewAlt": "Vista en tamaño completo",
+    "videoNotSupported": "Tu navegador no soporta la etiqueta de video.",
+    "audioNotSupported": "Tu navegador no soporta el elemento de audio.",
+    "closeHint": "Haz clic fuera o presiona ESC para cerrar",
+    "videoLoadFailed": "No se pudo cargar el video. Intenta refrescar la página.",
+    "fullScreen": "Pantalla completa",
+    "fullScreenHint": "Presiona F o haz clic para ver en pantalla completa",
+    "backgroundToggle": "Fondo: {color} (haz clic para cambiar)",
+    "colors": {
+      "white": "Blanco",
+      "black": "Negro"
+    }
+  }
+}
+

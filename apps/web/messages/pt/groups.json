@@ -1,0 +1,42 @@
+{
+  "title": "Grupos",
+  "subtitle": "Gerencie grupos e membros para sua organização.",
+  "createButton": "Criar grupo",
+  "emptyTitle": "Nenhum grupo ainda",
+  "emptyBody": "Crie seu primeiro grupo para começar.",
+  "memberCount": "{count, plural, one {# membro} other {# membros}}",
+  "manageMembers": "Gerenciar membros",
+  "confirmDeleteGroup": "Tem certeza de que deseja excluir este grupo?",
+  "confirmRemoveMember": "Tem certeza de que deseja remover este membro?",
+  "adminRequiredTitle": "Acesso de administrador necessário",
+  "adminRequiredBody": "Você precisa ser administrador para gerenciar grupos.",
+  "tooltips": {
+    "editGroup": "Editar grupo",
+    "deleteGroup": "Excluir grupo"
+  },
+  "form": {
+    "createTitle": "Criar grupo",
+    "editTitle": "Editar grupo",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Digite o nome do grupo",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Digite uma descrição (opcional)",
+    "activeLabel": "Ativo",
+    "create": "Criar",
+    "update": "Atualizar"
+  },
+  "members": {
+    "manageTitle": "Gerenciar membros — {name}",
+    "currentTitle": "Membros atuais ({count})",
+    "noneYet": "Nenhum membro ainda.",
+    "addTitle": "Adicionar membro",
+    "addAsMember": "Adicionar como membro",
+    "addAsAdmin": "Adicionar como admin",
+    "roles": {
+      "admin": "Administrador",
+      "member": "Membro"
+    }
+  }
+}
+
+

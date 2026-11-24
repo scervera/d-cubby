@@ -1,0 +1,28 @@
+{
+  "title": "Etiquetas",
+  "subtitle": "Gerencie etiquetas para organizar seus ativos",
+  "createButton": "Criar etiqueta",
+  "deleteTooltip": "Excluir etiqueta",
+  "emptyTitle": "Nenhuma etiqueta ainda",
+  "emptyBody": "Crie sua primeira etiqueta para começar a organizar ativos",
+  "assetCount": "{count, plural, one {# ativo} other {# ativos}}",
+  "confirmDelete": "Tem certeza de que deseja excluir a etiqueta \"{name}\"? Isso a removerá de todos os ativos.",
+  "form": {
+    "createTitle": "Criar nova etiqueta",
+    "editTitle": "Editar etiqueta",
+    "nameLabel": "Nome da etiqueta",
+    "namePlaceholder": "Digite o nome da etiqueta...",
+    "createButton": "Criar etiqueta",
+    "updateButton": "Atualizar etiqueta"
+  },
+  "toasts": {
+    "loadFailed": "Falha ao carregar etiquetas",
+    "nameRequired": "Nome da etiqueta é obrigatório",
+    "created": "Etiqueta \"{name}\" criada com sucesso",
+    "createFailed": "Falha ao criar etiqueta",
+    "deleted": "Etiqueta \"{name}\" excluída com sucesso",
+    "deleteFailed": "Falha ao excluir etiqueta"
+  }
+}
+
+

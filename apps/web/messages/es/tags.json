@@ -1,0 +1,28 @@
+{
+  "title": "Etiquetas",
+  "subtitle": "Administra etiquetas para organizar tus recursos",
+  "createButton": "Crear etiqueta",
+  "deleteTooltip": "Eliminar etiqueta",
+  "emptyTitle": "Aún no hay etiquetas",
+  "emptyBody": "Crea tu primera etiqueta para empezar a organizar recursos",
+  "assetCount": "{count, plural, one {# recurso} other {# recursos}}",
+  "confirmDelete": "¿Seguro que quieres eliminar la etiqueta \"{name}\"? Esto la quitará de todos los recursos.",
+  "form": {
+    "createTitle": "Crear nueva etiqueta",
+    "editTitle": "Editar etiqueta",
+    "nameLabel": "Nombre de la etiqueta",
+    "namePlaceholder": "Escribe el nombre de la etiqueta...",
+    "createButton": "Crear etiqueta",
+    "updateButton": "Actualizar etiqueta"
+  },
+  "toasts": {
+    "loadFailed": "No se pudieron cargar las etiquetas",
+    "nameRequired": "El nombre de la etiqueta es obligatorio",
+    "created": "Etiqueta \"{name}\" creada correctamente",
+    "createFailed": "No se pudo crear la etiqueta",
+    "deleted": "Etiqueta \"{name}\" eliminada correctamente",
+    "deleteFailed": "No se pudo eliminar la etiqueta"
+  }
+}
+
+

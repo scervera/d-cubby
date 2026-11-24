@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Salvar",
+  "cancel": "Cancelar",
+  "close": "Fechar",
+  "loading": "Carregando...",
+  "beta": {
+    "regionLabel": "Aviso do programa beta",
+    "label": "Beta",
+    "message": "Obrigado por nos ajudar a testar e melhorar a plataforma. Durante este período beta, alguns recursos, integrações e fluxos de trabalho podem evoluir ou se comportar de forma inesperada ocasionalmente. Mantenha backups independentes de todos os vídeos, mídias e ativos digitais importantes enquanto usa a plataforma.",
+    "linkLabel": "Ler o aviso do programa beta",
+    "back": "Voltar ao painel"
+  },
+  "announcement": {
+    "regionLabel": "Anúncio da plataforma",
+    "moreDetails": "Mais detalhes",
+    "dismiss": "Dispensar",
+    "severity": {
+      "info": "Aviso",
+      "maintenance": "Manutenção",
+      "outage": "Interrupção",
+      "critical": "Crítico"
+    }
+  },
+  "desktopRequired": {
+    "title": "Use um desktop para {featureName}",
+    "body": "{featureName} inclui controles de autoria, visualizações amplas de dados e fluxos de arrastar e soltar que precisam de uma tela de desktop. Abra esta área em um desktop ou notebook.",
+    "features": {
+      "curriculum": "Currículo",
+      "audience": "Aprendizes e análises",
+      "authors": "Autores"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Mostrando {total, plural, one {# item} other {# itens}}",
+    "showingRange": "Mostrando {start} a {end} de {total, plural, one {# resultado} other {# resultados}}",
+    "perPage": "{count} por página"
+  },
+  "settings": {
+    "title": "Configurações",
+    "downloadFolderLabel": "Pasta de download",
+    "downloadFolderDescription": "Escolha onde os arquivos baixados devem ser salvos. Se não definido, os arquivos serão baixados para a pasta padrão de Downloads.",
+    "chooseFolder": "Escolher pasta",
+    "reset": "Redefinir",
+    "saved": "Configurações salvas!",
+    "userLabel": "Usuário:",
+    "roleLabel": "Função:",
+    "defaultRole": "Usuário",
+    "folderPickerUnsupported": "Seu navegador não suporta seleção de pastas. Os downloads irão para a pasta padrão de Downloads."
+  }
+}

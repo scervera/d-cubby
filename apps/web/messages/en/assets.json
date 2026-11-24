@@ -1,0 +1,233 @@
+{
+  "allAssetsTitle": "All Assets",
+  "smartFolderWithAssets": "Smart folder with {count} assets",
+  "tagsPrefix": "Tags: {tags}",
+  "errorLoadingAssets": "Error Loading Assets",
+  "tryAgain": "Try Again",
+  "uploadFiles": "Upload Files",
+  "bulkDelete": "Bulk Delete",
+  "filters": {
+    "context": {
+      "all": "Filter Assets",
+      "dropZone": "Drop Zone {id}",
+      "smartFolder": "Smart Folder {id}"
+    },
+    "subtitle": "Filter and organize your assets",
+    "gridView": "Grid View",
+    "listView": "List View",
+    "toggleFilters": "Toggle Filters",
+    "searchPlaceholder": "Search Assets",
+    "fileTypeLabel": "File Type",
+    "categories": {
+      "allFiles": "All Files",
+      "allFilesShort": "All",
+      "images": "Images",
+      "imagesShort": "Images",
+      "videos": "Videos",
+      "videosShort": "Videos",
+      "audio": "Audio",
+      "audioShort": "Audio",
+      "documents": "Documents",
+      "documentsShort": "Docs"
+    }
+  },
+  "thumbnailSize": {
+    "label": "Thumbnail Size:",
+    "small": "Small",
+    "smallDesc": "More thumbnails per row",
+    "medium": "Medium",
+    "mediumDesc": "Balanced view",
+    "large": "Large",
+    "largeDesc": "Detailed thumbnails",
+    "full": "Full",
+    "fullDesc": "Full height, cropped width"
+  },
+  "upload": {
+    "modalTitle": "Upload Files",
+    "dropFilesHere": "Drop files here",
+    "clickToUpload": "Click to upload files",
+    "dragAndDropHint": "Drag and drop files here, or click to select",
+    "supportsHint": "Supports images, videos, audio, documents (max {maxSizeGB}GB each)",
+    "selectedFiles": "Selected Files ({count})",
+    "uploading": "Uploading...",
+    "processing": "Processing...",
+    "uploadButton": "Upload {count, plural, one {# file} other {# files}}",
+    "invalidFileTypes": "Invalid file types:\n{details}",
+    "filesSelected": "{count, plural, one {# valid file selected} other {# valid files selected}}",
+    "successfullyUploaded": "Successfully uploaded {count, plural, one {# file} other {# files}}",
+    "failedToUpload": "Failed to upload {count, plural, one {# file} other {# files}}",
+    "uploadFailed": "Upload failed",
+    "fileTooLarge": "File size must be less than {maxSizeGB}GB",
+    "fileTypeNotSupported": "File type not supported",
+    "applyTagsLabel": "Apply tags to all files",
+    "applyTagsHint": "These tags will be added to every file in this upload.",
+    "tagPlaceholder": "Type a tag name…",
+    "addTag": "Add"
+  },
+  "grid": {
+    "emptyTitle": "No assets found",
+    "emptyAllHint": "Get started by uploading your first file.",
+    "emptyCategoryHint": "No {category} found. Try uploading some {category}.",
+    "assetCount": "{count, plural, one {# asset} other {# assets}}",
+    "confirmDeleteAsset": "Move this asset to the recycle bin? You can restore it from Digital Assets → Recycle bin until it is permanently removed.",
+    "tooltips": {
+      "tapToViewDetails": "Tap to view details",
+      "doubleClickToViewDetails": "Double-click to view details",
+      "doubleClickToViewFullSize": "Double-click to view full size"
+    },
+    "bulk": {
+      "selected": "{count, plural, one {# asset selected} other {# assets selected}}",
+      "selectAll": "Select All",
+      "clearSelection": "Clear Selection",
+      "deleting": "Deleting...",
+      "deleteCount": "Delete {count}",
+      "confirmBulkDelete": "Move {count, plural, one {# asset} other {# assets}} to the recycle bin? You can restore them from Digital Assets → Recycle bin until they are permanently removed.",
+      "deletedSuccess": "Successfully deleted {count, plural, one {# asset} other {# assets}}",
+      "deleteFailed": "Failed to delete some assets"
+    }
+  },
+  "details": {
+    "fileType": "File Type:",
+    "fileSize": "File Size:",
+    "created": "Created:",
+    "assetId": "Asset ID:",
+    "exif": {
+      "imageResolution": "Image Resolution",
+      "videoResolution": "Video Resolution",
+      "dpi": "DPI",
+      "exifInformation": "EXIF Information",
+      "camera": "Camera",
+      "lens": "Lens",
+      "aperture": "Aperture",
+      "shutter": "Shutter",
+      "iso": "ISO",
+      "focalLength": "Focal Length",
+      "dateTaken": "Date Taken",
+      "location": "Location",
+      "software": "Software"
+    },
+    "tags": {
+      "title": "Tags",
+      "addTag": "Add Tag",
+      "unknownTag": "Unknown Tag",
+      "noneAssigned": "No tags assigned",
+      "enterTagName": "Enter tag name...",
+      "adding": "Adding...",
+      "add": "Add",
+      "availableTags": "Available tags",
+      "addSelected": "Add {count} selected",
+      "multiSelectHint": "Select multiple tags and click the button above to assign them all at once.",
+      "failedToLoadTags": "Failed to load tags",
+      "addedTag": "Tag “{name}” added successfully",
+      "addTagInvalidResponse": "Failed to add tag: Invalid response",
+      "addTagFailed": "Failed to add tag",
+      "removedTag": "Tag removed successfully",
+      "removeTagFailed": "Failed to remove tag",
+      "addedTags": "Added {count, plural, one {# tag} other {# tags}} successfully",
+      "addTagsFailed": "Failed to add some tags"
+    },
+    "actions": {
+      "setPosterFrame": "Set Poster Frame",
+      "setPosterFrameTooltip": "Set custom poster frame",
+      "editImage": "Edit Image",
+      "editImageTooltip": "Crop, resize, rotate, and save as a new derivative",
+      "autoTag": "Auto-tag with AI",
+      "autoTagTooltip": "Generate tags for this image using AI",
+      "autoTagging": "Tagging…",
+      "autoTagStarted": "Auto-tagging started. Tags will update shortly.",
+      "autoTagFailed": "Failed to start auto-tagging",
+      "view": "View",
+      "download": "Download",
+      "downloadTooltip": "Download asset",
+      "delete": "Delete",
+      "deleteAsset": "Delete Asset",
+      "deleteTooltip": "Delete asset"
+    }
+  },
+  "posterFrame": {
+    "title": "Set Poster Frame",
+    "selectedFrame": "Selected Frame: {seconds}s",
+    "instructions": "Scrub the video to the desired frame, then click “{action}” to generate the poster frame",
+    "useCurrentFrame": "Use Current Frame",
+    "generating": "Generating...",
+    "selectFrameFirst": "Please select a frame from the video first",
+    "generatedAt": "Poster frame generated at {seconds}s",
+    "generateFailed": "Failed to generate poster frame"
+  },
+  "download": {
+    "noUrl": "No file URL available for download",
+    "success": "File downloaded successfully!",
+    "failedTryAgain": "Download failed. Please try again.",
+    "unknownError": "Unknown error occurred",
+    "authRequired": "Authentication required. Please log in again.",
+    "notFound": "File not found. It may have been deleted.",
+    "accessDenied": "Access denied. You may not have permission to download this file.",
+    "failedWithError": "Download failed: {error}"
+  },
+  "editor": {
+    "title": "Image Editor",
+    "preview": "Preview",
+    "previewUnavailable": "Preview unavailable for this image.",
+    "output": "Output",
+    "crop": "Crop",
+    "resize": "Resize",
+    "rotate": "Rotate",
+    "format": "Format",
+    "savedSuccess": "Derivative image created successfully",
+    "saveFailed": "Failed to create derivative image",
+    "fields": {
+      "name": "New asset name",
+      "description": "Description",
+      "copyTags": "Copy tags from source image",
+      "width": "Width",
+      "height": "Height",
+      "lockAspectRatio": "Lock aspect ratio",
+      "resizeMode": "Resize mode",
+      "degrees": "Rotation (degrees)",
+      "outputFormat": "Output format",
+      "quality": "Quality"
+    },
+    "resizeModes": {
+      "exact": "Exact",
+      "limit": "Limit",
+      "fill": "Fill"
+    },
+    "formats": {
+      "keep": "Keep source format"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "saveAsNew": "Save As New",
+      "saving": "Saving..."
+    }
+  },
+  "lineage": {
+    "title": "Related Versions",
+    "summary": "{count, plural, one {# related image} other {# related images}}",
+    "loading": "Loading related versions...",
+    "none": "No related versions yet.",
+    "open": "Open",
+    "opening": "Opening...",
+    "failedToLoad": "Failed to load related image",
+    "relations": {
+      "ancestor": "Ancestor",
+      "sibling": "Sibling",
+      "descendant": "Descendant",
+      "relative": "Relative"
+    }
+  },
+  "viewer": {
+    "fullSizePreviewAlt": "Full size preview",
+    "videoNotSupported": "Your browser does not support the video tag.",
+    "audioNotSupported": "Your browser does not support the audio element.",
+    "closeHint": "Click outside or press ESC to close",
+    "videoLoadFailed": "Failed to load video. Please try refreshing the page.",
+    "fullScreen": "Full Screen",
+    "fullScreenHint": "Press F or click to view full screen",
+    "backgroundToggle": "Background: {color} (click to toggle)",
+    "colors": {
+      "white": "White",
+      "black": "Black"
+    }
+  }
+}

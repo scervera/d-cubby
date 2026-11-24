@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Save",
+  "cancel": "Cancel",
+  "close": "Close",
+  "loading": "Loading...",
+  "beta": {
+    "regionLabel": "Beta program notice",
+    "label": "Beta",
+    "message": "Thank you for helping us test and improve the platform. During this beta period, some features, integrations, and workflows may evolve or occasionally behave unexpectedly. Please retain independent backups of all important videos, media, and digital assets while using the platform.",
+    "linkLabel": "Read the beta program notice",
+    "back": "Back to dashboard"
+  },
+  "announcement": {
+    "regionLabel": "Platform announcement",
+    "moreDetails": "More details",
+    "dismiss": "Dismiss",
+    "severity": {
+      "info": "Notice",
+      "maintenance": "Maintenance",
+      "outage": "Outage",
+      "critical": "Critical"
+    }
+  },
+  "desktopRequired": {
+    "title": "Use a desktop for {featureName}",
+    "body": "{featureName} includes authoring controls, wide data views, and drag-and-drop workflows that need a desktop-sized screen. Please open this area from a desktop or laptop.",
+    "features": {
+      "curriculum": "Course",
+      "audience": "Learners and Analytics",
+      "authors": "Authors"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Showing {total, plural, one {# item} other {# items}}",
+    "showingRange": "Showing {start} to {end} of {total, plural, one {# result} other {# results}}",
+    "perPage": "{count} per page"
+  },
+  "settings": {
+    "title": "Settings",
+    "downloadFolderLabel": "Download Folder",
+    "downloadFolderDescription": "Choose where downloaded files should be saved. If not set, files will download to your default Downloads folder.",
+    "chooseFolder": "Choose Folder",
+    "reset": "Reset",
+    "saved": "Settings saved!",
+    "userLabel": "User:",
+    "roleLabel": "Role:",
+    "defaultRole": "User",
+    "folderPickerUnsupported": "Your browser doesn't support folder selection. Downloads will go to the default Downloads folder."
+  }
+}

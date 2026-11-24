@@ -1,0 +1,233 @@
+{
+  "allAssetsTitle": "Toutes les ressources",
+  "smartFolderWithAssets": "Dossier intelligent avec {count} ressources",
+  "tagsPrefix": "Étiquettes : {tags}",
+  "errorLoadingAssets": "Erreur lors du chargement des ressources",
+  "tryAgain": "Réessayer",
+  "uploadFiles": "Télécharger des fichiers",
+  "bulkDelete": "Suppression en masse",
+  "filters": {
+    "context": {
+      "all": "Filtrer les ressources",
+      "dropZone": "Dossier de dépôt {id}",
+      "smartFolder": "Dossier intelligent {id}"
+    },
+    "subtitle": "Filtrez et organisez vos ressources",
+    "gridView": "Vue en grille",
+    "listView": "Vue en liste",
+    "toggleFilters": "Basculer les filtres",
+    "searchPlaceholder": "Rechercher des ressources",
+    "fileTypeLabel": "Type de fichier",
+    "categories": {
+      "allFiles": "Tous les fichiers",
+      "allFilesShort": "Tous",
+      "images": "Images",
+      "imagesShort": "Images",
+      "videos": "Vidéos",
+      "videosShort": "Vidéos",
+      "audio": "Audio",
+      "audioShort": "Audio",
+      "documents": "Documents",
+      "documentsShort": "Docs"
+    }
+  },
+  "thumbnailSize": {
+    "label": "Taille de la miniature :",
+    "small": "Petit",
+    "smallDesc": "Plus de miniatures par ligne",
+    "medium": "Moyen",
+    "mediumDesc": "Vue équilibrée",
+    "large": "Grand",
+    "largeDesc": "Miniatures détaillées",
+    "full": "Complet",
+    "fullDesc": "Hauteur complète, largeur recadrée"
+  },
+  "upload": {
+    "modalTitle": "Télécharger des fichiers",
+    "dropFilesHere": "Déposez les fichiers ici",
+    "clickToUpload": "Cliquez pour télécharger des fichiers",
+    "dragAndDropHint": "Glissez-déposez des fichiers ici, ou cliquez pour sélectionner",
+    "supportsHint": "Prend en charge les images, vidéos, audio et documents (max {maxSizeGB}Go chacun)",
+    "selectedFiles": "Fichiers sélectionnés ({count})",
+    "uploading": "Téléchargement en cours...",
+    "processing": "Traitement en cours...",
+    "uploadButton": "Télécharger {count, plural, one {# fichier} other {# fichiers}}",
+    "invalidFileTypes": "Types de fichiers invalides :\n{details}",
+    "filesSelected": "{count, plural, one {# fichier valide sélectionné} other {# fichiers valides sélectionnés}}",
+    "successfullyUploaded": "{count, plural, one {# fichier téléchargé avec succès} other {# fichiers téléchargés avec succès}}",
+    "failedToUpload": "Échec du téléchargement de {count, plural, one {# fichier} other {# fichiers}}",
+    "uploadFailed": "Échec du téléchargement",
+    "fileTooLarge": "La taille du fichier doit être inférieure à {maxSizeGB}Go",
+    "fileTypeNotSupported": "Type de fichier non pris en charge",
+    "applyTagsLabel": "Appliquer des étiquettes à tous les fichiers",
+    "applyTagsHint": "Ces étiquettes seront ajoutées à chaque fichier de ce téléversement.",
+    "tagPlaceholder": "Saisissez un nom d'étiquette…",
+    "addTag": "Ajouter"
+  },
+  "grid": {
+    "emptyTitle": "Aucune ressource trouvée",
+    "emptyAllHint": "Commencez par télécharger votre premier fichier.",
+    "emptyCategoryHint": "Aucun {category} trouvé. Essayez de télécharger des {category}.",
+    "assetCount": "{count, plural, one {# ressource} other {# ressources}}",
+    "confirmDeleteAsset": "Êtes-vous sûr de vouloir supprimer cette ressource ?",
+    "tooltips": {
+      "tapToViewDetails": "Appuyez pour voir les détails",
+      "doubleClickToViewDetails": "Double-cliquez pour voir les détails",
+      "doubleClickToViewFullSize": "Double-cliquez pour voir en taille réelle"
+    },
+    "bulk": {
+      "selected": "{count, plural, one {# ressource sélectionnée} other {# ressources sélectionnées}}",
+      "selectAll": "Tout sélectionner",
+      "clearSelection": "Effacer la sélection",
+      "deleting": "Suppression en cours...",
+      "deleteCount": "Supprimer {count}",
+      "confirmBulkDelete": "Êtes-vous sûr de vouloir supprimer {count, plural, one {# ressource} other {# ressources}} ?",
+      "deletedSuccess": "{count, plural, one {# ressource supprimée avec succès} other {# ressources supprimées avec succès}}",
+      "deleteFailed": "Échec de la suppression de certaines ressources"
+    }
+  },
+  "details": {
+    "fileType": "Type de fichier :",
+    "fileSize": "Taille du fichier :",
+    "created": "Créé :",
+    "assetId": "ID de la ressource :",
+    "exif": {
+      "imageResolution": "Résolution d'image",
+      "videoResolution": "Résolution vidéo",
+      "dpi": "PPP",
+      "exifInformation": "Informations EXIF",
+      "camera": "Appareil photo",
+      "lens": "Objectif",
+      "aperture": "Ouverture",
+      "shutter": "Vitesse d'obturation",
+      "iso": "ISO",
+      "focalLength": "Distance focale",
+      "dateTaken": "Date de prise",
+      "location": "Emplacement",
+      "software": "Logiciel"
+    },
+    "tags": {
+      "title": "Étiquettes",
+      "addTag": "Ajouter une étiquette",
+      "unknownTag": "Étiquette inconnue",
+      "noneAssigned": "Aucune étiquette assignée",
+      "enterTagName": "Entrez le nom de l'étiquette...",
+      "adding": "Ajout en cours...",
+      "add": "Ajouter",
+      "availableTags": "Étiquettes disponibles",
+      "addSelected": "Ajouter {count} sélectionnées",
+      "multiSelectHint": "Sélectionnez plusieurs étiquettes et cliquez sur le bouton ci-dessus pour les assigner toutes à la fois.",
+      "failedToLoadTags": "Échec du chargement des étiquettes",
+      "addedTag": "Étiquette « {name} » ajoutée avec succès",
+      "addTagInvalidResponse": "Échec de l'ajout de l'étiquette : réponse invalide",
+      "addTagFailed": "Échec de l'ajout de l'étiquette",
+      "removedTag": "Étiquette supprimée avec succès",
+      "removeTagFailed": "Échec de la suppression de l'étiquette",
+      "addedTags": "{count, plural, one {# étiquette ajoutée avec succès} other {# étiquettes ajoutées avec succès}}",
+      "addTagsFailed": "Échec de l'ajout de certaines étiquettes"
+    },
+    "actions": {
+      "setPosterFrame": "Définir l'image de couverture",
+      "setPosterFrameTooltip": "Définir une image de couverture personnalisée",
+      "editImage": "Modifier l'image",
+      "editImageTooltip": "Recadrez, redimensionnez, faites pivoter et enregistrez en nouveau dérivé",
+      "autoTag": "Étiquetage automatique par IA",
+      "autoTagTooltip": "Générer des étiquettes pour cette image avec l'IA",
+      "autoTagging": "Étiquetage…",
+      "autoTagStarted": "Étiquetage automatique démarré. Les étiquettes seront mises à jour sous peu.",
+      "autoTagFailed": "Échec du démarrage de l'étiquetage automatique",
+      "view": "Voir",
+      "download": "Télécharger",
+      "downloadTooltip": "Télécharger la ressource",
+      "delete": "Supprimer",
+      "deleteAsset": "Supprimer la ressource",
+      "deleteTooltip": "Supprimer la ressource"
+    }
+  },
+  "posterFrame": {
+    "title": "Définir l'image de couverture",
+    "selectedFrame": "Image sélectionnée : {seconds}s",
+    "instructions": "Naviguez dans la vidéo jusqu'à l'image souhaitée, puis cliquez sur « {action} » pour générer l'image de couverture",
+    "useCurrentFrame": "Utiliser l'image actuelle",
+    "generating": "Génération en cours...",
+    "selectFrameFirst": "Veuillez d'abord sélectionner une image dans la vidéo",
+    "generatedAt": "Image de couverture générée à {seconds}s",
+    "generateFailed": "Échec de la génération de l'image de couverture"
+  },
+  "download": {
+    "noUrl": "Aucune URL de fichier disponible pour le téléchargement",
+    "success": "Fichier téléchargé avec succès !",
+    "failedTryAgain": "Échec du téléchargement. Veuillez réessayer.",
+    "unknownError": "Une erreur inconnue s'est produite",
+    "authRequired": "Authentification requise. Veuillez vous reconnecter.",
+    "notFound": "Fichier introuvable. Il a peut-être été supprimé.",
+    "accessDenied": "Accès refusé. Vous n'avez peut-être pas la permission de télécharger ce fichier.",
+    "failedWithError": "Échec du téléchargement : {error}"
+  },
+  "editor": {
+    "title": "Éditeur d'image",
+    "preview": "Aperçu",
+    "previewUnavailable": "Aucun aperçu disponible pour cette image.",
+    "output": "Sortie",
+    "crop": "Recadrage",
+    "resize": "Redimensionner",
+    "rotate": "Rotation",
+    "format": "Format",
+    "savedSuccess": "Image dérivée créée avec succès",
+    "saveFailed": "Échec de la création de l'image dérivée",
+    "fields": {
+      "name": "Nom de la nouvelle ressource",
+      "description": "Description",
+      "copyTags": "Copier les étiquettes depuis l'image source",
+      "width": "Largeur",
+      "height": "Hauteur",
+      "lockAspectRatio": "Conserver le ratio",
+      "resizeMode": "Mode de redimensionnement",
+      "degrees": "Rotation (degrés)",
+      "outputFormat": "Format de sortie",
+      "quality": "Qualité"
+    },
+    "resizeModes": {
+      "exact": "Exact",
+      "limit": "Limiter",
+      "fill": "Remplir"
+    },
+    "formats": {
+      "keep": "Conserver le format source"
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "saveAsNew": "Enregistrer comme nouveau",
+      "saving": "Enregistrement..."
+    }
+  },
+  "lineage": {
+    "title": "Versions liées",
+    "summary": "{count, plural, one {# image liée} other {# images liées}}",
+    "loading": "Chargement des versions liées...",
+    "none": "Aucune version liée pour le moment.",
+    "open": "Ouvrir",
+    "opening": "Ouverture...",
+    "failedToLoad": "Échec du chargement de l'image liée",
+    "relations": {
+      "ancestor": "Ancêtre",
+      "sibling": "Sœur",
+      "descendant": "Descendante",
+      "relative": "Liée"
+    }
+  },
+  "viewer": {
+    "fullSizePreviewAlt": "Aperçu en taille réelle",
+    "videoNotSupported": "Votre navigateur ne prend pas en charge la balise vidéo.",
+    "audioNotSupported": "Votre navigateur ne prend pas en charge l'élément audio.",
+    "closeHint": "Cliquez à l'extérieur ou appuyez sur ESC pour fermer",
+    "videoLoadFailed": "Échec du chargement de la vidéo. Veuillez essayer de rafraîchir la page.",
+    "fullScreen": "Plein écran",
+    "fullScreenHint": "Appuyez sur F ou cliquez pour voir en plein écran",
+    "backgroundToggle": "Arrière-plan : {color} (cliquez pour changer)",
+    "colors": {
+      "white": "Blanc",
+      "black": "Noir"
+    }
+  }
+}

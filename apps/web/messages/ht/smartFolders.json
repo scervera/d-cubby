@@ -1,0 +1,29 @@
+{
+  "title": "Dosye entelijan",
+  "subtitle": "Kreye dosye dinamik ak etikèt pou òganize byen ou yo",
+  "createButton": "Kreye dosye entelijan",
+  "emptyTitle": "Pa gen dosye entelijan ankò",
+  "emptyBody": "Kreye premye dosye entelijan ou pou òganize byen yo pa etikèt",
+  "assetCount": "{count, plural, one {# byen} other {# byen}}",
+  "confirmDelete": "Èske ou sèten ou vle efase dosye entelijan sa a? Aksyon sa a pa ka defèt.",
+  "pinToSidebar": "Mete sou bò (sidebar)",
+  "unpinFromSidebar": "Retire sou bò (sidebar)",
+  "editFolder": "Modifye dosye",
+  "deleteFolder": "Efase dosye",
+  "form": {
+    "createTitle": "Kreye dosye entelijan",
+    "editTitle": "Modifye dosye entelijan",
+    "nameLabel": "Non",
+    "namePlaceholder": "Ekri non dosye a",
+    "tagsLabel": "Etikèt",
+    "tagsHint": "Byen ki gen nenpòt nan etikèt sa yo ap parèt nan dosye sa a",
+    "addTagPlaceholder": "Ekri yon etikèt epi peze Enter",
+    "colorLabel": "Koulè",
+    "pinLabel": "Mete sou bò (sidebar)",
+    "cancel": "Anile",
+    "create": "Kreye",
+    "update": "Mete ajou"
+  }
+}
+
+

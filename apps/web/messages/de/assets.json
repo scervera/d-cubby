@@ -1,0 +1,233 @@
+{
+  "allAssetsTitle": "Alle Assets",
+  "smartFolderWithAssets": "Intelligenter Ordner mit {count} Assets",
+  "tagsPrefix": "Tags: {tags}",
+  "errorLoadingAssets": "Fehler beim Laden der Assets",
+  "tryAgain": "Erneut versuchen",
+  "uploadFiles": "Dateien hochladen",
+  "bulkDelete": "Massenlöschung",
+  "filters": {
+    "context": {
+      "all": "Assets filtern",
+      "dropZone": "Ablagezone {id}",
+      "smartFolder": "Intelligenter Ordner {id}"
+    },
+    "subtitle": "Filtern und organisieren Sie Ihre Assets",
+    "gridView": "Rasteransicht",
+    "listView": "Listenansicht",
+    "toggleFilters": "Filter umschalten",
+    "searchPlaceholder": "Assets durchsuchen",
+    "fileTypeLabel": "Dateityp",
+    "categories": {
+      "allFiles": "Alle Dateien",
+      "allFilesShort": "Alle",
+      "images": "Bilder",
+      "imagesShort": "Bilder",
+      "videos": "Videos",
+      "videosShort": "Videos",
+      "audio": "Audio",
+      "audioShort": "Audio",
+      "documents": "Dokumente",
+      "documentsShort": "Docs"
+    }
+  },
+  "thumbnailSize": {
+    "label": "Miniaturgröße:",
+    "small": "Klein",
+    "smallDesc": "Mehr Miniaturen pro Zeile",
+    "medium": "Mittel",
+    "mediumDesc": "Ausgewogene Ansicht",
+    "large": "Groß",
+    "largeDesc": "Detaillierte Miniaturen",
+    "full": "Vollständig",
+    "fullDesc": "Volle Höhe, zugeschnittene Breite"
+  },
+  "upload": {
+    "modalTitle": "Dateien hochladen",
+    "dropFilesHere": "Dateien hier ablegen",
+    "clickToUpload": "Klicken Sie, um Dateien hochzuladen",
+    "dragAndDropHint": "Ziehen Sie Dateien hierher, oder klicken Sie, um auszuwählen",
+    "supportsHint": "Unterstützt Bilder, Videos, Audio und Dokumente (max. {maxSizeGB}GB jeweils)",
+    "selectedFiles": "Ausgewählte Dateien ({count})",
+    "uploading": "Wird hochgeladen...",
+    "processing": "Wird verarbeitet...",
+    "uploadButton": "{count, plural, one {# Datei hochladen} other {# Dateien hochladen}}",
+    "invalidFileTypes": "Ungültige Dateitypen:\n{details}",
+    "filesSelected": "{count, plural, one {# gültige Datei ausgewählt} other {# gültige Dateien ausgewählt}}",
+    "successfullyUploaded": "{count, plural, one {# Datei erfolgreich hochgeladen} other {# Dateien erfolgreich hochgeladen}}",
+    "failedToUpload": "Fehler beim Hochladen von {count, plural, one {# Datei} other {# Dateien}}",
+    "uploadFailed": "Upload fehlgeschlagen",
+    "fileTooLarge": "Die Dateigröße muss kleiner als {maxSizeGB}GB sein",
+    "fileTypeNotSupported": "Dateityp wird nicht unterstützt",
+    "applyTagsLabel": "Tags auf alle Dateien anwenden",
+    "applyTagsHint": "Diese Tags werden jeder Datei in diesem Upload hinzugefügt.",
+    "tagPlaceholder": "Tag-Namen eingeben…",
+    "addTag": "Hinzufügen"
+  },
+  "grid": {
+    "emptyTitle": "Keine Assets gefunden",
+    "emptyAllHint": "Beginnen Sie mit dem Hochladen Ihrer ersten Datei.",
+    "emptyCategoryHint": "Keine {category} gefunden. Versuchen Sie, einige {category} hochzuladen.",
+    "assetCount": "{count, plural, one {# Asset} other {# Assets}}",
+    "confirmDeleteAsset": "Sind Sie sicher, dass Sie dieses Asset löschen möchten?",
+    "tooltips": {
+      "tapToViewDetails": "Tippen Sie, um Details anzuzeigen",
+      "doubleClickToViewDetails": "Doppelklicken Sie, um Details anzuzeigen",
+      "doubleClickToViewFullSize": "Doppelklicken Sie, um in voller Größe anzuzeigen"
+    },
+    "bulk": {
+      "selected": "{count, plural, one {# Asset ausgewählt} other {# Assets ausgewählt}}",
+      "selectAll": "Alle auswählen",
+      "clearSelection": "Auswahl löschen",
+      "deleting": "Wird gelöscht...",
+      "deleteCount": "{count} löschen",
+      "confirmBulkDelete": "Sind Sie sicher, dass Sie {count, plural, one {# Asset} other {# Assets}} löschen möchten?",
+      "deletedSuccess": "{count, plural, one {# Asset erfolgreich gelöscht} other {# Assets erfolgreich gelöscht}}",
+      "deleteFailed": "Fehler beim Löschen einiger Assets"
+    }
+  },
+  "details": {
+    "fileType": "Dateityp:",
+    "fileSize": "Dateigröße:",
+    "created": "Erstellt:",
+    "assetId": "Asset-ID:",
+    "exif": {
+      "imageResolution": "Bildauflösung",
+      "videoResolution": "Videoauflösung",
+      "dpi": "DPI",
+      "exifInformation": "EXIF-Informationen",
+      "camera": "Kamera",
+      "lens": "Objektiv",
+      "aperture": "Blende",
+      "shutter": "Verschlusszeit",
+      "iso": "ISO",
+      "focalLength": "Brennweite",
+      "dateTaken": "Aufnahmedatum",
+      "location": "Standort",
+      "software": "Software"
+    },
+    "tags": {
+      "title": "Tags",
+      "addTag": "Tag hinzufügen",
+      "unknownTag": "Unbekannter Tag",
+      "noneAssigned": "Keine Tags zugewiesen",
+      "enterTagName": "Tagname eingeben...",
+      "adding": "Wird hinzugefügt...",
+      "add": "Hinzufügen",
+      "availableTags": "Verfügbare Tags",
+      "addSelected": "{count} ausgewählte hinzufügen",
+      "multiSelectHint": "Wählen Sie mehrere Tags aus und klicken Sie auf die Schaltfläche oben, um sie alle auf einmal zuzuweisen.",
+      "failedToLoadTags": "Fehler beim Laden der Tags",
+      "addedTag": "Tag \"{name}\" wurde erfolgreich hinzugefügt",
+      "addTagInvalidResponse": "Fehler beim Hinzufügen des Tags: Ungültige Antwort",
+      "addTagFailed": "Fehler beim Hinzufügen des Tags",
+      "removedTag": "Tag erfolgreich entfernt",
+      "removeTagFailed": "Fehler beim Entfernen des Tags",
+      "addedTags": "{count, plural, one {# Tag erfolgreich hinzugefügt} other {# Tags erfolgreich hinzugefügt}}",
+      "addTagsFailed": "Fehler beim Hinzufügen einiger Tags"
+    },
+    "actions": {
+      "setPosterFrame": "Titelbild festlegen",
+      "setPosterFrameTooltip": "Benutzerdefiniertes Titelbild festlegen",
+      "editImage": "Bild bearbeiten",
+      "editImageTooltip": "Zuschneiden, skalieren, drehen und als neues Derivat speichern",
+      "autoTag": "Mit KI automatisch taggen",
+      "autoTagTooltip": "Tags für dieses Bild per KI vorschlagen",
+      "autoTagging": "Taggen…",
+      "autoTagStarted": "Autotagging gestartet. Tags werden in Kürze aktualisiert.",
+      "autoTagFailed": "Autotagging konnte nicht gestartet werden",
+      "view": "Anzeigen",
+      "download": "Herunterladen",
+      "downloadTooltip": "Asset herunterladen",
+      "delete": "Löschen",
+      "deleteAsset": "Asset löschen",
+      "deleteTooltip": "Asset löschen"
+    }
+  },
+  "posterFrame": {
+    "title": "Titelbild festlegen",
+    "selectedFrame": "Ausgewähltes Bild: {seconds}s",
+    "instructions": "Navigieren Sie im Video zum gewünschten Bild und klicken Sie dann auf \"{action}\", um das Titelbild zu generieren",
+    "useCurrentFrame": "Aktuelles Bild verwenden",
+    "generating": "Wird generiert...",
+    "selectFrameFirst": "Bitte wählen Sie zuerst ein Bild aus dem Video aus",
+    "generatedAt": "Titelbild bei {seconds}s generiert",
+    "generateFailed": "Fehler beim Generieren des Titelbilds"
+  },
+  "download": {
+    "noUrl": "Keine Datei-URL zum Herunterladen verfügbar",
+    "success": "Datei erfolgreich heruntergeladen!",
+    "failedTryAgain": "Download fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "unknownError": "Ein unbekannter Fehler ist aufgetreten",
+    "authRequired": "Authentifizierung erforderlich. Bitte melden Sie sich erneut an.",
+    "notFound": "Datei nicht gefunden. Sie wurde möglicherweise gelöscht.",
+    "accessDenied": "Zugriff verweigert. Sie haben möglicherweise keine Berechtigung zum Herunterladen dieser Datei.",
+    "failedWithError": "Download fehlgeschlagen: {error}"
+  },
+  "editor": {
+    "title": "Bildeditor",
+    "preview": "Vorschau",
+    "previewUnavailable": "Für dieses Bild ist keine Vorschau verfügbar.",
+    "output": "Ausgabe",
+    "crop": "Zuschneiden",
+    "resize": "Skalieren",
+    "rotate": "Drehen",
+    "format": "Format",
+    "savedSuccess": "Abgeleitetes Bild wurde erfolgreich erstellt",
+    "saveFailed": "Abgeleitetes Bild konnte nicht erstellt werden",
+    "fields": {
+      "name": "Name des neuen Assets",
+      "description": "Beschreibung",
+      "copyTags": "Tags vom Quellbild übernehmen",
+      "width": "Breite",
+      "height": "Höhe",
+      "lockAspectRatio": "Seitenverhältnis sperren",
+      "resizeMode": "Skalierungsmodus",
+      "degrees": "Rotation (Grad)",
+      "outputFormat": "Ausgabeformat",
+      "quality": "Qualität"
+    },
+    "resizeModes": {
+      "exact": "Exakt",
+      "limit": "Begrenzen",
+      "fill": "Füllen"
+    },
+    "formats": {
+      "keep": "Originalformat beibehalten"
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "saveAsNew": "Als neu speichern",
+      "saving": "Wird gespeichert..."
+    }
+  },
+  "lineage": {
+    "title": "Verwandte Versionen",
+    "summary": "{count, plural, one {# verwandtes Bild} other {# verwandte Bilder}}",
+    "loading": "Verwandte Versionen werden geladen...",
+    "none": "Noch keine verwandten Versionen.",
+    "open": "Öffnen",
+    "opening": "Wird geöffnet...",
+    "failedToLoad": "Verwandtes Bild konnte nicht geladen werden",
+    "relations": {
+      "ancestor": "Vorfahr",
+      "sibling": "Geschwister",
+      "descendant": "Nachkomme",
+      "relative": "Verwandt"
+    }
+  },
+  "viewer": {
+    "fullSizePreviewAlt": "Vorschau in voller Größe",
+    "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht.",
+    "audioNotSupported": "Ihr Browser unterstützt das Audio-Element nicht.",
+    "closeHint": "Klicken Sie außerhalb oder drücken Sie ESC, um zu schließen",
+    "videoLoadFailed": "Fehler beim Laden des Videos. Bitte versuchen Sie, die Seite zu aktualisieren.",
+    "fullScreen": "Vollbild",
+    "fullScreenHint": "Drücken Sie F oder klicken Sie, um im Vollbild anzuzeigen",
+    "backgroundToggle": "Hintergrund: {color} (klicken Sie zum Umschalten)",
+    "colors": {
+      "white": "Weiß",
+      "black": "Schwarz"
+    }
+  }
+}

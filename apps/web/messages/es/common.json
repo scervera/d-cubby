@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "close": "Cerrar",
+  "loading": "Cargando...",
+  "beta": {
+    "regionLabel": "Aviso del programa beta",
+    "label": "Beta",
+    "message": "Gracias por ayudarnos a probar y mejorar la plataforma. Durante este período beta, algunas funciones, integraciones y flujos de trabajo pueden evolucionar o comportarse de forma inesperada ocasionalmente. Conserve copias de seguridad independientes de todos los videos, medios y activos digitales importantes mientras usa la plataforma.",
+    "linkLabel": "Leer el aviso del programa beta",
+    "back": "Volver al panel"
+  },
+  "announcement": {
+    "regionLabel": "Anuncio de la plataforma",
+    "moreDetails": "Más detalles",
+    "dismiss": "Descartar",
+    "severity": {
+      "info": "Aviso",
+      "maintenance": "Mantenimiento",
+      "outage": "Interrupción",
+      "critical": "Crítico"
+    }
+  },
+  "desktopRequired": {
+    "title": "Usa un escritorio para {featureName}",
+    "body": "{featureName} incluye controles de autoría, vistas de datos amplias y flujos de arrastrar y soltar que necesitan una pantalla de escritorio. Abre esta área desde una computadora de escritorio o portátil.",
+    "features": {
+      "curriculum": "Currículo",
+      "audience": "Estudiantes y analítica",
+      "authors": "Autores"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Mostrando {total, plural, one {# elemento} other {# elementos}}",
+    "showingRange": "Mostrando {start} a {end} de {total, plural, one {# resultado} other {# resultados}}",
+    "perPage": "{count} por página"
+  },
+  "settings": {
+    "title": "Configuración",
+    "downloadFolderLabel": "Carpeta de descargas",
+    "downloadFolderDescription": "Elige dónde se guardan los archivos descargados. Si no se configura, se descargarán en tu carpeta de Descargas predeterminada.",
+    "chooseFolder": "Elegir carpeta",
+    "reset": "Restablecer",
+    "saved": "¡Configuración guardada!",
+    "userLabel": "Usuario:",
+    "roleLabel": "Rol:",
+    "defaultRole": "Usuario",
+    "folderPickerUnsupported": "Tu navegador no soporta la selección de carpetas. Las descargas irán a la carpeta de Descargas predeterminada."
+  }
+}

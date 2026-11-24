@@ -1,0 +1,29 @@
+{
+  "title": "Pastas inteligentes",
+  "subtitle": "Crie pastas dinâmicas baseadas em tags para organizar seus ativos",
+  "createButton": "Criar pasta inteligente",
+  "emptyTitle": "Nenhuma pasta inteligente ainda",
+  "emptyBody": "Crie sua primeira pasta inteligente para organizar ativos por tags",
+  "assetCount": "{count, plural, one {# ativo} other {# ativos}}",
+  "confirmDelete": "Tem certeza de que deseja excluir esta pasta inteligente? Esta ação não pode ser desfeita.",
+  "pinToSidebar": "Fixar na barra lateral",
+  "unpinFromSidebar": "Desafixar da barra lateral",
+  "editFolder": "Editar pasta",
+  "deleteFolder": "Excluir pasta",
+  "form": {
+    "createTitle": "Criar pasta inteligente",
+    "editTitle": "Editar pasta inteligente",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Digite o nome da pasta",
+    "tagsLabel": "Tags",
+    "tagsHint": "Ativos com qualquer uma destas tags aparecerão nesta pasta",
+    "addTagPlaceholder": "Digite uma tag e pressione Enter",
+    "colorLabel": "Cor",
+    "pinLabel": "Fixar na barra lateral",
+    "cancel": "Cancelar",
+    "create": "Criar",
+    "update": "Atualizar"
+  }
+}
+
+

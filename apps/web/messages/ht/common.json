@@ -1,0 +1,51 @@
+{
+  "appName": "D-cubby",
+  "save": "Sove",
+  "cancel": "Anile",
+  "close": "Fèmen",
+  "loading": "Ap chaje...",
+  "beta": {
+    "regionLabel": "Beta program notice",
+    "label": "Beta",
+    "message": "Thank you for helping us test and improve the platform. During this beta period, some features, integrations, and workflows may evolve or occasionally behave unexpectedly. Please retain independent backups of all important videos, media, and digital assets while using the platform.",
+    "linkLabel": "Read the beta program notice",
+    "back": "Back to dashboard"
+  },
+  "announcement": {
+    "regionLabel": "Anons platfòm lan",
+    "moreDetails": "Plis detay",
+    "dismiss": "Fèmen",
+    "severity": {
+      "info": "Avi",
+      "maintenance": "Antreten",
+      "outage": "Pann",
+      "critical": "Kritik"
+    }
+  },
+  "desktopRequired": {
+    "title": "Sèvi ak yon òdinatè pou {featureName}",
+    "body": "{featureName} gen kontwòl pou kreye, gwo tablo done, ak travay trennen-depoze ki bezwen yon ekran òdinatè. Tanpri louvri zòn sa a sou yon òdinatè oswa laptop.",
+    "features": {
+      "curriculum": "Kourikoulòm",
+      "audience": "Aprann yo ak analitik",
+      "authors": "Otè"
+    }
+  },
+  "pagination": {
+    "showingTotal": "Ap montre {total, plural, one {# atik} other {# atik}}",
+    "showingRange": "Ap montre {start} rive {end} sou {total, plural, one {# rezilta} other {# rezilta}}",
+    "perPage": "{count} pa paj"
+  },
+  "settings": {
+    "title": "Paramèt",
+    "downloadFolderLabel": "Dosye telechajman",
+    "downloadFolderDescription": "Chwazi kote fichye yo telechaje dwe sove. Si ou pa mete anyen, fichye yo ap ale nan dosye Downloads pa default.",
+    "chooseFolder": "Chwazi dosye",
+    "reset": "Reyinisyalize",
+    "saved": "Paramèt yo sove!",
+    "userLabel": "Itilizatè:",
+    "roleLabel": "Wòl:",
+    "defaultRole": "Itilizatè",
+    "folderPickerUnsupported": "Navigatè ou a pa sipòte seleksyon dosye. Telechajman yo ap ale nan dosye Downloads pa default."
+  }
+}

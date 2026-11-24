@@ -1,0 +1,42 @@
+{
+  "pageTitle": {
+    "asset": "Digital Assets — Recycle bin",
+    "media": "Lesson Media — Recycle bin"
+  },
+  "subtitle": {
+    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
+    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
+  },
+  "loading": "Loading recycle bin…",
+  "emptyTitle": "Recycle bin is empty",
+  "emptyBody": {
+    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
+    "media": "When you delete lesson media, items appear here until automatic cleanup."
+  },
+  "backToLibrary": {
+    "asset": "Back to Digital Assets",
+    "media": "Back to Lesson Media"
+  },
+  "columns": {
+    "item": "Item",
+    "deletedAt": "Deleted",
+    "purgeAfter": "Permanent removal",
+    "actions": "Actions"
+  },
+  "restore": "Restore",
+  "restoring": "Restoring…",
+  "purge": "Delete permanently",
+  "purging": "Deleting…",
+  "confirmRestore": "Restore \"{name}\" to your library?",
+  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
+  "noPermissionRestore": "You can only restore files you uploaded",
+  "errors": {
+    "loadFailed": "Failed to load recycle bin"
+  },
+  "toasts": {
+    "restored": "Restored successfully",
+    "purged": "Permanent deletion queued",
+    "restoreFailed": "Failed to restore",
+    "purgeFailed": "Failed to delete permanently"
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "allAssetsTitle": "Tout Byen",
+  "errorLoadingAssets": "Erè pandan chajman byen yo",
+  "tryAgain": "Eseye ankò",
+  "allAssets": "Tout byen",
+  "smartFolderWithAssets": "Dosye entelijan ak {assetCount} byen",
+  "tags": "Etikèt",
+  "uploadFiles": "Telechaje fichye",
+  "bulkDelete": "Efase an mas",
+  "filters": {
+    "context": {
+      "all": "Filtre Byen",
+      "dropZone": "Zòn Depo {id}",
+      "smartFolder": "Dosye Entelijan {id}"
+    },
+    "subtitle": "Filtre ak òganize byen ou yo",
+    "gridView": "Vizibilite nan Gwoup",
+    "listView": "Vizibilite nan Lis",
+    "toggleFilters": "Chanje Filtre",
+    "searchPlaceholder": "Chèche Byen"
+  },
+  "thumbnailSize": {
+    "label": "Gwosè Minyatir:",
+    "small": "Ti",
+    "smallDesc": "Plis minyatir pou chak ranje",
+    "medium": "Mwayen",
+    "mediumDesc": "Vizibilite balanse",
+    "large": "Gwo",
+    "largeDesc": "Minyatir detaye",
+    "full": "Konplè",
+    "fullDesc": "Wotè konplè, lajè koupe"
+  },
+  "grid": {
+    "bulk": {
+      "confirmBulkDelete": "Èske ou sèten ou vle efase {count} byen?",
+      "deletedSuccess": "{count} byen efase avèk siksè",
+      "deleteFailed": "Pa t reyisi efase kèk byen",
+      "selectedAssets": "{count} byen chwazi",
+      "selectAll": "Chwazi tout",
+      "clearSelection": "Retire seleksyon",
+      "cancel": "Anile",
+      "delete": "Efase {count}"
+    },
+    "emptyTitle": "Pa gen byen jwenn",
+    "emptyAllHint": "Kòmanse pa telechaje premye fichye ou.",
+    "assetCount": "{count, plural, one {# byen} other {# byen}}",
+    "noAssetsFound": "Pa gen byen jwenn",
+    "getStartedUpload": "Kòmanse pa telechaje premye fichye ou.",
+    "noCategoryFound": "Pa gen {category} jwenn. Eseye telechaje kèk {category}.",
+    "view": "Gade",
+    "download": "Telechaje",
+    "delete": "Efase",
+    "deleting": "Ap efase...",
+    "tapToViewDetails": "Touche pou wè detay",
+    "doubleClickToViewDetails": "Double-klike pou wè detay",
+    "fileType": "Kalite fichye",
+    "fileSize": "Gwosè fichye",
+    "created": "Kreye",
+    "assetId": "ID byen",
+    "tagsSection": "Etikèt",
+    "addTag": "Ajoute etikèt",
+    "noTagsAssigned": "Pa gen etikèt",
+    "enterTagName": "Ekri non etikèt la...",
+    "adding": "Ap ajoute...",
+    "add": "Ajoute",
+    "cancel": "Anile",
+    "availableTags": "Etikèt ki disponib",
+    "selectMultipleTags": "Chwazi plizyè etikèt epi klike “Ajoute X chwazi” pou mete yo tout an menm tan",
+    "addSelected": "Ajoute {count} chwazi",
+    "imageDimensions": "Dimansyon imaj",
+    "width": "Lajè",
+    "height": "Wotè",
+    "exifData": "Done EXIF",
+    "cameraMake": "Mak kamera",
+    "cameraModel": "Modèl kamera",
+    "lensModel": "Modèl lantiy",
+    "aperture": "Ouverti",
+    "shutter": "Obtiratè",
+    "iso": "ISO",
+    "focalLength": "Longè fokal",
+    "dateTaken": "Dat pran",
+    "location": "Kote",
+    "software": "Lojisyèl",
+    "setPosterFrame": "Chwazi imaj afich",
+    "downloadAsset": "Telechaje byen",
+    "deleteAsset": "Efase byen",
+    "fullSizePreview": "Aperçu gwosè konplè",
+    "clickOutsideToClose": "Klike deyò oswa peze ESC pou fèmen",
+    "videoPlaybackError": "Erè lekti videyo",
+    "audioPlaybackError": "Erè lekti odyo",
+    "unsupportedVideo": "Navigatè ou a pa sipòte tag videyo a.",
+    "unsupportedAudio": "Navigatè ou a pa sipòte eleman odyo a."
+  },
+  "details": {
+    "tags": {
+      "failedToLoadTags": "Pa t reyisi chaje etikèt yo",
+      "addedTag": "Etikèt “{name}” ajoute avèk siksè",
+      "addTagInvalidResponse": "Pa t reyisi ajoute etikèt: repons pa valab",
+      "addTagFailed": "Pa t reyisi ajoute etikèt",
+      "removedTag": "Etikèt retire avèk siksè",
+      "removeTagFailed": "Pa t reyisi retire etikèt",
+      "addedTags": "{count} etikèt ajoute avèk siksè",
+      "addTagsFailed": "Pa t reyisi ajoute kèk etikèt"
+    }
+  },
+  "posterFrame": {
+    "selectFrameFirst": "Tanpri chwazi yon frame nan videyo a anvan",
+    "generatedAt": "Imaj afich pwodwi nan {seconds}s",
+    "generateFailed": "Pa t reyisi pwodwi imaj afich",
+    "title": "Chwazi imaj afich",
+    "scrubVideo": "Deplase videyo a sou frame ou vle a, epi klike “Sèvi ak frame aktyèl”",
+    "selectedFrame": "Frame chwazi: {seconds}s",
+    "useCurrentFrame": "Sèvi ak frame aktyèl",
+    "generating": "Ap pwodwi...",
+    "close": "Fèmen"
+  },
+  "download": {
+    "noUrl": "Pa gen URL fichye pou telechaje",
+    "success": "Fichye telechaje avèk siksè!",
+    "failedTryAgain": "Telechajman echwe. Tanpri eseye ankò.",
+    "authRequired": "Ou bezwen konekte. Tanpri rekonekte.",
+    "notFound": "Fichye pa jwenn. Li ka te efase.",
+    "accessDenied": "Aksè refize. Ou ka pa gen pèmisyon pou telechaje fichye sa a.",
+    "failedWithError": "Telechajman echwe: {error}"
+  },
+  "viewer": {
+    "videoLoadFailed": "Pa t reyisi chaje videyo a. Tanpri rafrechi paj la.",
+    "fullScreen": "Ekran konplè",
+    "fullScreenHint": "Peze F oswa klike pou wè nan ekran konplè",
+    "backgroundToggle": "Fon: {color} (klike pou chanje)",
+    "colors": {
+      "white": "Blan",
+      "black": "Nwa"
+    }
+  },
+  "details": {
+    "actions": {
+      "setPosterFrame": "Mete imaj afich",
+      "setPosterFrameTooltip": "Mete imaj afich pèsonalize",
+      "editImage": "Modifye imaj",
+      "editImageTooltip": "Koupe, redimansyone, vire epi sove kòm nouvo derive",
+      "autoTag": "Oto-tage ak IA",
+      "autoTagTooltip": "Jenere tag pou imaj sa a ak IA",
+      "autoTagging": "Ap tage…",
+      "autoTagStarted": "Oto-tage kòmanse. Tag yo ap mete ajou byen vit.",
+      "autoTagFailed": "Pa t kapab kòmanse oto-tage",
+      "view": "Gade",
+      "download": "Telechaje",
+      "downloadTooltip": "Telechaje byen",
+      "delete": "Efase",
+      "deleteAsset": "Efase byen",
+      "deleteTooltip": "Efase byen"
+    },
+    "exif": {
+      "imageResolution": "Rezolisyon imaj",
+      "videoResolution": "Rezolisyon videyo",
+      "dpi": "DPI",
+      "exifInformation": "Enfòmasyon EXIF",
+      "camera": "Kamera",
+      "lens": "Lantiy"
+    }
+  },
+  "editor": {
+    "title": "Editè Imaj",
+    "preview": "Aperçu",
+    "previewUnavailable": "Aperçu pa disponib pou imaj sa a.",
+    "output": "Sòti",
+    "crop": "Koupe",
+    "resize": "Redimansyone",
+    "rotate": "Vire",
+    "format": "Fòma",
+    "savedSuccess": "Imaj derive a kreye avèk siksè",
+    "saveFailed": "Pa t reyisi kreye imaj derive a",
+    "fields": {
+      "name": "Nouvo non byen an",
+      "description": "Deskripsyon",
+      "copyTags": "Kopye etikèt soti nan imaj sous la",
+      "width": "Lajè",
+      "height": "Wotè",
+      "lockAspectRatio": "Kenbe menm rapò a",
+      "resizeMode": "Mòd redimansyon",
+      "degrees": "Wotasyon (degre)",
+      "outputFormat": "Fòma sòti",
+      "quality": "Kalite"
+    },
+    "resizeModes": {
+      "exact": "Egzak",
+      "limit": "Limite",
+      "fill": "Ranpli"
+    },
+    "formats": {
+      "keep": "Kenbe fòma sous la"
+    },
+    "actions": {
+      "cancel": "Anile",
+      "saveAsNew": "Sove Kòm Nouvo",
+      "saving": "Ap sove..."
+    }
+  },
+  "lineage": {
+    "title": "Vèsyon ki Gen Rapò",
+    "summary": "{count, plural, one {# imaj ki gen rapò} other {# imaj ki gen rapò}}",
+    "loading": "Ap chaje vèsyon ki gen rapò...",
+    "none": "Poko gen vèsyon ki gen rapò.",
+    "open": "Louvri",
+    "opening": "Ap louvri...",
+    "failedToLoad": "Pa t reyisi chaje imaj ki gen rapò",
+    "relations": {
+      "ancestor": "Ansèt",
+      "sibling": "Frè/Sè",
+      "descendant": "Desandan",
+      "relative": "Fanmi"
+    }
+  },
+  "upload": {
+    "uploadFiles": "Telechaje fichye",
+    "dropFilesHere": "Lage fichye yo isit la",
+    "clickToUpload": "Klike pou telechaje fichye",
+    "dragAndDrop": "Trennen epi lage fichye isit la, oswa klike pou chwazi",
+    "supports": "Sipòte imaj, videyo, odyo, dokiman (maks {size}GB chak)",
+    "selectedFiles": "Fichye chwazi ({count})",
+    "cancel": "Anile",
+    "upload": "Telechaje {count} fichye",
+    "uploading": "Ap telechaje...",
+    "processing": "Ap trete...",
+    "invalidFileTypes": "Kalite fichye pa valab:\n{errors}",
+    "validFilesSelected": "{count} fichye valab chwazi",
+    "successfullyUploaded": "{count} fichye telechaje avèk siksè",
+    "failedToUpload": "Pa t reyisi telechaje {count} fichye",
+    "uploadFailed": "Telechajman echwe",
+    "applyTagsLabel": "Aplike etikèt sou tout fichye yo",
+    "applyTagsHint": "Etikèt sa yo ap ajoute sou chak fichye nan telechajman sa a.",
+    "tagPlaceholder": "Tape non yon etikèt…",
+    "addTag": "Ajoute"
+  }
+}
+

@@ -1,0 +1,42 @@
+{
+  "title": "Gwoup",
+  "subtitle": "Jere gwoup ak manm pou òganizasyon ou.",
+  "createButton": "Kreye gwoup",
+  "emptyTitle": "Pa gen gwoup ankò",
+  "emptyBody": "Kreye premye gwoup ou pou kòmanse.",
+  "memberCount": "{count, plural, one {# manm} other {# manm}}",
+  "manageMembers": "Jere manm yo",
+  "confirmDeleteGroup": "Èske ou sèten ou vle efase gwoup sa a?",
+  "confirmRemoveMember": "Èske ou sèten ou vle retire manm sa a?",
+  "adminRequiredTitle": "Ou bezwen admin",
+  "adminRequiredBody": "Ou dwe admin pou jere gwoup yo.",
+  "tooltips": {
+    "editGroup": "Modifye gwoup",
+    "deleteGroup": "Efase gwoup"
+  },
+  "form": {
+    "createTitle": "Kreye gwoup",
+    "editTitle": "Modifye gwoup",
+    "nameLabel": "Non",
+    "namePlaceholder": "Ekri non gwoup la",
+    "descriptionLabel": "Deskripsyon",
+    "descriptionPlaceholder": "Ekri deskripsyon (opsyonèl)",
+    "activeLabel": "Aktif",
+    "create": "Kreye",
+    "update": "Mete ajou"
+  },
+  "members": {
+    "manageTitle": "Jere manm yo — {name}",
+    "currentTitle": "Manm aktyèl ({count})",
+    "noneYet": "Pa gen manm ankò.",
+    "addTitle": "Ajoute manm",
+    "addAsMember": "Ajoute kòm manm",
+    "addAsAdmin": "Ajoute kòm admin",
+    "roles": {
+      "admin": "Administratè",
+      "member": "Manm"
+    }
+  }
+}
+
+
