@@ -35,4 +35,5 @@ export const namespaces = [
   'dropZones',
   'groups',
   'tags',
+  'watchedFolders',
 ] as const
