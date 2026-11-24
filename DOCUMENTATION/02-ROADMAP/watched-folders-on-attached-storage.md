@@ -15,6 +15,10 @@ watched folder is just a typed path, and only paths inside the container are rea
 - The dam gem (0.3.1+) rejects watched-folder paths outside `Dam.config.watched_folder_roots`;
   D-cubby sets that from `WATCHED_FOLDER_ROOTS` (default `/watched` in production).
 - Admins type the path by hand on Settings → Watched folders.
+- **Done in v0.1.0:** `install.sh` attaches named host folders read-only at `/watched/<name>`
+  (`WATCHED_MOUNTS`), and dam 0.3.2's `watched_folder_keep_originals` (on by default in
+  D-cubby) imports files without deleting them, recognizing already-imported files by path.
+  Scans are not recursive yet: only files directly inside the watched folder are imported.
 
 ## What to build
 
@@ -40,6 +44,10 @@ watched folder is just a typed path, and only paths inside the container are rea
    - When a root is unmounted (USB unplugged, NAS offline), scans must not treat it as
      "all files deleted". Mark the folder "unavailable", skip the scan, notify admins, and
      resume when it comes back. Check the gem's scan job for this behavior.
+
+5. **Recursive scans** of nested archive folders (optionally mirroring folder names as tags).
+6. **Ignore list:** when an imported asset is deleted and purged, keep-originals mode imports
+   the file again on the next scan; remember deleted paths instead.
 
 ## Open questions
 

@@ -73,7 +73,7 @@ done
 KEYS="APP_VERSION APP_URL CADDY_SITE_ADDRESS RAILS_DISABLE_SSL HTTP_PORT HTTPS_PORT
 SECRET_KEY_BASE JWT_SECRET_KEY POSTGRES_PASSWORD SETUP_TOKEN
 STORAGE_PROVIDER STORAGE_HOST_PATH S3_ENDPOINT S3_REGION S3_BUCKET S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY S3_FORCE_PATH_STYLE
-MAX_UPLOAD_SIZE_GB DAM_MAX_FILE_SIZE_GB WATCHED_MOUNTS
+MAX_UPLOAD_SIZE_GB DAM_MAX_FILE_SIZE_GB WATCHED_MOUNTS WATCHED_FOLDER_KEEP_ORIGINALS
 SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD SMTP_TLS SMTP_FROM
 DAM_AI_PROVIDER DAM_AI_API_KEY DAM_AI_MODEL DAM_AI_BASE_URL
 DAM_FACE_DETECTION_ENABLED AWS_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
@@ -410,7 +410,12 @@ write_override() {
                 echo "      - type: bind"
                 echo "        source: \"$path\""
                 echo "        target: /watched/$name"
-                echo "        read_only: true"
+                # Drop folders (keep-originals off) need write access to remove imported files.
+                if [ "${WATCHED_FOLDER_KEEP_ORIGINALS:-true}" = false ]; then
+                    echo "        read_only: false"
+                else
+                    echo "        read_only: true"
+                fi
             done
         done
     } > "$OVERRIDE_FILE"
@@ -624,6 +629,7 @@ S3_REGION="${S3_REGION:-us-east-1}"
 SMTP_PORT="${SMTP_PORT:-587}"
 AWS_REGION="${AWS_REGION:-us-east-1}"
 DAM_FACE_DETECTION_ENABLED="${DAM_FACE_DETECTION_ENABLED:-false}"
+WATCHED_FOLDER_KEEP_ORIGINALS="${WATCHED_FOLDER_KEEP_ORIGINALS:-true}"
 WEB_CONCURRENCY="${WEB_CONCURRENCY:-2}"
 RAILS_MAX_THREADS="${RAILS_MAX_THREADS:-5}"
 JOB_CONCURRENCY="${JOB_CONCURRENCY:-1}"

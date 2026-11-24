@@ -35,6 +35,10 @@ Dam.configure do |config|
   # host folders are mounted under /watched (see docker-compose.yml).
   config.watched_folder_roots =
     ENV.fetch("WATCHED_FOLDER_ROOTS") { Rails.env.production? ? "/watched" : "" }.split(",").map(&:strip).reject(&:empty?).presence
+  # Attached folders are mounted read-only, so imported files stay where they are and are
+  # recognized on later scans. Set WATCHED_FOLDER_KEEP_ORIGINALS=false (and mount the folders
+  # read-write) for drop folders whose files move into D-cubby.
+  config.watched_folder_keep_originals = ENV.fetch("WATCHED_FOLDER_KEEP_ORIGINALS", "true") != "false"
 
   # AI auto-tagging is configured in .env: DAM_AI_PROVIDER (openai, anthropic or
   # openai_compatible), DAM_AI_MODEL, DAM_AI_API_KEY, DAM_AI_BASE_URL.
