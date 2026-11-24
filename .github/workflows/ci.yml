@@ -32,6 +32,8 @@ jobs:
       JWT_SECRET_KEY: ci-only-secret
     steps:
       - uses: actions/checkout@v4
+      - name: Install system dependencies (libvips, exiftool, ffmpeg for the dam gem)
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libvips libimage-exiftool-perl ffmpeg
       - uses: ruby/setup-ruby@v1
         with:
           working-directory: apps/api
