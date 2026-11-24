@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# Host development: Postgres (compose.dev.yml), Rails API, Solid Queue worker, Next.js.
+#   bin/dev            start (logs in tmp/logs/)
+#   bin/dev -v         start with output in this terminal as well
+#   bin/dev-stop       stop     bin/restart   stop + start     bin/dev-logs   follow logs
+#
+# Open http://localhost:4080. Next.js proxies /api, /users and /rails/active_storage to
+# Rails, so the browser sees one origin, as it does behind Caddy in production.
+
+set -eo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
+
+if [ -t 1 ]; then RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; NC='\033[0m'
+else RED=''; GREEN=''; YELLOW=''; BLUE=''; NC=''; fi
+die()  { echo -e "${RED}❌ $*${NC}" >&2; exit 1; }
+warn() { echo -e "${YELLOW}⚠️  $*${NC}" >&2; }
+info() { echo -e "${BLUE}$*${NC}"; }
+ok()   { echo -e "${GREEN}✅ $*${NC}"; }
+
+VERBOSE=false
+case "${1:-}" in -v|--verbose) VERBOSE=true ;; esac
+
+# --- env: root .env.local is the single source, copied into each app ------------------
+if [ ! -f .env.local ]; then
+    cp env.development.example .env.local
+    warn "Created .env.local from env.development.example — review it."
+fi
+for app in api web; do
+    cmp -s .env.local "apps/${app}/.env.local" 2>/dev/null || cp .env.local "apps/${app}/.env.local"
+done
+# shellcheck disable=SC1091
+set -a; . ./.env.local; set +a
+
+API_PORT="${DEV_API_PORT:-4081}"
+WEB_PORT="${DEV_WEB_PORT:-4080}"
+PG_PORT="${DEV_PG_PORT:-5433}"
+PID_DIR="${REPO_ROOT}/tmp/pids"
+LOG_DIR="${REPO_ROOT}/tmp/logs"
+mkdir -p "$PID_DIR" "$LOG_DIR"
+
+info "🚀 D-cubby — local development"
+
+port_open() { (echo > "/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1; }
+
+# --- Postgres ------------------------------------------------------------------------------
+command -v docker >/dev/null 2>&1 || die "docker is required for the dev database"
+if ! port_open "$PG_PORT"; then
+    info "🐳 Starting Postgres (compose.dev.yml, port ${PG_PORT})"
+    docker compose -f compose.dev.yml up -d --wait postgres
+fi
+port_open "$PG_PORT" || die "Postgres is not listening on ${PG_PORT}"
+ok "Postgres up"
+
+# --- processes ---------------------------------------------------------------------------
+stop_pidfile() {
+    local pid_file="${PID_DIR}/$1.pid" pid
+    [ -f "$pid_file" ] || return 0
+    pid="$(cat "$pid_file")"
+    kill "$pid" 2>/dev/null && sleep 1
+    kill -9 "$pid" 2>/dev/null || true
+    rm -f "$pid_file"
+}
+
+# start NAME DIR PORT(or -) COMMAND...
+start() {
+    local name="$1" dir="$2" port="$3"; shift 3
+    local log="${LOG_DIR}/${name}.log" pid
+    stop_pidfile "$name"
+    if [ "$port" != "-" ] && port_open "$port"; then
+        die "port $port is busy (not started by bin/dev). Free it: lsof -ti:$port | xargs kill"
+    fi
+    info "▶️  ${name}${port:+ }$([ "$port" = "-" ] || echo "(:${port})")"
+    : > "$log"
+    if [ "$VERBOSE" = true ]; then
+        ( cd "$dir" && exec "$@" ) > >(tee -a "$log") 2>&1 &
+    else
+        ( cd "$dir" && exec "$@" ) >> "$log" 2>&1 &
+    fi
+    pid=$!
+    echo "$pid" > "${PID_DIR}/${name}.pid"
+    for _ in $(seq 1 60); do
+        kill -0 "$pid" 2>/dev/null || { tail -60 "$log"; die "${name} exited during startup (log: ${log#"$REPO_ROOT"/})"; }
+        if [ "$port" = "-" ] || port_open "$port"; then ok "${name} running (pid ${pid})"; return 0; fi
+        sleep 1
+    done
+    tail -60 "$log"
+    die "${name} did not open port ${port} within 60s"
+}
+
+info "🗄️  Preparing database"
+( cd apps/api && bin/rails db:prepare ) >> "${LOG_DIR}/rails.log" 2>&1 || { tail -40 "${LOG_DIR}/rails.log"; die "db:prepare failed"; }
+
+# macOS: forking Puma / Solid Queue workers crashes without these (Objective-C runtime
+# fork checks, and libpq's GSSAPI setup segfaulting in a forked child).
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export PGGSSENCMODE=disable
+start rails apps/api "$API_PORT" bundle exec rails server -p "$API_PORT" -b 127.0.0.1
+start jobs apps/api - bin/jobs
+start nextjs apps/web "$WEB_PORT" npm run dev -- --port "$WEB_PORT"
+
+echo ""
+ok "Development environment running"
+echo "   App:  http://localhost:${WEB_PORT}"
+echo "   API:  http://localhost:${API_PORT}/health"
+echo "   Logs: bin/dev-logs [rails|jobs|nextjs]     Stop: bin/dev-stop"
+if [ "$VERBOSE" = true ]; then
+    info "Streaming output (Ctrl+C detaches; processes keep running — use bin/dev-stop)."
+    wait
+fi

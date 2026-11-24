@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Stop processes started by bin/dev. Only touches THIS project: PID files in tmp/pids and
+# listeners on this project's dev ports (never `pkill rails` across the whole machine).
+#   bin/dev-stop            stop app processes (Postgres keeps running)
+#   bin/dev-stop --all      also stop the compose.dev.yml Postgres
+
+set -eo pipefail
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
+# shellcheck disable=SC1091
+[ -f .env.local ] && { set -a; . ./.env.local; set +a; }
+
+echo "🛑 Stopping D-cubby dev processes"
+for name in nextjs jobs rails; do
+    pid_file="tmp/pids/${name}.pid"
+    [ -f "$pid_file" ] || continue
+    pid="$(cat "$pid_file")"
+    if kill -0 "$pid" 2>/dev/null; then
+        # Kill children too (next-server, puma and Solid Queue workers).
+        pkill -TERM -P "$pid" 2>/dev/null || true
+        kill -TERM "$pid" 2>/dev/null || true
+        for _ in 1 2 3 4 5; do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
+        kill -9 "$pid" 2>/dev/null || true
+        echo "✅ $name stopped"
+    fi
+    rm -f "$pid_file"
+done
+
+# Stray listeners on our dev ports: stop them only if they were started from this repo
+# (their working directory is inside it). Never kill another project's servers.
+for port in "${DEV_API_PORT:-4081}" "${DEV_WEB_PORT:-4080}"; do
+    for pid in $(lsof -ti:"$port" -sTCP:LISTEN 2>/dev/null || true); do
+        cwd="$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')"
+        case "$cwd" in
+            "$REPO_ROOT"|"$REPO_ROOT"/*) echo "⚠️  stopping stray pid $pid on port $port"; kill "$pid" 2>/dev/null || true ;;
+            *) echo "ℹ️  port $port is used by pid $pid outside this repo (${cwd:-unknown}); leaving it" ;;
+        esac
+    done
+done
+
+[ "${1:-}" = "--all" ] && docker compose -f compose.dev.yml stop postgres
+echo "✅ Stopped"

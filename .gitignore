@@ -1,0 +1,38 @@
+# --- Secrets and operator env (NEVER commit) ------------------------------------------
+.env
+.env.*
+!env.*.example
+!.env.example
+apps/*/.env*
+*.pem
+apps/api/config/master.key
+apps/api/config/credentials/*.key
+
+# --- Local data / output ---------------------------------------------------------------
+backups/
+tmp/
+log/
+coverage/
+
+# --- Rails -------------------------------------------------------------------------------
+apps/api/log/*
+apps/api/tmp/*
+apps/api/storage/*
+!apps/api/log/.keep
+!apps/api/tmp/.keep
+!apps/api/storage/.keep
+
+# --- Next.js -----------------------------------------------------------------------------
+node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/next-env.d.ts
+apps/web/*.tsbuildinfo
+apps/web/playwright-report/
+apps/web/test-results/
+
+# --- OS / editors ----------------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp

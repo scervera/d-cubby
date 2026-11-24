@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Follow local dev logs written by bin/dev.
+#   bin/dev-logs [rails|jobs|nextjs|all]     (default: all)
+set -e
+cd "$(dirname "$0")/.."
+case "${1:-all}" in
+    rails|jobs|nextjs)
+        [ -f "tmp/logs/$1.log" ] || { echo "No tmp/logs/$1.log — is bin/dev running?" >&2; exit 1; }
+        exec tail -n 100 -f "tmp/logs/$1.log" ;;
+    all)
+        ls tmp/logs/*.log >/dev/null 2>&1 || { echo "No logs in tmp/logs — is bin/dev running?" >&2; exit 1; }
+        exec tail -n 30 -f tmp/logs/*.log ;;
+    -h|--help|help) sed -n '2,3p' "$0" | sed 's/^# //' ;;
+    *) echo "unknown service: $1 (rails|jobs|nextjs|all)" >&2; exit 1 ;;
+esac

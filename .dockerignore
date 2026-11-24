@@ -1,0 +1,19 @@
+# Root build context (used by apps/api/Dockerfile). Keep secrets and bulk out of images.
+.git
+**/node_modules
+apps/web
+**/.env*
+!**/env.*.example
+**/config/master.key
+**/config/credentials/*.key
+**/config/deploy.*.yml
+ssl-*.pem
+*.pem
+backups
+tmp
+**/tmp
+**/log
+**/coverage
+**/storage/*
+DOCUMENTATION
+.github

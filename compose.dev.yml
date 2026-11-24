@@ -1,0 +1,25 @@
+# D-cubby — local development data services only (bin/dev starts this).
+# The distribution stack (Caddy, web, api, worker, Postgres) lives in docker-compose.yml.
+# Port 5433 keeps it clear of other projects' Postgres on 5432.
+
+name: d-cubby-dev
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: d_cubby_development
+    ports:
+      - "127.0.0.1:${DEV_PG_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:

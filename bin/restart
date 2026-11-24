@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Stop then start local host-dev (bin/dev-stop && bin/dev). Arguments go to bin/dev.
+set -e
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+"$REPO_ROOT/bin/dev-stop"
+exec "$REPO_ROOT/bin/dev" "$@"
