@@ -45,7 +45,7 @@ gem "solid_cache", "~> 1.0"
 
 # The DAM engine (assets, tags, search, smart folders, drop zones, AI tagging).
 # For local DAM work: bundle config set --local local.dam /path/to/your/dam/checkout
-gem "dam", git: "https://github.com/scervera/dam.git", tag: "v0.3.0"
+gem "dam", git: "https://github.com/scervera/dam.git", tag: "v0.3.1"
 
 # Auth: bcrypt passwords + HS256 JWTs (see app/services/auth_token.rb).
 gem "bcrypt", "~> 3.1"

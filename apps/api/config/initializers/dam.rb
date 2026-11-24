@@ -31,6 +31,10 @@ Dam.configure do |config|
 
   # Solid Queue runs Dam::WatchedFolderSchedulerJob from config/recurring.yml.
   config.watched_folder_scheduler = :external
+  # Watched folders may only read inside these directories (comma-separated). In Docker,
+  # host folders are mounted under /watched (see docker-compose.yml).
+  config.watched_folder_roots =
+    ENV.fetch("WATCHED_FOLDER_ROOTS") { Rails.env.production? ? "/watched" : "" }.split(",").map(&:strip).reject(&:empty?).presence
 
   # AI auto-tagging is configured in .env: DAM_AI_PROVIDER (openai, anthropic or
   # openai_compatible), DAM_AI_MODEL, DAM_AI_API_KEY, DAM_AI_BASE_URL.

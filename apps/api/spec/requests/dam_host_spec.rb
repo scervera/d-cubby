@@ -75,4 +75,23 @@ RSpec.describe "DAM inside D-cubby", type: :request do
     expect(json.dig("by_category", "image", "count")).to eq(1)
     expect(json["storage_bytes"]).to be > 0
   end
+
+  it "keeps watched folders inside the configured roots and away from non-admins" do
+    root = Dir.mktmpdir
+    allow(Dam.config).to receive(:watched_folder_roots).and_return([ root ])
+    params = { watched_folder: { name: "Inbox", scan_frequency_value: 5, scan_frequency_unit: "minutes",
+                                 max_file_size_bytes: 10.megabytes } }
+
+    post "/api/v1/watched_folders", params: params.deep_merge(watched_folder: { path: "/etc" }), headers: auth_headers(owner)
+    expect(response).to have_http_status(:unprocessable_content)
+
+    post "/api/v1/watched_folders", params: params.deep_merge(watched_folder: { path: root }), headers: auth_headers(editor)
+    expect(response).to have_http_status(:forbidden)
+
+    post "/api/v1/watched_folders", params: params.deep_merge(watched_folder: { path: root }), headers: auth_headers(owner)
+    expect(response).to have_http_status(:created)
+    expect(Dam::WatchedFolder.sole.tenant).to eq(organization)
+  ensure
+    FileUtils.rm_rf(root) if root
+  end
 end
