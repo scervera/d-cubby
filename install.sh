@@ -25,7 +25,9 @@
 # their uses:
 # shellcheck disable=SC2034
 
-set -eo pipefail
+set -Eeo pipefail
+# Never exit silently: say where an unexpected failure happened.
+trap 'echo -e "\033[0;31m✗ install.sh stopped unexpectedly (line $LINENO). Please report this at https://github.com/scervera/d-cubby/issues\033[0m" >&2' ERR
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
@@ -256,7 +258,7 @@ preflight() {
     ok "Docker $(docker version --format '{{.Server.Version}}' 2>/dev/null), $(docker compose version --short 2>/dev/null)"
 
     local free_kb
-    free_kb="$(df -Pk "$ROOT" | awk 'NR==2 {print $4}')"
+    free_kb="$(df -Pk "$ROOT" 2>/dev/null | awk 'NR==2 {print $4}' || true)"
     if [ -n "$free_kb" ] && [ "$free_kb" -lt 10485760 ]; then
         warn "Less than 10 GB free on this disk ($((free_kb / 1048576)) GB). Uploaded files need room."
     fi
@@ -268,7 +270,8 @@ configure_address() {
     echo "automatically (ports 80 and 443 must be reachable from the internet)."
     echo "Without one, it runs over plain HTTP — fine on a private network, not on the internet."
     local mode domain host port
-    case "${CADDY_SITE_ADDRESS:-}" in :*|'') mode=http ;; *) mode=https ;; esac
+    # Default to HTTPS (recommended) unless the current settings use plain HTTP.
+    case "${CADDY_SITE_ADDRESS:-}" in :*) mode=http ;; *) mode=https ;; esac
     [ -n "${APP_DOMAIN:-}" ] && mode=https
     [ -n "${APP_HOST:-}" ] && mode=http
     choose mode "How will people reach D-cubby?" "https|A domain name, with HTTPS (recommended)" "http|An IP address or local name, plain HTTP"
@@ -283,8 +286,9 @@ configure_address() {
             echo "Enter a full domain name like dam.example.org."
         done
         local resolved=""
-        if command -v getent >/dev/null 2>&1; then resolved="$(getent hosts "$domain" | awk '{print $1}' | sort -u | tr '\n' ' ')"
-        elif command -v host >/dev/null 2>&1; then resolved="$(host "$domain" 2>/dev/null | awk '/has (IPv6 )?address/ {print $NF}' | tr '\n' ' ')"; fi
+        # Lookups fail (non-zero) when the name doesn't resolve yet; that's reported below.
+        if command -v getent >/dev/null 2>&1; then resolved="$(getent hosts "$domain" 2>/dev/null | awk '{print $1}' | sort -u | tr '\n' ' ' || true)"
+        elif command -v host >/dev/null 2>&1; then resolved="$(host "$domain" 2>/dev/null | awk '/has (IPv6 )?address/ {print $NF}' | tr '\n' ' ' || true)"; fi
         if [ -n "$resolved" ]; then
             ok "$domain points to: $resolved— make sure that's this server."
         else
@@ -300,7 +304,8 @@ configure_address() {
             host="$(printf '%s' "${APP_URL:-}" | sed -e 's#^https\{0,1\}://##' -e 's#[:/].*##')"
         fi
         if [ -z "$host" ]; then
-            host="$(hostname -I 2>/dev/null | awk '{print $1}')"
+            # Linux: hostname -I; macOS: ipconfig. Either may be missing.
+            host="$(hostname -I 2>/dev/null | awk '{print $1}' || true)"
             [ -n "$host" ] || host="$(ipconfig getifaddr en0 2>/dev/null || true)"
             [ -n "$host" ] || host=localhost
         fi
@@ -526,10 +531,10 @@ review() {
 wait_healthy() {
     local service="$1" seconds="${2:-300}" id status i=0
     while [ $i -lt "$seconds" ]; do
-        id="$(dc "$ENV_FILE" ps -q "$service" 2>/dev/null)"
+        id="$(dc "$ENV_FILE" ps -q "$service" 2>/dev/null || true)"
         if [ -n "$id" ]; then
             # Services without a healthcheck (caddy, worker) count as up once running.
-            status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-check:{{.State.Status}}{{end}}' "$id" 2>/dev/null)"
+            status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-check:{{.State.Status}}{{end}}' "$id" 2>/dev/null || true)"
             case "$status" in
                 healthy|no-check:running) return 0 ;;
                 no-check:exited|no-check:dead|unhealthy) return 1 ;;
