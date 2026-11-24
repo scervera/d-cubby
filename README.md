@@ -4,7 +4,19 @@ A free, self-hosted digital asset management app for your organization: upload, 
 
 D-cubby is built on the [`dam`](https://github.com/scervera/dam) Rails engine and ships as Docker images.
 
-> **Status:** under active development. Installation instructions will be added with the first release.
+## Install
+
+On a server with Docker:
+
+```bash
+curl -LO https://github.com/scervera/d-cubby/releases/latest/download/d-cubby-<version>.tar.gz
+tar xzf d-cubby-<version>.tar.gz && cd d-cubby-<version>
+./install.sh
+```
+
+The installer asks for your address, storage, and optional email, AI and face detection,
+tests each one, starts D-cubby and prints a one-time setup link. Full guide, upgrades and
+backups: [DOCUMENTATION/01-INSTALL/README.md](DOCUMENTATION/01-INSTALL/README.md).
 
 ## Development
 

@@ -36,3 +36,6 @@ apps/web/test-results/
 .idea/
 .vscode/
 *.swp
+
+# --- Written by install.sh ----------------------------------------------------------------
+docker-compose.override.yml

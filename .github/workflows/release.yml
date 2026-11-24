@@ -1,0 +1,82 @@
+name: Release
+
+# Push a tag like v0.1.0 to publish:
+#   ghcr.io/scervera/d-cubby-api:<version>, :<major>.<minor>, :latest  (linux/amd64 + arm64)
+#   ghcr.io/scervera/d-cubby-web:<same tags>
+#   a GitHub release with d-cubby-<version>.tar.gz (install.sh, docker-compose.yml, ...)
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  images:
+    name: Image (${{ matrix.image }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: api
+            context: .
+            file: apps/api/Dockerfile
+          - image: web
+            context: apps/web
+            file: apps/web/Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/d-cubby-${{ matrix.image }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: APP_VERSION=${{ steps.meta.outputs.version }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+
+  release:
+    name: GitHub release
+    needs: images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the install bundle
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          dir="d-cubby-${version}"
+          mkdir -p "$dir/docker"
+          cp install.sh docker-compose.yml .env.example LICENSE.md "$dir/"
+          cp docker/Caddyfile "$dir/docker/"
+          echo "$version" > "$dir/VERSION"
+          cp DOCUMENTATION/01-INSTALL/README.md "$dir/README.md"
+          tar czf "$dir.tar.gz" "$dir"
+          sha256sum "$dir.tar.gz" > "$dir.tar.gz.sha256"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          prerelease=""
+          case "$version" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" "d-cubby-${version}.tar.gz" "d-cubby-${version}.tar.gz.sha256" \
+            --title "D-cubby ${version}" --generate-notes $prerelease

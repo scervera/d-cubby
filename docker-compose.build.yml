@@ -1,0 +1,21 @@
+# Build the images from this checkout instead of pulling them (CI and local testing):
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+#   ./install.sh --build ...
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      args:
+        APP_VERSION: ${APP_VERSION:-0.0.0-dev}
+  worker:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      args:
+        APP_VERSION: ${APP_VERSION:-0.0.0-dev}
+  web:
+    build:
+      context: ./apps/web
+      args:
+        APP_VERSION: ${APP_VERSION:-0.0.0-dev}

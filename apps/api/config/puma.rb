@@ -34,6 +34,13 @@ port ENV.fetch("PORT", 3000)
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
+# Worker processes in production (WEB_CONCURRENCY, from .env). 0 = single process.
+workers_count = ENV.fetch("WEB_CONCURRENCY", 0).to_i
+if workers_count > 1
+  workers workers_count
+  preload_app!
+end
+
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]

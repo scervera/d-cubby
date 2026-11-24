@@ -1,0 +1,10 @@
+#!/bin/bash -e
+# Prepares the database (create + migrate) before the web server starts. The worker
+# (bin/jobs) and one-off commands (rails runner, d_cubby:check:*) skip this; the worker
+# waits for the api service to be healthy instead (docker-compose.yml).
+
+case "$*" in
+  *"rails server"*) ./bin/rails db:prepare ;;
+esac
+
+exec "${@}"

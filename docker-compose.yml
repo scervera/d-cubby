@@ -1,0 +1,86 @@
+# D-cubby — production stack. Settings come from .env (written by ./install.sh).
+#
+#   ./install.sh                 first install (interactive)
+#   ./install.sh --reconfigure   change settings
+#   ./install.sh --check         live-test storage, email, AI, faces
+#   docker compose ps | logs -f | pull && up -d
+#
+# Attached folders for watched-folder imports are mounted by docker-compose.override.yml,
+# which install.sh generates from WATCHED_MOUNTS.
+
+name: d-cubby
+
+x-app-env: &app-env
+  RAILS_ENV: production
+  DATABASE_URL: postgresql://d_cubby:${POSTGRES_PASSWORD:?run ./install.sh first}@postgres:5432/d_cubby
+  WATCHED_FOLDER_ROOTS: /watched
+
+x-api: &api
+  image: ghcr.io/scervera/d-cubby-api:${APP_VERSION:-latest}
+  restart: unless-stopped
+  env_file: ${D_CUBBY_ENV_FILE:-.env}
+  environment: *app-env
+  volumes:
+    # STORAGE_HOST_PATH: a host directory, or the named volume "storage" (default).
+    - ${STORAGE_HOST_PATH:-storage}:/rails/storage
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
+    environment:
+      CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
+      MAX_UPLOAD_SIZE_GB: ${MAX_UPLOAD_SIZE_GB:-5}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api: { condition: service_healthy }
+      web: { condition: service_healthy }
+
+  web:
+    image: ghcr.io/scervera/d-cubby-web:${APP_VERSION:-latest}
+    restart: unless-stopped
+    environment:
+      # Server-side requests (organization default language) go straight to Rails.
+      API_INTERNAL_URL: http://api:3000
+
+  api:
+    <<: *api
+    # The entrypoint runs db:prepare (create + migrate) before the server starts.
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  worker:
+    <<: *api
+    command: ["bin/jobs"]
+    healthcheck:
+      disable: true
+    depends_on:
+      api: { condition: service_healthy }
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: d_cubby
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?run ./install.sh first}
+      POSTGRES_DB: d_cubby
+    volumes:
+      - ${POSTGRES_HOST_PATH:-pgdata}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U d_cubby -d d_cubby"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  storage:
+  pgdata:
+  caddy_data:
+  caddy_config:

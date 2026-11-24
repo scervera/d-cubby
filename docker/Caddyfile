@@ -1,0 +1,52 @@
+# D-cubby edge proxy. One origin for the browser:
+#   /api/*, /rails/active_storage/*, /health  -> Rails (api:3000)
+#   everything else                          -> Next.js (web:3000)
+# Keep the Rails paths in sync with RAILS_PATHS in apps/web/next.config.ts.
+#
+# CADDY_SITE_ADDRESS (from .env):
+#   dam.example.org   automatic HTTPS (Let's Encrypt); ports 80 and 443 must reach this host
+#   :80               plain HTTP on any address (LAN / IP-only installs; not encrypted)
+
+{
+	admin off
+	servers {
+		# Large uploads and long video streams.
+		timeouts {
+			read_body 0
+			write 0
+			idle 5m
+		}
+	}
+}
+
+{$CADDY_SITE_ADDRESS::80} {
+	encode zstd gzip
+
+	request_body {
+		max_size {$MAX_UPLOAD_SIZE_GB:5}GB
+	}
+
+	header {
+		-Server
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+	}
+
+	@rails path /api/* /rails/active_storage/* /health
+	handle @rails {
+		reverse_proxy api:3000 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+
+	log {
+		output stdout
+		format console
+		level WARN
+	}
+}

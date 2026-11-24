@@ -28,6 +28,14 @@ Single source of truth for Claude Code, Cursor and other agents. Prefer linking 
 
 Open http://localhost:4080 only. Next.js proxies `/api` and `/rails/active_storage` to Rails in development (`apps/web/next.config.ts`); Caddy does the same in production.
 
+### Production stack (repo root)
+
+| Task | Command |
+|------|---------|
+| Install / reconfigure / test | `./install.sh` · `--reconfigure` · `--check` (`--build` builds images from this checkout) |
+| Files | `docker-compose.yml` (pulls `ghcr.io/scervera/d-cubby-{api,web}`), `docker-compose.build.yml`, `docker/Caddyfile`, `.env.example` |
+| Release | push a `v*` tag → `.github/workflows/release.yml` (multi-arch images + install bundle) |
+
 ### API (`cd apps/api`)
 
 | Task | Command |
