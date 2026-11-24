@@ -1,15 +1,12 @@
 {
   "title": "Gwoup",
-  "subtitle": "Jere gwoup ak manm pou òganizasyon ou.",
+  "subtitle": "Gwoup yo deside kiyès ki wè dosye entèlijan gwoup yo.",
   "createButton": "Kreye gwoup",
   "emptyTitle": "Pa gen gwoup ankò",
   "emptyBody": "Kreye premye gwoup ou pou kòmanse.",
   "memberCount": "{count, plural, one {# manm} other {# manm}}",
   "manageMembers": "Jere manm yo",
   "confirmDeleteGroup": "Èske ou sèten ou vle efase gwoup sa a?",
-  "confirmRemoveMember": "Èske ou sèten ou vle retire manm sa a?",
-  "adminRequiredTitle": "Ou bezwen admin",
-  "adminRequiredBody": "Ou dwe admin pou jere gwoup yo.",
   "tooltips": {
     "editGroup": "Modifye gwoup",
     "deleteGroup": "Efase gwoup"
@@ -26,17 +23,26 @@
     "update": "Mete ajou"
   },
   "members": {
-    "manageTitle": "Jere manm yo — {name}",
+    "manageTitle": "Manm — {name}",
     "currentTitle": "Manm aktyèl ({count})",
     "noneYet": "Pa gen manm ankò.",
     "addTitle": "Ajoute manm",
-    "addAsMember": "Ajoute kòm manm",
-    "addAsAdmin": "Ajoute kòm admin",
-    "roles": {
-      "admin": "Administratè",
-      "member": "Manm"
-    }
+    "add": "Ajoute",
+    "remove": "Retire {email} nan gwoup la",
+    "everyoneAdded": "Tout moun nan òganizasyon an deja manm."
+  },
+  "subtitleReadOnly": "Gwoup yo deside kiyès ki wè dosye entèlijan gwoup yo. Se administratè yo ki jere yo.",
+  "emptyBodyReadOnly": "Okenn administratè poko kreye gwoup.",
+  "viewMembers": "Wè manm yo",
+  "toasts": {
+    "loadFailed": "Nou pa t ka chaje gwoup yo",
+    "created": "Gwoup kreye",
+    "updated": "Gwoup mete ajou",
+    "saveFailed": "Nou pa t ka anrejistre gwoup la",
+    "deleted": "Gwoup efase",
+    "deleteFailed": "Nou pa t ka efase gwoup la",
+    "membersLoadFailed": "Nou pa t ka chaje manm yo",
+    "addMemberFailed": "Nou pa t ka ajoute manm nan",
+    "removeMemberFailed": "Nou pa t ka retire manm nan"
   }
 }
-
-

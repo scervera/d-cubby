@@ -1,1 +1,93 @@
-{}
+{
+  "title": "Watched folders",
+  "subtitle": "Import new files from folders on the server automatically",
+  "containerHint": "D-cubby runs in a container. It sees the server folder you chose for watched folders during installation (WATCHED_FOLDERS_PATH) at /watched, so every path here starts with /watched — for example /watched/photos.",
+  "refresh": "Refresh",
+  "addFolder": "Add folder",
+  "emptyTitle": "No watched folders",
+  "emptyBody": "Add a folder and D-cubby will import the files placed in it.",
+  "confirmDelete": "Stop watching this folder? Files already imported stay in the library.",
+  "inaccessibleHint": "D-cubby can't read this path. Check that it exists under /watched and that the folder is readable.",
+  "lastScanned": "Last scanned: {time}",
+  "nextScan": "Next scan: {time}",
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "inaccessible": "Can't read folder"
+  },
+  "stats": {
+    "frequency": "Scan every",
+    "maxFileSize": "Max file size",
+    "processed": "Files imported",
+    "errors": "Errors",
+    "autoTags": "Tags added to imports:"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# unread notification} other {# unread notifications}}",
+    "history": "Scan history",
+    "scanNow": "Scan now",
+    "scanning": "Scanning…",
+    "edit": "Edit folder settings",
+    "activate": "Start watching",
+    "deactivate": "Pause watching",
+    "delete": "Remove folder"
+  },
+  "form": {
+    "createTitle": "Add watched folder",
+    "editTitle": "Edit watched folder",
+    "nameLabel": "Name",
+    "pathLabel": "Folder path",
+    "pathHint": "A path inside the container, under /watched. Subfolders of your watched-folders directory on the server appear there.",
+    "frequencyLabel": "Scan every",
+    "unitLabel": "Unit",
+    "minutes": "Minutes",
+    "hours": "Hours",
+    "days": "Days",
+    "maxFileSizeLabel": "Max file size (GB)",
+    "autoTagsLabel": "Tags for imported files",
+    "autoTagsPlaceholder": "e.g. photos, events, 2026",
+    "autoTagsHint": "Comma-separated. Every file imported from this folder gets these tags.",
+    "activeLabel": "Active (scan this folder)",
+    "create": "Add folder",
+    "update": "Save"
+  },
+  "history": {
+    "title": "Scan history",
+    "empty": "No scans yet",
+    "emptyHint": "Scans appear here once the folder has been checked.",
+    "running": "Scan in progress",
+    "failed": "Scan failed",
+    "noNewFiles": "No new files",
+    "processed": "Imported {count, plural, one {# file} other {# files}}",
+    "skipped": "Skipped {count, plural, one {# file} other {# files}} already imported",
+    "completed": "Scan completed",
+    "counts": "Found {found} · imported {processed} · skipped {skipped} · errors {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "COMPLETED",
+      "failed": "FAILED",
+      "running": "RUNNING"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "emptyHint": "Problems importing files from this folder are listed here.",
+    "unread": "unread"
+  },
+  "toasts": {
+    "loadFailed": "Couldn't load watched folders",
+    "created": "Watched folder added",
+    "createFailed": "Couldn't add the folder",
+    "updated": "Watched folder saved",
+    "updateFailed": "Couldn't save the folder",
+    "deleted": "Folder removed",
+    "deleteFailed": "Couldn't remove the folder",
+    "scanStarted": "Scan started",
+    "scanFailed": "Couldn't start the scan",
+    "activated": "Folder is being watched",
+    "deactivated": "Watching paused",
+    "historyFailed": "Couldn't load the scan history",
+    "notificationsFailed": "Couldn't load notifications"
+  }
+}

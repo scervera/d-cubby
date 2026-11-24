@@ -47,7 +47,7 @@
     "dropFilesHere": "Suelta los archivos aquí",
     "clickToUpload": "Haz clic para subir archivos",
     "dragAndDropHint": "Arrastra y suelta archivos aquí, o haz clic para seleccionar",
-    "supportsHint": "Soporta imágenes, videos, audio y documentos (máx. {maxSizeGB}GB cada uno)",
+    "supportsHint": "Admite imágenes, videos, audio y documentos (máx. {maxSize} cada uno)",
     "selectedFiles": "Archivos seleccionados ({count})",
     "uploading": "Subiendo...",
     "processing": "Procesando...",
@@ -57,19 +57,20 @@
     "successfullyUploaded": "Se subieron {count, plural, one {# archivo} other {# archivos}} correctamente",
     "failedToUpload": "No se pudieron subir {count, plural, one {# archivo} other {# archivos}}",
     "uploadFailed": "Falló la carga",
-    "fileTooLarge": "El tamaño del archivo debe ser menor que {maxSizeGB}GB",
+    "fileTooLarge": "El archivo debe pesar menos de {maxSize}",
     "fileTypeNotSupported": "Tipo de archivo no compatible",
     "applyTagsLabel": "Aplicar etiquetas a todos los archivos",
     "applyTagsHint": "Estas etiquetas se añadirán a cada archivo de esta carga.",
     "tagPlaceholder": "Escribe el nombre de una etiqueta…",
-    "addTag": "Añadir"
+    "addTag": "Añadir",
+    "supportsHintNoLimit": "Admite imágenes, videos, audio y documentos"
   },
   "grid": {
     "emptyTitle": "No se encontraron recursos",
     "emptyAllHint": "Empieza subiendo tu primer archivo.",
     "emptyCategoryHint": "No se encontraron {category}. Intenta subir algunos {category}.",
     "assetCount": "{count, plural, one {# recurso} other {# recursos}}",
-    "confirmDeleteAsset": "¿Seguro que quieres eliminar este recurso?",
+    "confirmDeleteAsset": "¿Mover este recurso a la papelera? Puedes restaurarlo desde la papelera hasta que se elimine definitivamente.",
     "tooltips": {
       "tapToViewDetails": "Toca para ver detalles",
       "doubleClickToViewDetails": "Doble clic para ver detalles",
@@ -81,10 +82,14 @@
       "clearSelection": "Limpiar selección",
       "deleting": "Eliminando...",
       "deleteCount": "Eliminar {count}",
-      "confirmBulkDelete": "¿Seguro que quieres eliminar {count, plural, one {# recurso} other {# recursos}}?",
+      "confirmBulkDelete": "¿Mover {count, plural, one {# recurso} other {# recursos}} a la papelera? Puedes restaurarlos desde la papelera hasta que se eliminen definitivamente.",
       "deletedSuccess": "Se eliminaron {count, plural, one {# recurso} other {# recursos}} correctamente",
-      "deleteFailed": "No se pudieron eliminar algunos recursos"
-    }
+      "deleteFailed": "No se pudieron eliminar algunos recursos",
+      "confirmTitle": "¿Mover recursos a la papelera?"
+    },
+    "confirmDeleteTitle": "¿Mover a la papelera?",
+    "actionsMenu": "Acciones para {name}",
+    "deleteFailed": "No se pudo eliminar el recurso"
   },
   "details": {
     "fileType": "Tipo de archivo:",
@@ -104,7 +109,8 @@
       "focalLength": "Distancia focal",
       "dateTaken": "Fecha de captura",
       "location": "Ubicación",
-      "software": "Software"
+      "software": "Software",
+      "pixels": "píxeles"
     },
     "tags": {
       "title": "Etiquetas",
@@ -124,7 +130,8 @@
       "removedTag": "Etiqueta eliminada",
       "removeTagFailed": "No se pudo eliminar la etiqueta",
       "addedTags": "Se agregaron {count, plural, one {# etiqueta} other {# etiquetas}} correctamente",
-      "addTagsFailed": "No se pudieron agregar algunas etiquetas"
+      "addTagsFailed": "No se pudieron agregar algunas etiquetas",
+      "removeTagLabel": "Quitar la etiqueta {name}"
     },
     "actions": {
       "setPosterFrame": "Elegir portada",
@@ -142,7 +149,8 @@
       "delete": "Eliminar",
       "deleteAsset": "Eliminar recurso",
       "deleteTooltip": "Eliminar recurso"
-    }
+    },
+    "done": "Listo"
   },
   "posterFrame": {
     "title": "Elegir portada",
@@ -229,6 +237,16 @@
       "white": "Blanco",
       "black": "Negro"
     }
+  },
+  "faces": {
+    "show": "Mostrar rostros",
+    "detect": "Detectar rostros",
+    "detecting": "Detectando…",
+    "detectHint": "Detectar rostros en esta foto",
+    "detectionStarted": "Se inició la detección de rostros. Los resultados aparecerán cuando estén listos.",
+    "detectionFailed": "No se pudo iniciar la detección de rostros",
+    "tagged": "Rostro etiquetado",
+    "tagFailed": "No se pudo etiquetar el rostro",
+    "createFailed": "No se pudo crear la persona ni etiquetar el rostro"
   }
 }
-

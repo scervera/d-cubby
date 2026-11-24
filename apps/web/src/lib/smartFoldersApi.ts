@@ -1,234 +1,119 @@
-import { api } from './api';
-import { API_ENDPOINTS } from './config';
+import { api } from './api'
+import { API_ENDPOINTS } from './config'
+
+export type SmartFolderVisibility = 'personal' | 'group' | 'global'
 
 export interface SmartFolder {
-  id: number;
-  name: string;
-  description: string | null;
-  tag_criteria: string;
-  tag_names: string[];
-  active: boolean;
-  sort_order: number;
-  asset_count: number;
-  visibility_level: 'personal' | 'group' | 'global';
-  match_logic: 'any' | 'all';
-  color: string;
-  pinned_to_sidebar: boolean;
-  shared_user_ids: number[];
-  group_id: number | null;
-  created_at: string;
-  updated_at: string;
-}
-
-/** A smart folder as the API returns it (JSON:API resource). */
-interface SmartFolderResource {
-  id: number;
-  attributes: Omit<SmartFolder, 'id'>;
+  id: number
+  name: string
+  description: string | null
+  tag_criteria: string
+  tag_names: string[]
+  active: boolean
+  sort_order: number
+  asset_count: number
+  visibility_level: SmartFolderVisibility
+  match_logic: 'any' | 'all'
+  color: string
+  pinned_to_sidebar: boolean
+  shared_user_ids: number[]
+  group_id: number | null
+  user_id: number | null
+  created_at: string
+  updated_at: string
 }
 
 export interface CreateSmartFolderData {
-  name: string;
-  description?: string;
-  tag_criteria: string;
-  active?: boolean;
-  sort_order?: number;
-  visibility_level?: 'personal' | 'group' | 'global';
-  match_logic?: 'any' | 'all';
-  color?: string;
-  pinned_to_sidebar?: boolean;
-  shared_user_ids?: number[];
-  group_id?: number | null;
+  name: string
+  description?: string
+  tag_criteria: string
+  active?: boolean
+  sort_order?: number
+  visibility_level?: SmartFolderVisibility
+  match_logic?: 'any' | 'all'
+  color?: string
+  pinned_to_sidebar?: boolean
+  shared_user_ids?: number[]
+  group_id?: number | null
 }
 
-export interface UpdateSmartFolderData {
-  name?: string;
-  description?: string;
-  tag_criteria?: string;
-  active?: boolean;
-  sort_order?: number;
-  visibility_level?: 'personal' | 'group' | 'global';
-  match_logic?: 'any' | 'all';
-  color?: string;
-  pinned_to_sidebar?: boolean;
-  shared_user_ids?: number[];
-  group_id?: number | null;
+export type UpdateSmartFolderData = Partial<CreateSmartFolderData>
+
+/** A smart folder as the API returns it: `{ id, attributes: {...} }`. */
+interface SmartFolderResource {
+  id: number
+  attributes: Omit<SmartFolder, 'id'>
+}
+
+function toSmartFolder(item: SmartFolderResource): SmartFolder {
+  const a = item.attributes
+  return {
+    id: item.id,
+    name: a.name,
+    description: a.description,
+    tag_criteria: a.tag_criteria,
+    tag_names: a.tag_names || [],
+    active: a.active,
+    sort_order: a.sort_order,
+    asset_count: a.asset_count ?? 0,
+    visibility_level: a.visibility_level,
+    match_logic: a.match_logic,
+    color: a.color,
+    pinned_to_sidebar: !!a.pinned_to_sidebar,
+    shared_user_ids: a.shared_user_ids || [],
+    group_id: a.group_id ?? null,
+    user_id: a.user_id ?? null,
+    created_at: a.created_at,
+    updated_at: a.updated_at,
+  }
 }
 
 export const smartFoldersApi = {
-  // Get all smart folders
   getAll: async (): Promise<SmartFolder[]> => {
-    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.LIST);
-    return response.data.data.map((item: SmartFolderResource) => ({
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    }));
+    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.LIST)
+    return (response.data.data as SmartFolderResource[]).map(toSmartFolder)
   },
 
-  // Get smart folders for sidebar (limited to 5)
+  /**
+   * Folders pinned to the sidebar. (The API's /smart_folders/sidebar returns the five most
+   * recently updated folders, not the pinned ones, so filter the full list instead.)
+   */
   getSidebar: async (): Promise<SmartFolder[]> => {
-    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.SIDEBAR);
-    return response.data.data.map((item: SmartFolderResource) => ({
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    }));
+    const folders = await smartFoldersApi.getAll()
+    return folders.filter((folder) => folder.pinned_to_sidebar)
   },
 
-  // Get a specific smart folder
   getById: async (id: number): Promise<SmartFolder> => {
-    const response = await api.get(`/smart_folders/${id}`);
-    const item = response.data.data;
-    return {
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    };
+    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.SHOW(id))
+    return toSmartFolder(response.data.data)
   },
 
-  // Create a new smart folder
   create: async (data: CreateSmartFolderData): Promise<SmartFolder> => {
-    const response = await api.post(API_ENDPOINTS.SMART_FOLDERS.CREATE, { smart_folder: data });
-    const item = response.data.data;
-    return {
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    };
+    const response = await api.post(API_ENDPOINTS.SMART_FOLDERS.CREATE, { smart_folder: data })
+    return toSmartFolder(response.data.data)
   },
 
-  // Update a smart folder
   update: async (id: number, data: UpdateSmartFolderData): Promise<SmartFolder> => {
-    const response = await api.patch(`/smart_folders/${id}`, { smart_folder: data });
-    const item = response.data.data;
-    return {
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    };
+    const response = await api.patch(API_ENDPOINTS.SMART_FOLDERS.UPDATE(id), { smart_folder: data })
+    return toSmartFolder(response.data.data)
   },
 
-  // Delete a smart folder
   delete: async (id: number): Promise<void> => {
-    await api.delete(`/smart_folders/${id}`);
+    await api.delete(API_ENDPOINTS.SMART_FOLDERS.DELETE(id))
   },
 
-  // Pin a smart folder to sidebar
   pin: async (id: number): Promise<SmartFolder> => {
-    const response = await api.post(`/smart_folders/${id}/pin`);
-    const item = response.data.data;
-    return {
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    };
+    const response = await api.post(API_ENDPOINTS.SMART_FOLDERS.PIN(id))
+    return toSmartFolder(response.data.data)
   },
 
-  // Unpin a smart folder from sidebar
   unpin: async (id: number): Promise<SmartFolder> => {
-    const response = await api.post(`/smart_folders/${id}/unpin`);
-    const item = response.data.data;
-    return {
-      id: item.id,
-      name: item.attributes.name,
-      description: item.attributes.description,
-      tag_criteria: item.attributes.tag_criteria,
-      tag_names: item.attributes.tag_names,
-      active: item.attributes.active,
-      sort_order: item.attributes.sort_order,
-      asset_count: item.attributes.asset_count,
-      visibility_level: item.attributes.visibility_level,
-      match_logic: item.attributes.match_logic,
-      color: item.attributes.color,
-      pinned_to_sidebar: item.attributes.pinned_to_sidebar,
-      shared_user_ids: item.attributes.shared_user_ids || [],
-      group_id: item.attributes.group_id,
-      created_at: item.attributes.created_at,
-      updated_at: item.attributes.updated_at
-    };
+    const response = await api.post(API_ENDPOINTS.SMART_FOLDERS.UNPIN(id))
+    return toSmartFolder(response.data.data)
   },
 
-  // Get assets for a smart folder
   getAssets: async (id: number): Promise<unknown> => {
-    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.ASSETS(id));
-    return response.data;
+    const response = await api.get(API_ENDPOINTS.SMART_FOLDERS.ASSETS(id))
+    return response.data
   },
-};
+}

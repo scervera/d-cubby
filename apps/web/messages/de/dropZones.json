@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "Failed to fetch drop zones",
     "deleteFailed": "Failed to delete drop zone",
-    "subscribeFailed": "Failed to subscribe to drop zone",
     "unsubscribeFailed": "Failed to unsubscribe from drop zone",
     "createFailed": "Failed to create drop zone",
     "updateFailed": "Failed to update drop zone",
@@ -19,17 +18,18 @@
     "uploadFailed": "Failed to upload files to drop zone",
     "uploadFailedGeneric": "Failed to upload files"
   },
-  "uploadingCount": "Uploading {count, plural, one {# file} other {# files}}...",
-  "uploadingProgress": "Uploading {completed}/{total} files...",
-  "uploadedSuccess": "Successfully uploaded {count, plural, one {# file} other {# files}}!",
-  "uploadedSuccessWithHint": "Successfully uploaded {count, plural, one {# file} other {# files}}! View them in your Assets Dashboard.",
+  "uploadedSuccess": "{count, plural, one {# Datei hochgeladen} other {# Dateien hochgeladen}}",
+  "uploadedSuccessWithHint": "{count, plural, one {# Datei hochgeladen} other {# Dateien hochgeladen}}. Sie finden sie in der Asset-Bibliothek.",
   "folder": {
     "files": "{count, plural, one {# file} other {# files}}",
     "subscribers": "{count, plural, one {# subscriber} other {# subscribers}}",
     "menuView": "View",
     "menuManage": "Manage",
-    "menuSubscribe": "Subscribe",
-    "menuDelete": "Delete"
+    "menuDelete": "Delete",
+    "inactive": "Inaktiv",
+    "uploadingFiles": "{count, plural, one {# Datei wird} other {# Dateien werden}} hochgeladen",
+    "menuLabel": "Aktionen für {name}",
+    "menuUnsubscribe": "Abbestellen"
   },
   "modal": {
     "createTitle": "Create Drop Zone",
@@ -66,16 +66,24 @@
     "backToList": "Back to Drop Zones",
     "filesUploadedStat": "{count, plural, one {# file uploaded} other {# files uploaded}}",
     "uploadPortalTitle": "Upload Portal",
-    "uploadPortalBody": "Files uploaded here will automatically be tagged and appear in your Assets Dashboard.",
+    "uploadPortalBody": "Hier hochgeladene Dateien werden automatisch getaggt und der Asset-Bibliothek hinzugefügt.",
     "autoAppliedTags": "Auto-applied tags:",
     "acceptedFileTypes": "Accepted file types:",
     "uploadingTitle": "Uploading files...",
     "dropFilesHere": "Drop files here",
     "dragDropTitle": "Drag & Drop Files",
     "dragDropBody": "Drop files anywhere in this area to upload them",
-    "browseButton": "Or click to browse files",
-    "uploadedHint": "Uploaded files will appear in your Assets Dashboard"
+    "browseButton": "Dateien auswählen",
+    "uploadedHint": "Hochgeladene Dateien erscheinen auch in der Asset-Bibliothek.",
+    "readOnly": "Sie können diese Ablagezone ansehen, aber nur Redakteure können Dateien hochladen.",
+    "inactive": "Diese Ablagezone ist inaktiv und nimmt keine Dateien an.",
+    "recentUploads": "Zuletzt hochgeladen"
+  },
+  "emptyBodyReadOnly": "Ablagezonen, die Sie abonniert haben, erscheinen hier.",
+  "toasts": {
+    "created": "Ablagezone erstellt",
+    "updated": "Ablagezone aktualisiert",
+    "deleted": "Ablagezone gelöscht",
+    "unsubscribed": "Sie haben {name} abbestellt"
   }
 }
-
-

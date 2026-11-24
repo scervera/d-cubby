@@ -32,14 +32,15 @@
   },
   "grid": {
     "bulk": {
-      "confirmBulkDelete": "Èske ou sèten ou vle efase {count} byen?",
+      "confirmBulkDelete": "Mete {count, plural, one {# fichye} other {# fichye}} nan poubèl la? Ou ka retabli yo nan poubèl la jiskaske yo efase yo nèt.",
       "deletedSuccess": "{count} byen efase avèk siksè",
       "deleteFailed": "Pa t reyisi efase kèk byen",
       "selectedAssets": "{count} byen chwazi",
       "selectAll": "Chwazi tout",
       "clearSelection": "Retire seleksyon",
       "cancel": "Anile",
-      "delete": "Efase {count}"
+      "delete": "Efase {count}",
+      "confirmTitle": "Mete fichye yo nan poubèl la?"
     },
     "emptyTitle": "Pa gen byen jwenn",
     "emptyAllHint": "Kòmanse pa telechaje premye fichye ou.",
@@ -89,18 +90,42 @@
     "videoPlaybackError": "Erè lekti videyo",
     "audioPlaybackError": "Erè lekti odyo",
     "unsupportedVideo": "Navigatè ou a pa sipòte tag videyo a.",
-    "unsupportedAudio": "Navigatè ou a pa sipòte eleman odyo a."
+    "unsupportedAudio": "Navigatè ou a pa sipòte eleman odyo a.",
+    "confirmDeleteTitle": "Mete l nan poubèl la?",
+    "confirmDeleteAsset": "Mete fichye sa a nan poubèl la? Ou ka retabli l nan poubèl la jiskaske yo efase l nèt.",
+    "actionsMenu": "Aksyon pou {name}",
+    "deleteFailed": "Nou pa t kapab efase fichye a"
   },
   "details": {
+    "actions": {
+      "setPosterFrame": "Mete imaj afich",
+      "setPosterFrameTooltip": "Mete imaj afich pèsonalize",
+      "editImage": "Modifye imaj",
+      "editImageTooltip": "Koupe, redimansyone, vire epi sove kòm nouvo derive",
+      "autoTag": "Oto-tage ak IA",
+      "autoTagTooltip": "Jenere tag pou imaj sa a ak IA",
+      "autoTagging": "Ap tage…",
+      "autoTagStarted": "Oto-tage kòmanse. Tag yo ap mete ajou byen vit.",
+      "autoTagFailed": "Pa t kapab kòmanse oto-tage",
+      "view": "Gade",
+      "download": "Telechaje",
+      "downloadTooltip": "Telechaje byen",
+      "delete": "Efase",
+      "deleteAsset": "Efase byen",
+      "deleteTooltip": "Efase byen"
+    },
+    "exif": {
+      "imageResolution": "Rezolisyon imaj",
+      "videoResolution": "Rezolisyon videyo",
+      "dpi": "DPI",
+      "exifInformation": "Enfòmasyon EXIF",
+      "camera": "Kamera",
+      "lens": "Lantiy",
+      "pixels": "piksèl"
+    },
+    "done": "Fini",
     "tags": {
-      "failedToLoadTags": "Pa t reyisi chaje etikèt yo",
-      "addedTag": "Etikèt “{name}” ajoute avèk siksè",
-      "addTagInvalidResponse": "Pa t reyisi ajoute etikèt: repons pa valab",
-      "addTagFailed": "Pa t reyisi ajoute etikèt",
-      "removedTag": "Etikèt retire avèk siksè",
-      "removeTagFailed": "Pa t reyisi retire etikèt",
-      "addedTags": "{count} etikèt ajoute avèk siksè",
-      "addTagsFailed": "Pa t reyisi ajoute kèk etikèt"
+      "removeTagLabel": "Retire etikèt {name}"
     }
   },
   "posterFrame": {
@@ -131,33 +156,6 @@
     "colors": {
       "white": "Blan",
       "black": "Nwa"
-    }
-  },
-  "details": {
-    "actions": {
-      "setPosterFrame": "Mete imaj afich",
-      "setPosterFrameTooltip": "Mete imaj afich pèsonalize",
-      "editImage": "Modifye imaj",
-      "editImageTooltip": "Koupe, redimansyone, vire epi sove kòm nouvo derive",
-      "autoTag": "Oto-tage ak IA",
-      "autoTagTooltip": "Jenere tag pou imaj sa a ak IA",
-      "autoTagging": "Ap tage…",
-      "autoTagStarted": "Oto-tage kòmanse. Tag yo ap mete ajou byen vit.",
-      "autoTagFailed": "Pa t kapab kòmanse oto-tage",
-      "view": "Gade",
-      "download": "Telechaje",
-      "downloadTooltip": "Telechaje byen",
-      "delete": "Efase",
-      "deleteAsset": "Efase byen",
-      "deleteTooltip": "Efase byen"
-    },
-    "exif": {
-      "imageResolution": "Rezolisyon imaj",
-      "videoResolution": "Rezolisyon videyo",
-      "dpi": "DPI",
-      "exifInformation": "Enfòmasyon EXIF",
-      "camera": "Kamera",
-      "lens": "Lantiy"
     }
   },
   "editor": {
@@ -231,7 +229,20 @@
     "applyTagsLabel": "Aplike etikèt sou tout fichye yo",
     "applyTagsHint": "Etikèt sa yo ap ajoute sou chak fichye nan telechajman sa a.",
     "tagPlaceholder": "Tape non yon etikèt…",
-    "addTag": "Ajoute"
+    "addTag": "Ajoute",
+    "supportsHint": "Aksepte imaj, videyo, odyo ak dokiman (maksimòm {maxSize} chak)",
+    "supportsHintNoLimit": "Aksepte imaj, videyo, odyo ak dokiman",
+    "fileTooLarge": "Fichye a dwe pi piti pase {maxSize}"
+  },
+  "faces": {
+    "show": "Montre figi yo",
+    "detect": "Detekte figi",
+    "detecting": "N ap detekte…",
+    "detectHint": "Detekte figi nan foto sa a",
+    "detectionStarted": "Deteksyon figi kòmanse. Rezilta yo ap parèt lè yo pare.",
+    "detectionFailed": "Nou pa t kapab kòmanse deteksyon figi",
+    "tagged": "Figi a idantifye",
+    "tagFailed": "Nou pa t kapab idantifye figi a",
+    "createFailed": "Nou pa t kapab kreye moun nan oswa idantifye figi a"
   }
 }
-

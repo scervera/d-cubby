@@ -19,11 +19,24 @@
     "tagsHint": "Byen ki gen nenpòt nan etikèt sa yo ap parèt nan dosye sa a",
     "addTagPlaceholder": "Ekri yon etikèt epi peze Enter",
     "colorLabel": "Koulè",
-    "pinLabel": "Mete sou bò (sidebar)",
+    "pinLabel": "Epengle nan ba bò a",
     "cancel": "Anile",
     "create": "Kreye",
-    "update": "Mete ajou"
-  }
+    "update": "Mete ajou",
+    "noGroups": "Poko gen gwoup. Yon administratè ka kreye yo nan paj Gwoup yo.",
+    "tagsInputPlaceholder": "Tape yon etikèt epi peze Antre",
+    "tagsHelperAny": "Byen ki gen NENPÒT nan etikèt sa yo parèt nan dosye sa a.",
+    "tagsHelperAll": "Byen ki gen TOUT etikèt sa yo parèt nan dosye sa a.",
+    "addTags": "Ajoute",
+    "noTagsBody": "Ajoute omwen yon etikèt.",
+    "shareUsersHint": "Kenbe Cmd (Mac) oswa Ctrl (Windows) pou chwazi plizyè moun"
+  },
+  "emptyBodyReadOnly": "Editè yo kreye dosye entèlijan; sa yo pataje avè w ap parèt la a.",
+  "loadFailed": "Nou pa t ka chaje dosye entèlijan yo",
+  "saveFailed": "Nou pa t ka anrejistre dosye entèlijan an",
+  "deleteFailed": "Nou pa t ka efase dosye entèlijan an",
+  "pinFailed": "Nou pa t ka chanje epeng nan ba bò a",
+  "created": "Dosye entèlijan kreye",
+  "updated": "Dosye entèlijan mete ajou",
+  "deleted": "Dosye entèlijan efase"
 }
-
-

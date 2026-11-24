@@ -1,42 +1,31 @@
 {
-  "pageTitle": {
-    "asset": "Digital Assets — Recycle bin",
-    "media": "Lesson Media — Recycle bin"
-  },
-  "subtitle": {
-    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
-    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
-  },
-  "loading": "Loading recycle bin…",
-  "emptyTitle": "Recycle bin is empty",
-  "emptyBody": {
-    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
-    "media": "When you delete lesson media, items appear here until automatic cleanup."
-  },
-  "backToLibrary": {
-    "asset": "Back to Digital Assets",
-    "media": "Back to Lesson Media"
-  },
+  "pageTitle": "Lixeira",
+  "subtitle": "Os arquivos excluídos ficam aqui até serem removidos definitivamente. Você pode restaurá-los antes da data de remoção.",
+  "loading": "Carregando a lixeira…",
+  "emptyTitle": "A lixeira está vazia",
+  "emptyBody": "Quando você exclui arquivos, eles aparecem aqui até a limpeza automática.",
+  "backToLibrary": "Voltar à biblioteca",
+  "viewersCannotOpen": "Somente proprietários, administradores e editores podem abrir a lixeira.",
   "columns": {
     "item": "Item",
-    "deletedAt": "Deleted",
-    "purgeAfter": "Permanent removal",
-    "actions": "Actions"
+    "deletedAt": "Excluído",
+    "purgeAfter": "Remoção definitiva",
+    "actions": "Ações"
   },
-  "restore": "Restore",
-  "restoring": "Restoring…",
-  "purge": "Delete permanently",
-  "purging": "Deleting…",
-  "confirmRestore": "Restore \"{name}\" to your library?",
-  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
-  "noPermissionRestore": "You can only restore files you uploaded",
+  "restore": "Restaurar",
+  "restoring": "Restaurando…",
+  "purge": "Excluir definitivamente",
+  "purging": "Excluindo…",
+  "confirmRestore": "Restaurar \"{name}\" para a sua biblioteca?",
+  "confirmPurge": "Excluir \"{name}\" definitivamente? Isso não pode ser desfeito.",
+  "noPermissionRestore": "Você só pode restaurar arquivos que enviou",
   "errors": {
-    "loadFailed": "Failed to load recycle bin"
+    "loadFailed": "Não foi possível carregar a lixeira"
   },
   "toasts": {
-    "restored": "Restored successfully",
-    "purged": "Permanent deletion queued",
-    "restoreFailed": "Failed to restore",
-    "purgeFailed": "Failed to delete permanently"
+    "restored": "Restaurado com sucesso",
+    "purged": "Exclusão definitiva agendada",
+    "restoreFailed": "Não foi possível restaurar",
+    "purgeFailed": "Não foi possível excluir definitivamente"
   }
 }

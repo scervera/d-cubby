@@ -1,42 +1,31 @@
 {
-  "pageTitle": {
-    "asset": "Digital Assets — Recycle bin",
-    "media": "Lesson Media — Recycle bin"
-  },
-  "subtitle": {
-    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
-    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
-  },
-  "loading": "Loading recycle bin…",
-  "emptyTitle": "Recycle bin is empty",
-  "emptyBody": {
-    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
-    "media": "When you delete lesson media, items appear here until automatic cleanup."
-  },
-  "backToLibrary": {
-    "asset": "Back to Digital Assets",
-    "media": "Back to Lesson Media"
-  },
+  "pageTitle": "Corbeille",
+  "subtitle": "Les fichiers supprimés restent ici jusqu'à leur suppression définitive. Vous pouvez les restaurer avant la date de suppression.",
+  "loading": "Chargement de la corbeille…",
+  "emptyTitle": "La corbeille est vide",
+  "emptyBody": "Les ressources supprimées apparaissent ici jusqu'au nettoyage automatique.",
+  "backToLibrary": "Retour à la bibliothèque",
+  "viewersCannotOpen": "Seuls les propriétaires, administrateurs et éditeurs peuvent ouvrir la corbeille.",
   "columns": {
-    "item": "Item",
-    "deletedAt": "Deleted",
-    "purgeAfter": "Permanent removal",
+    "item": "Élément",
+    "deletedAt": "Supprimé",
+    "purgeAfter": "Suppression définitive",
     "actions": "Actions"
   },
-  "restore": "Restore",
-  "restoring": "Restoring…",
-  "purge": "Delete permanently",
-  "purging": "Deleting…",
-  "confirmRestore": "Restore \"{name}\" to your library?",
-  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
-  "noPermissionRestore": "You can only restore files you uploaded",
+  "restore": "Restaurer",
+  "restoring": "Restauration…",
+  "purge": "Supprimer définitivement",
+  "purging": "Suppression…",
+  "confirmRestore": "Restaurer « {name} » dans votre bibliothèque ?",
+  "confirmPurge": "Supprimer définitivement « {name} » ? Cette action est irréversible.",
+  "noPermissionRestore": "Vous ne pouvez restaurer que les fichiers que vous avez importés",
   "errors": {
-    "loadFailed": "Failed to load recycle bin"
+    "loadFailed": "Impossible de charger la corbeille"
   },
   "toasts": {
-    "restored": "Restored successfully",
-    "purged": "Permanent deletion queued",
-    "restoreFailed": "Failed to restore",
-    "purgeFailed": "Failed to delete permanently"
+    "restored": "Restauré",
+    "purged": "Suppression définitive programmée",
+    "restoreFailed": "Échec de la restauration",
+    "purgeFailed": "Échec de la suppression définitive"
   }
 }

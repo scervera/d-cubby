@@ -1,0 +1,93 @@
+{
+  "title": "Dosye siveye",
+  "subtitle": "Enpòte nouvo fichye ki nan dosye sou sèvè a otomatikman",
+  "containerHint": "D-cubby ap mache nan yon kontenè. Li wè dosye sèvè ou te chwazi pou dosye siveye pandan enstalasyon an (WATCHED_FOLDERS_PATH) nan /watched, kidonk chak chemen isit la kòmanse ak /watched — pa egzanp /watched/foto.",
+  "refresh": "Rafrechi",
+  "addFolder": "Ajoute dosye",
+  "emptyTitle": "Pa gen dosye siveye",
+  "emptyBody": "Ajoute yon dosye epi D-cubby ap enpòte fichye ou mete ladan l.",
+  "confirmDelete": "Sispann siveye dosye sa a? Fichye ki deja enpòte yo rete nan bibliyotèk la.",
+  "inaccessibleHint": "D-cubby pa ka li chemen sa a. Verifye li egziste anba /watched epi dosye a ka li.",
+  "lastScanned": "Dènye eskanaj: {time}",
+  "nextScan": "Pwochen eskanaj: {time}",
+  "status": {
+    "active": "Aktif",
+    "inactive": "Inaktif",
+    "inaccessible": "Pa ka li dosye a"
+  },
+  "stats": {
+    "frequency": "Eskane chak",
+    "maxFileSize": "Gwosè maksimòm",
+    "processed": "Fichye enpòte",
+    "errors": "Erè",
+    "autoTags": "Etikèt ki ajoute sou enpòtasyon yo:"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# notifikasyon pa li} other {# notifikasyon pa li}}",
+    "history": "Istwa eskanaj",
+    "scanNow": "Eskane kounye a",
+    "scanning": "Ap eskane…",
+    "edit": "Modifye dosye a",
+    "activate": "Kòmanse siveye",
+    "deactivate": "Kanpe siveye",
+    "delete": "Retire dosye"
+  },
+  "form": {
+    "createTitle": "Ajoute dosye siveye",
+    "editTitle": "Modifye dosye siveye",
+    "nameLabel": "Non",
+    "pathLabel": "Chemen dosye a",
+    "pathHint": "Yon chemen andedan kontenè a, anba /watched. Sou-dosye ki nan repèrtwa dosye siveye ou sou sèvè a parèt la.",
+    "frequencyLabel": "Eskane chak",
+    "unitLabel": "Inite",
+    "minutes": "Minit",
+    "hours": "Èdtan",
+    "days": "Jou",
+    "maxFileSizeLabel": "Gwosè maksimòm fichye (GB)",
+    "autoTagsLabel": "Etikèt pou fichye enpòte yo",
+    "autoTagsPlaceholder": "pa egzanp foto, evènman, 2026",
+    "autoTagsHint": "Separe ak vigil. Chak fichye ki enpòte nan dosye sa a resevwa etikèt sa yo.",
+    "activeLabel": "Aktif (eskane dosye sa a)",
+    "create": "Ajoute dosye",
+    "update": "Anrejistre"
+  },
+  "history": {
+    "title": "Istwa eskanaj",
+    "empty": "Poko gen eskanaj",
+    "emptyHint": "Eskanaj yo ap parèt la a lè dosye a fin tcheke.",
+    "running": "Eskanaj ap fèt",
+    "failed": "Eskanaj la echwe",
+    "noNewFiles": "Pa gen nouvo fichye",
+    "processed": "{count, plural, one {# fichye enpòte} other {# fichye enpòte}}",
+    "skipped": "{count, plural, one {# fichye ki te deja enpòte sote} other {# fichye ki te deja enpòte sote}}",
+    "completed": "Eskanaj fini",
+    "counts": "Jwenn {found} · enpòte {processed} · sote {skipped} · erè {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "FINI",
+      "failed": "ECHWE",
+      "running": "AP FÈT"
+    }
+  },
+  "notifications": {
+    "title": "Notifikasyon",
+    "empty": "Pa gen notifikasyon",
+    "emptyHint": "Pwoblèm pou enpòte fichye nan dosye sa a parèt la a.",
+    "unread": "pa li"
+  },
+  "toasts": {
+    "loadFailed": "Nou pa t ka chaje dosye siveye yo",
+    "created": "Dosye siveye ajoute",
+    "createFailed": "Nou pa t ka ajoute dosye a",
+    "updated": "Dosye siveye anrejistre",
+    "updateFailed": "Nou pa t ka anrejistre dosye a",
+    "deleted": "Dosye retire",
+    "deleteFailed": "Nou pa t ka retire dosye a",
+    "scanStarted": "Eskanaj kòmanse",
+    "scanFailed": "Nou pa t ka kòmanse eskanaj la",
+    "activated": "Dosye a ap siveye",
+    "deactivated": "Siveyans kanpe",
+    "historyFailed": "Nou pa t ka chaje istwa a",
+    "notificationsFailed": "Nou pa t ka chaje notifikasyon yo"
+  }
+}

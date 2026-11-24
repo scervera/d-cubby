@@ -1,15 +1,12 @@
 {
   "title": "Grupos de usuarios",
-  "subtitle": "Administra grupos de usuarios para compartir carpetas inteligentes",
+  "subtitle": "Los grupos deciden quién ve las carpetas inteligentes de grupo.",
   "createButton": "Crear grupo",
   "emptyTitle": "No hay grupos",
   "emptyBody": "Empieza creando tu primer grupo.",
   "memberCount": "{count, plural, one {# miembro} other {# miembros}}",
   "manageMembers": "Administrar miembros",
-  "adminRequiredTitle": "Se requiere acceso de administrador",
-  "adminRequiredBody": "Necesitas privilegios de administrador para gestionar grupos.",
   "confirmDeleteGroup": "¿Seguro que quieres eliminar este grupo?",
-  "confirmRemoveMember": "¿Quitar a este usuario del grupo?",
   "tooltips": {
     "editGroup": "Editar grupo",
     "deleteGroup": "Eliminar grupo"
@@ -26,17 +23,26 @@
     "create": "Crear"
   },
   "members": {
-    "manageTitle": "Administrar miembros - {name}",
+    "manageTitle": "Miembros — {name}",
     "currentTitle": "Miembros actuales ({count})",
     "noneYet": "Aún no hay miembros",
     "addTitle": "Agregar miembro",
-    "addAsMember": "Agregar como miembro",
-    "addAsAdmin": "Agregar como administrador",
-    "roles": {
-      "admin": "Administrador",
-      "member": "Miembro"
-    }
+    "add": "Añadir",
+    "remove": "Quitar a {email} del grupo",
+    "everyoneAdded": "Todas las personas de la organización ya son miembros."
+  },
+  "subtitleReadOnly": "Los grupos deciden quién ve las carpetas inteligentes de grupo. Los administradores los gestionan.",
+  "emptyBodyReadOnly": "Un administrador aún no ha creado grupos.",
+  "viewMembers": "Ver miembros",
+  "toasts": {
+    "loadFailed": "No se pudieron cargar los grupos",
+    "created": "Grupo creado",
+    "updated": "Grupo actualizado",
+    "saveFailed": "No se pudo guardar el grupo",
+    "deleted": "Grupo eliminado",
+    "deleteFailed": "No se pudo eliminar el grupo",
+    "membersLoadFailed": "No se pudieron cargar los miembros",
+    "addMemberFailed": "No se pudo añadir al miembro",
+    "removeMemberFailed": "No se pudo quitar al miembro"
   }
 }
-
-

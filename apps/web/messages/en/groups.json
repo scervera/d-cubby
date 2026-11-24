@@ -1,15 +1,12 @@
 {
   "title": "User Groups",
-  "subtitle": "Manage user groups for sharing smart folders",
+  "subtitle": "Groups decide who sees group smart folders.",
   "createButton": "Create Group",
   "emptyTitle": "No groups",
   "emptyBody": "Get started by creating your first group.",
   "memberCount": "{count, plural, one {# member} other {# members}}",
   "manageMembers": "Manage Members",
-  "adminRequiredTitle": "Admin Access Required",
-  "adminRequiredBody": "You need administrator privileges to manage groups.",
   "confirmDeleteGroup": "Are you sure you want to delete this group?",
-  "confirmRemoveMember": "Remove this user from the group?",
   "tooltips": {
     "editGroup": "Edit group",
     "deleteGroup": "Delete group"
@@ -26,15 +23,26 @@
     "create": "Create"
   },
   "members": {
-    "manageTitle": "Manage Members - {name}",
+    "manageTitle": "Members — {name}",
     "currentTitle": "Current Members ({count})",
     "noneYet": "No members yet",
     "addTitle": "Add Member",
-    "addAsMember": "Add as Member",
-    "addAsAdmin": "Add as Admin",
-    "roles": {
-      "admin": "Admin",
-      "member": "Member"
-    }
+    "add": "Add",
+    "remove": "Remove {email} from the group",
+    "everyoneAdded": "Everyone in the organization is already a member."
+  },
+  "subtitleReadOnly": "Groups decide who sees group smart folders. Administrators manage them.",
+  "emptyBodyReadOnly": "An administrator hasn't created any groups yet.",
+  "viewMembers": "View members",
+  "toasts": {
+    "loadFailed": "Couldn't load groups",
+    "created": "Group created",
+    "updated": "Group updated",
+    "saveFailed": "Couldn't save the group",
+    "deleted": "Group deleted",
+    "deleteFailed": "Couldn't delete the group",
+    "membersLoadFailed": "Couldn't load the members",
+    "addMemberFailed": "Couldn't add the member",
+    "removeMemberFailed": "Couldn't remove the member"
   }
 }

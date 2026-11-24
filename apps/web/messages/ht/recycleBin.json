@@ -1,42 +1,31 @@
 {
-  "pageTitle": {
-    "asset": "Digital Assets — Recycle bin",
-    "media": "Lesson Media — Recycle bin"
-  },
-  "subtitle": {
-    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
-    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
-  },
-  "loading": "Loading recycle bin…",
-  "emptyTitle": "Recycle bin is empty",
-  "emptyBody": {
-    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
-    "media": "When you delete lesson media, items appear here until automatic cleanup."
-  },
-  "backToLibrary": {
-    "asset": "Back to Digital Assets",
-    "media": "Back to Lesson Media"
-  },
+  "pageTitle": "Poubèl",
+  "subtitle": "Fichye ou efase yo rete la a jiskaske yo efase yo nèt. Ou ka retabli yo anvan dat efasman an.",
+  "loading": "N ap chaje poubèl la…",
+  "emptyTitle": "Poubèl la vid",
+  "emptyBody": "Lè ou efase fichye, yo parèt la a jiskaske netwayaj otomatik la fèt.",
+  "backToLibrary": "Retounen nan bibliyotèk la",
+  "viewersCannotOpen": "Se sèlman pwopriyetè, administratè ak editè ki ka louvri poubèl la.",
   "columns": {
-    "item": "Item",
-    "deletedAt": "Deleted",
-    "purgeAfter": "Permanent removal",
-    "actions": "Actions"
+    "item": "Eleman",
+    "deletedAt": "Efase",
+    "purgeAfter": "Efasman nèt",
+    "actions": "Aksyon"
   },
-  "restore": "Restore",
-  "restoring": "Restoring…",
-  "purge": "Delete permanently",
-  "purging": "Deleting…",
-  "confirmRestore": "Restore \"{name}\" to your library?",
-  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
-  "noPermissionRestore": "You can only restore files you uploaded",
+  "restore": "Retabli",
+  "restoring": "N ap retabli…",
+  "purge": "Efase nèt",
+  "purging": "N ap efase…",
+  "confirmRestore": "Retabli \"{name}\" nan bibliyotèk ou a?",
+  "confirmPurge": "Efase \"{name}\" nèt? Ou p ap ka anile sa.",
+  "noPermissionRestore": "Ou ka retabli sèlman fichye ou te telechaje",
   "errors": {
-    "loadFailed": "Failed to load recycle bin"
+    "loadFailed": "Nou pa t kapab chaje poubèl la"
   },
   "toasts": {
-    "restored": "Restored successfully",
-    "purged": "Permanent deletion queued",
-    "restoreFailed": "Failed to restore",
-    "purgeFailed": "Failed to delete permanently"
+    "restored": "Retabli avèk siksè",
+    "purged": "Efasman nèt la pwograme",
+    "restoreFailed": "Nou pa t kapab retabli",
+    "purgeFailed": "Nou pa t kapab efase nèt"
   }
 }

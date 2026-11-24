@@ -1,7 +1,7 @@
 # The organization that owns this install. There is exactly one (created by /setup);
 # it is the DAM's tenant.
 class Organization < ApplicationRecord
-  LOCALES = %w[en es fr de pt it].freeze
+  LOCALES = %w[en es pt ht fr de].freeze
   MAX_LOGO_SIZE = 2.megabytes
   LOGO_TYPES = %w[image/png image/jpeg image/webp image/svg+xml].freeze
 

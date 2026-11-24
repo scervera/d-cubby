@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "No se pudieron cargar las carpetas de entrega",
     "deleteFailed": "No se pudo eliminar la carpeta de entrega",
-    "subscribeFailed": "No se pudo suscribir a la carpeta de entrega",
     "unsubscribeFailed": "No se pudo cancelar la suscripción",
     "createFailed": "No se pudo crear la carpeta de entrega",
     "updateFailed": "No se pudo actualizar la carpeta de entrega",
@@ -19,17 +18,18 @@
     "uploadFailed": "No se pudieron subir archivos a la carpeta de entrega",
     "uploadFailedGeneric": "No se pudieron subir archivos"
   },
-  "uploadingCount": "Subiendo {count, plural, one {# archivo} other {# archivos}}...",
-  "uploadingProgress": "Subiendo {completed}/{total} archivos...",
-  "uploadedSuccess": "Se subieron {count, plural, one {# archivo} other {# archivos}} correctamente",
-  "uploadedSuccessWithHint": "Se subieron {count, plural, one {# archivo} other {# archivos}} correctamente. Míralos en tu panel de Recursos.",
+  "uploadedSuccess": "Se subieron {count, plural, one {# archivo} other {# archivos}}",
+  "uploadedSuccessWithHint": "Se subieron {count, plural, one {# archivo} other {# archivos}}. Los encontrarás en la biblioteca de recursos.",
   "folder": {
     "files": "{count, plural, one {# archivo} other {# archivos}}",
     "subscribers": "{count, plural, one {# suscriptor} other {# suscriptores}}",
     "menuView": "Ver",
     "menuManage": "Administrar",
-    "menuSubscribe": "Suscribirse",
-    "menuDelete": "Eliminar"
+    "menuDelete": "Eliminar",
+    "inactive": "Inactiva",
+    "uploadingFiles": "Subiendo {count, plural, one {# archivo} other {# archivos}}",
+    "menuLabel": "Acciones para {name}",
+    "menuUnsubscribe": "Cancelar suscripción"
   },
   "modal": {
     "createTitle": "Crear carpeta de entrega",
@@ -66,16 +66,24 @@
     "backToList": "Volver a carpetas de entrega",
     "filesUploadedStat": "{count, plural, one {# archivo subido} other {# archivos subidos}}",
     "uploadPortalTitle": "Portal de carga",
-    "uploadPortalBody": "Los archivos subidos aquí se etiquetarán automáticamente y aparecerán en tu panel de Recursos.",
+    "uploadPortalBody": "Los archivos que subas aquí se etiquetan automáticamente y se añaden a la biblioteca de recursos.",
     "autoAppliedTags": "Etiquetas automáticas:",
     "acceptedFileTypes": "Tipos aceptados:",
     "uploadingTitle": "Subiendo archivos...",
     "dropFilesHere": "Suelta los archivos aquí",
     "dragDropTitle": "Arrastra y suelta archivos",
     "dragDropBody": "Suelta archivos en esta área para subirlos",
-    "browseButton": "O haz clic para buscar archivos",
-    "uploadedHint": "Los archivos subidos aparecerán en tu panel de Recursos"
+    "browseButton": "Elegir archivos",
+    "uploadedHint": "Los archivos subidos también aparecen en la biblioteca de recursos.",
+    "readOnly": "Puedes ver esta zona de carga, pero solo los editores pueden subir archivos.",
+    "inactive": "Esta zona de carga está inactiva y no acepta archivos.",
+    "recentUploads": "Subidas recientes"
+  },
+  "emptyBodyReadOnly": "Aquí aparecerán las zonas de carga a las que estés suscrito.",
+  "toasts": {
+    "created": "Zona de carga creada",
+    "updated": "Zona de carga actualizada",
+    "deleted": "Zona de carga eliminada",
+    "unsubscribed": "Cancelaste tu suscripción a {name}"
   }
 }
-
-

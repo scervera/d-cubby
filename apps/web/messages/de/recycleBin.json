@@ -1,42 +1,31 @@
 {
-  "pageTitle": {
-    "asset": "Digital Assets — Recycle bin",
-    "media": "Lesson Media — Recycle bin"
-  },
-  "subtitle": {
-    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
-    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
-  },
-  "loading": "Loading recycle bin…",
-  "emptyTitle": "Recycle bin is empty",
-  "emptyBody": {
-    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
-    "media": "When you delete lesson media, items appear here until automatic cleanup."
-  },
-  "backToLibrary": {
-    "asset": "Back to Digital Assets",
-    "media": "Back to Lesson Media"
-  },
+  "pageTitle": "Papierkorb",
+  "subtitle": "Gelöschte Dateien bleiben hier, bis sie endgültig entfernt werden. Bis dahin können Sie sie wiederherstellen.",
+  "loading": "Papierkorb wird geladen…",
+  "emptyTitle": "Der Papierkorb ist leer",
+  "emptyBody": "Gelöschte Assets erscheinen hier bis zur automatischen Bereinigung.",
+  "backToLibrary": "Zurück zur Bibliothek",
+  "viewersCannotOpen": "Nur Inhaber, Administratoren und Bearbeiter können den Papierkorb öffnen.",
   "columns": {
-    "item": "Item",
-    "deletedAt": "Deleted",
-    "purgeAfter": "Permanent removal",
-    "actions": "Actions"
+    "item": "Element",
+    "deletedAt": "Gelöscht",
+    "purgeAfter": "Endgültige Entfernung",
+    "actions": "Aktionen"
   },
-  "restore": "Restore",
-  "restoring": "Restoring…",
-  "purge": "Delete permanently",
-  "purging": "Deleting…",
-  "confirmRestore": "Restore \"{name}\" to your library?",
-  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
-  "noPermissionRestore": "You can only restore files you uploaded",
+  "restore": "Wiederherstellen",
+  "restoring": "Wird wiederhergestellt…",
+  "purge": "Endgültig löschen",
+  "purging": "Wird gelöscht…",
+  "confirmRestore": "„{name}“ in Ihre Bibliothek wiederherstellen?",
+  "confirmPurge": "„{name}“ endgültig löschen? Dies kann nicht rückgängig gemacht werden.",
+  "noPermissionRestore": "Sie können nur Dateien wiederherstellen, die Sie hochgeladen haben",
   "errors": {
-    "loadFailed": "Failed to load recycle bin"
+    "loadFailed": "Papierkorb konnte nicht geladen werden"
   },
   "toasts": {
-    "restored": "Restored successfully",
-    "purged": "Permanent deletion queued",
-    "restoreFailed": "Failed to restore",
-    "purgeFailed": "Failed to delete permanently"
+    "restored": "Wiederhergestellt",
+    "purged": "Endgültige Löschung eingeplant",
+    "restoreFailed": "Wiederherstellen fehlgeschlagen",
+    "purgeFailed": "Endgültiges Löschen fehlgeschlagen"
   }
 }

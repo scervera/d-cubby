@@ -47,7 +47,7 @@
     "dropFilesHere": "Drop files here",
     "clickToUpload": "Click to upload files",
     "dragAndDropHint": "Drag and drop files here, or click to select",
-    "supportsHint": "Supports images, videos, audio, documents (max {maxSizeGB}GB each)",
+    "supportsHint": "Supports images, videos, audio and documents (max {maxSize} each)",
     "selectedFiles": "Selected Files ({count})",
     "uploading": "Uploading...",
     "processing": "Processing...",
@@ -57,19 +57,20 @@
     "successfullyUploaded": "Successfully uploaded {count, plural, one {# file} other {# files}}",
     "failedToUpload": "Failed to upload {count, plural, one {# file} other {# files}}",
     "uploadFailed": "Upload failed",
-    "fileTooLarge": "File size must be less than {maxSizeGB}GB",
+    "fileTooLarge": "File size must be less than {maxSize}",
     "fileTypeNotSupported": "File type not supported",
     "applyTagsLabel": "Apply tags to all files",
     "applyTagsHint": "These tags will be added to every file in this upload.",
     "tagPlaceholder": "Type a tag name…",
-    "addTag": "Add"
+    "addTag": "Add",
+    "supportsHintNoLimit": "Supports images, videos, audio and documents"
   },
   "grid": {
     "emptyTitle": "No assets found",
     "emptyAllHint": "Get started by uploading your first file.",
     "emptyCategoryHint": "No {category} found. Try uploading some {category}.",
     "assetCount": "{count, plural, one {# asset} other {# assets}}",
-    "confirmDeleteAsset": "Move this asset to the recycle bin? You can restore it from Digital Assets → Recycle bin until it is permanently removed.",
+    "confirmDeleteAsset": "Move this asset to the recycle bin? You can restore it from the recycle bin until it is permanently removed.",
     "tooltips": {
       "tapToViewDetails": "Tap to view details",
       "doubleClickToViewDetails": "Double-click to view details",
@@ -81,10 +82,14 @@
       "clearSelection": "Clear Selection",
       "deleting": "Deleting...",
       "deleteCount": "Delete {count}",
-      "confirmBulkDelete": "Move {count, plural, one {# asset} other {# assets}} to the recycle bin? You can restore them from Digital Assets → Recycle bin until they are permanently removed.",
+      "confirmBulkDelete": "Move {count, plural, one {# asset} other {# assets}} to the recycle bin? You can restore them from the recycle bin until they are permanently removed.",
       "deletedSuccess": "Successfully deleted {count, plural, one {# asset} other {# assets}}",
-      "deleteFailed": "Failed to delete some assets"
-    }
+      "deleteFailed": "Failed to delete some assets",
+      "confirmTitle": "Move assets to recycle bin?"
+    },
+    "confirmDeleteTitle": "Move to recycle bin?",
+    "actionsMenu": "Actions for {name}",
+    "deleteFailed": "Failed to delete the asset"
   },
   "details": {
     "fileType": "File Type:",
@@ -104,7 +109,8 @@
       "focalLength": "Focal Length",
       "dateTaken": "Date Taken",
       "location": "Location",
-      "software": "Software"
+      "software": "Software",
+      "pixels": "pixels"
     },
     "tags": {
       "title": "Tags",
@@ -124,7 +130,8 @@
       "removedTag": "Tag removed successfully",
       "removeTagFailed": "Failed to remove tag",
       "addedTags": "Added {count, plural, one {# tag} other {# tags}} successfully",
-      "addTagsFailed": "Failed to add some tags"
+      "addTagsFailed": "Failed to add some tags",
+      "removeTagLabel": "Remove tag {name}"
     },
     "actions": {
       "setPosterFrame": "Set Poster Frame",
@@ -142,7 +149,8 @@
       "delete": "Delete",
       "deleteAsset": "Delete Asset",
       "deleteTooltip": "Delete asset"
-    }
+    },
+    "done": "Done"
   },
   "posterFrame": {
     "title": "Set Poster Frame",
@@ -229,5 +237,16 @@
       "white": "White",
       "black": "Black"
     }
+  },
+  "faces": {
+    "show": "Show faces",
+    "detect": "Detect faces",
+    "detecting": "Detecting…",
+    "detectHint": "Detect faces in this photo",
+    "detectionStarted": "Face detection started. Results will appear when ready.",
+    "detectionFailed": "Failed to start face detection",
+    "tagged": "Face tagged",
+    "tagFailed": "Failed to tag face",
+    "createFailed": "Failed to create person or tag face"
   }
 }

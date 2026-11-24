@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "Failed to fetch drop zones",
     "deleteFailed": "Failed to delete drop zone",
-    "subscribeFailed": "Failed to subscribe to drop zone",
     "unsubscribeFailed": "Failed to unsubscribe from drop zone",
     "createFailed": "Failed to create drop zone",
     "updateFailed": "Failed to update drop zone",
@@ -19,17 +18,18 @@
     "uploadFailed": "Failed to upload files to drop zone",
     "uploadFailedGeneric": "Failed to upload files"
   },
-  "uploadingCount": "Uploading {count, plural, one {# file} other {# files}}...",
-  "uploadingProgress": "Uploading {completed}/{total} files...",
-  "uploadedSuccess": "Successfully uploaded {count, plural, one {# file} other {# files}}!",
-  "uploadedSuccessWithHint": "Successfully uploaded {count, plural, one {# file} other {# files}}! View them in your Assets Dashboard.",
+  "uploadedSuccess": "{count, plural, one {# fichier envoyé} other {# fichiers envoyés}}",
+  "uploadedSuccessWithHint": "{count, plural, one {# fichier envoyé} other {# fichiers envoyés}}. Vous les trouverez dans la bibliothèque.",
   "folder": {
     "files": "{count, plural, one {# file} other {# files}}",
     "subscribers": "{count, plural, one {# subscriber} other {# subscribers}}",
     "menuView": "View",
     "menuManage": "Manage",
-    "menuSubscribe": "Subscribe",
-    "menuDelete": "Delete"
+    "menuDelete": "Delete",
+    "inactive": "Inactive",
+    "uploadingFiles": "Envoi de {count, plural, one {# fichier} other {# fichiers}}",
+    "menuLabel": "Actions pour {name}",
+    "menuUnsubscribe": "Se désabonner"
   },
   "modal": {
     "createTitle": "Create Drop Zone",
@@ -66,16 +66,24 @@
     "backToList": "Back to Drop Zones",
     "filesUploadedStat": "{count, plural, one {# file uploaded} other {# files uploaded}}",
     "uploadPortalTitle": "Upload Portal",
-    "uploadPortalBody": "Files uploaded here will automatically be tagged and appear in your Assets Dashboard.",
+    "uploadPortalBody": "Les fichiers envoyés ici sont tagués automatiquement et ajoutés à la bibliothèque.",
     "autoAppliedTags": "Auto-applied tags:",
     "acceptedFileTypes": "Accepted file types:",
     "uploadingTitle": "Uploading files...",
     "dropFilesHere": "Drop files here",
     "dragDropTitle": "Drag & Drop Files",
     "dragDropBody": "Drop files anywhere in this area to upload them",
-    "browseButton": "Or click to browse files",
-    "uploadedHint": "Uploaded files will appear in your Assets Dashboard"
+    "browseButton": "Choisir des fichiers",
+    "uploadedHint": "Les fichiers envoyés apparaissent aussi dans la bibliothèque.",
+    "readOnly": "Vous pouvez consulter cette zone de dépôt, mais seuls les éditeurs peuvent y envoyer des fichiers.",
+    "inactive": "Cette zone de dépôt est inactive et n'accepte pas d'envois.",
+    "recentUploads": "Envois récents"
+  },
+  "emptyBodyReadOnly": "Les zones de dépôt auxquelles vous êtes abonné apparaîtront ici.",
+  "toasts": {
+    "created": "Zone de dépôt créée",
+    "updated": "Zone de dépôt mise à jour",
+    "deleted": "Zone de dépôt supprimée",
+    "unsubscribed": "Vous êtes désabonné de {name}"
   }
 }
-
-

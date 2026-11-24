@@ -47,7 +47,7 @@
     "dropFilesHere": "Dateien hier ablegen",
     "clickToUpload": "Klicken Sie, um Dateien hochzuladen",
     "dragAndDropHint": "Ziehen Sie Dateien hierher, oder klicken Sie, um auszuwählen",
-    "supportsHint": "Unterstützt Bilder, Videos, Audio und Dokumente (max. {maxSizeGB}GB jeweils)",
+    "supportsHint": "Unterstützt Bilder, Videos, Audio und Dokumente (max. {maxSize} pro Datei)",
     "selectedFiles": "Ausgewählte Dateien ({count})",
     "uploading": "Wird hochgeladen...",
     "processing": "Wird verarbeitet...",
@@ -57,19 +57,20 @@
     "successfullyUploaded": "{count, plural, one {# Datei erfolgreich hochgeladen} other {# Dateien erfolgreich hochgeladen}}",
     "failedToUpload": "Fehler beim Hochladen von {count, plural, one {# Datei} other {# Dateien}}",
     "uploadFailed": "Upload fehlgeschlagen",
-    "fileTooLarge": "Die Dateigröße muss kleiner als {maxSizeGB}GB sein",
+    "fileTooLarge": "Die Datei muss kleiner als {maxSize} sein",
     "fileTypeNotSupported": "Dateityp wird nicht unterstützt",
     "applyTagsLabel": "Tags auf alle Dateien anwenden",
     "applyTagsHint": "Diese Tags werden jeder Datei in diesem Upload hinzugefügt.",
     "tagPlaceholder": "Tag-Namen eingeben…",
-    "addTag": "Hinzufügen"
+    "addTag": "Hinzufügen",
+    "supportsHintNoLimit": "Unterstützt Bilder, Videos, Audio und Dokumente"
   },
   "grid": {
     "emptyTitle": "Keine Assets gefunden",
     "emptyAllHint": "Beginnen Sie mit dem Hochladen Ihrer ersten Datei.",
     "emptyCategoryHint": "Keine {category} gefunden. Versuchen Sie, einige {category} hochzuladen.",
     "assetCount": "{count, plural, one {# Asset} other {# Assets}}",
-    "confirmDeleteAsset": "Sind Sie sicher, dass Sie dieses Asset löschen möchten?",
+    "confirmDeleteAsset": "Dieses Asset in den Papierkorb verschieben? Sie können es aus dem Papierkorb wiederherstellen, bis es endgültig entfernt wird.",
     "tooltips": {
       "tapToViewDetails": "Tippen Sie, um Details anzuzeigen",
       "doubleClickToViewDetails": "Doppelklicken Sie, um Details anzuzeigen",
@@ -81,10 +82,14 @@
       "clearSelection": "Auswahl löschen",
       "deleting": "Wird gelöscht...",
       "deleteCount": "{count} löschen",
-      "confirmBulkDelete": "Sind Sie sicher, dass Sie {count, plural, one {# Asset} other {# Assets}} löschen möchten?",
+      "confirmBulkDelete": "{count, plural, one {# Asset} other {# Assets}} in den Papierkorb verschieben? Sie können sie aus dem Papierkorb wiederherstellen, bis sie endgültig entfernt werden.",
       "deletedSuccess": "{count, plural, one {# Asset erfolgreich gelöscht} other {# Assets erfolgreich gelöscht}}",
-      "deleteFailed": "Fehler beim Löschen einiger Assets"
-    }
+      "deleteFailed": "Fehler beim Löschen einiger Assets",
+      "confirmTitle": "Assets in den Papierkorb verschieben?"
+    },
+    "confirmDeleteTitle": "In den Papierkorb verschieben?",
+    "actionsMenu": "Aktionen für {name}",
+    "deleteFailed": "Das Asset konnte nicht gelöscht werden"
   },
   "details": {
     "fileType": "Dateityp:",
@@ -104,7 +109,8 @@
       "focalLength": "Brennweite",
       "dateTaken": "Aufnahmedatum",
       "location": "Standort",
-      "software": "Software"
+      "software": "Software",
+      "pixels": "Pixel"
     },
     "tags": {
       "title": "Tags",
@@ -124,7 +130,8 @@
       "removedTag": "Tag erfolgreich entfernt",
       "removeTagFailed": "Fehler beim Entfernen des Tags",
       "addedTags": "{count, plural, one {# Tag erfolgreich hinzugefügt} other {# Tags erfolgreich hinzugefügt}}",
-      "addTagsFailed": "Fehler beim Hinzufügen einiger Tags"
+      "addTagsFailed": "Fehler beim Hinzufügen einiger Tags",
+      "removeTagLabel": "Tag {name} entfernen"
     },
     "actions": {
       "setPosterFrame": "Titelbild festlegen",
@@ -142,7 +149,8 @@
       "delete": "Löschen",
       "deleteAsset": "Asset löschen",
       "deleteTooltip": "Asset löschen"
-    }
+    },
+    "done": "Fertig"
   },
   "posterFrame": {
     "title": "Titelbild festlegen",
@@ -229,5 +237,16 @@
       "white": "Weiß",
       "black": "Schwarz"
     }
+  },
+  "faces": {
+    "show": "Gesichter anzeigen",
+    "detect": "Gesichter erkennen",
+    "detecting": "Wird erkannt…",
+    "detectHint": "Gesichter auf diesem Foto erkennen",
+    "detectionStarted": "Gesichtserkennung gestartet. Die Ergebnisse erscheinen, sobald sie bereit sind.",
+    "detectionFailed": "Gesichtserkennung konnte nicht gestartet werden",
+    "tagged": "Gesicht markiert",
+    "tagFailed": "Gesicht konnte nicht markiert werden",
+    "createFailed": "Person konnte nicht angelegt oder Gesicht nicht markiert werden"
   }
 }

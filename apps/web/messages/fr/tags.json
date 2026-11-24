@@ -5,15 +5,12 @@
   "deleteTooltip": "Delete tag",
   "emptyTitle": "No tags yet",
   "emptyBody": "Create your first tag to start organizing assets",
-  "assetCount": "{count, plural, one {# asset} other {# assets}}",
   "confirmDelete": "Are you sure you want to delete the tag \"{name}\"? This will remove it from all assets.",
   "form": {
     "createTitle": "Create New Tag",
-    "editTitle": "Edit Tag",
     "nameLabel": "Tag Name",
     "namePlaceholder": "Enter tag name...",
-    "createButton": "Create Tag",
-    "updateButton": "Update Tag"
+    "createButton": "Create Tag"
   },
   "toasts": {
     "loadFailed": "Failed to load tags",
@@ -24,5 +21,3 @@
     "deleteFailed": "Failed to delete tag"
   }
 }
-
-

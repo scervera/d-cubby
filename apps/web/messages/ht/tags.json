@@ -5,15 +5,12 @@
   "deleteTooltip": "Efase etikèt",
   "emptyTitle": "Pa gen etikèt ankò",
   "emptyBody": "Kreye premye etikèt ou pou kòmanse òganize byen yo",
-  "assetCount": "{count, plural, one {# byen} other {# byen}}",
   "confirmDelete": "Èske ou sèten ou vle efase etikèt \"{name}\"? Sa ap retire li sou tout byen.",
   "form": {
     "createTitle": "Kreye nouvo etikèt",
-    "editTitle": "Modifye etikèt",
     "nameLabel": "Non etikèt",
     "namePlaceholder": "Ekri non etikèt la...",
-    "createButton": "Kreye etikèt",
-    "updateButton": "Mete ajou etikèt"
+    "createButton": "Kreye etikèt"
   },
   "toasts": {
     "loadFailed": "Pa t reyisi chaje etikèt yo",
@@ -24,5 +21,3 @@
     "deleteFailed": "Pa t reyisi efase etikèt"
   }
 }
-
-

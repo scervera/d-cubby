@@ -1,15 +1,12 @@
 {
   "title": "Grupos",
-  "subtitle": "Gerencie grupos e membros para sua organização.",
+  "subtitle": "Os grupos definem quem vê as pastas inteligentes de grupo.",
   "createButton": "Criar grupo",
   "emptyTitle": "Nenhum grupo ainda",
   "emptyBody": "Crie seu primeiro grupo para começar.",
   "memberCount": "{count, plural, one {# membro} other {# membros}}",
   "manageMembers": "Gerenciar membros",
   "confirmDeleteGroup": "Tem certeza de que deseja excluir este grupo?",
-  "confirmRemoveMember": "Tem certeza de que deseja remover este membro?",
-  "adminRequiredTitle": "Acesso de administrador necessário",
-  "adminRequiredBody": "Você precisa ser administrador para gerenciar grupos.",
   "tooltips": {
     "editGroup": "Editar grupo",
     "deleteGroup": "Excluir grupo"
@@ -26,17 +23,26 @@
     "update": "Atualizar"
   },
   "members": {
-    "manageTitle": "Gerenciar membros — {name}",
+    "manageTitle": "Membros — {name}",
     "currentTitle": "Membros atuais ({count})",
     "noneYet": "Nenhum membro ainda.",
     "addTitle": "Adicionar membro",
-    "addAsMember": "Adicionar como membro",
-    "addAsAdmin": "Adicionar como admin",
-    "roles": {
-      "admin": "Administrador",
-      "member": "Membro"
-    }
+    "add": "Adicionar",
+    "remove": "Remover {email} do grupo",
+    "everyoneAdded": "Todos na organização já são membros."
+  },
+  "subtitleReadOnly": "Os grupos definem quem vê as pastas inteligentes de grupo. Administradores os gerenciam.",
+  "emptyBodyReadOnly": "Nenhum administrador criou grupos ainda.",
+  "viewMembers": "Ver membros",
+  "toasts": {
+    "loadFailed": "Não foi possível carregar os grupos",
+    "created": "Grupo criado",
+    "updated": "Grupo atualizado",
+    "saveFailed": "Não foi possível salvar o grupo",
+    "deleted": "Grupo excluído",
+    "deleteFailed": "Não foi possível excluir o grupo",
+    "membersLoadFailed": "Não foi possível carregar os membros",
+    "addMemberFailed": "Não foi possível adicionar o membro",
+    "removeMemberFailed": "Não foi possível remover o membro"
   }
 }
-
-

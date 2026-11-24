@@ -26,7 +26,7 @@ export interface ConfirmDialogProps {
 
 /**
  * Standard destructive / confirmation modal (glass panel, backdrop dismiss).
- * Used for delete and other irreversible actions across the tenant app.
+ * Used for delete and other irreversible actions across the app.
  */
 export default function ConfirmDialog({
   open,

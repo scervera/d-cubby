@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "Falha ao buscar zonas de envio",
     "deleteFailed": "Falha ao excluir zona de envio",
-    "subscribeFailed": "Falha ao assinar zona de envio",
     "unsubscribeFailed": "Falha ao cancelar assinatura",
     "createFailed": "Falha ao criar zona de envio",
     "updateFailed": "Falha ao atualizar zona de envio",
@@ -19,17 +18,18 @@
     "uploadFailed": "Falha ao enviar arquivos para a zona de envio",
     "uploadFailedGeneric": "Falha ao enviar arquivos"
   },
-  "uploadingCount": "Enviando {count, plural, one {# arquivo} other {# arquivos}}...",
-  "uploadingProgress": "Enviando {completed}/{total} arquivos...",
-  "uploadedSuccess": "Enviado {count, plural, one {# arquivo} other {# arquivos}} com sucesso!",
-  "uploadedSuccessWithHint": "Enviado {count, plural, one {# arquivo} other {# arquivos}} com sucesso! Veja no seu painel de Ativos.",
+  "uploadedSuccess": "{count, plural, one {# arquivo enviado} other {# arquivos enviados}}",
+  "uploadedSuccessWithHint": "{count, plural, one {# arquivo enviado} other {# arquivos enviados}}. Você os encontrará na biblioteca de ativos.",
   "folder": {
     "files": "{count, plural, one {# arquivo} other {# arquivos}}",
     "subscribers": "{count, plural, one {# assinante} other {# assinantes}}",
     "menuView": "Ver",
     "menuManage": "Gerenciar",
-    "menuSubscribe": "Assinar",
-    "menuDelete": "Excluir"
+    "menuDelete": "Excluir",
+    "inactive": "Inativa",
+    "uploadingFiles": "Enviando {count, plural, one {# arquivo} other {# arquivos}}",
+    "menuLabel": "Ações para {name}",
+    "menuUnsubscribe": "Cancelar assinatura"
   },
   "modal": {
     "createTitle": "Criar zona de envio",
@@ -66,16 +66,24 @@
     "backToList": "Voltar às zonas de envio",
     "filesUploadedStat": "{count, plural, one {# arquivo enviado} other {# arquivos enviados}}",
     "uploadPortalTitle": "Portal de envio",
-    "uploadPortalBody": "Arquivos enviados aqui serão etiquetados automaticamente e aparecerão no seu painel de Ativos.",
+    "uploadPortalBody": "Os arquivos enviados aqui são etiquetados automaticamente e adicionados à biblioteca de ativos.",
     "autoAppliedTags": "Tags aplicadas automaticamente:",
     "acceptedFileTypes": "Tipos de arquivo aceitos:",
     "uploadingTitle": "Enviando arquivos...",
     "dropFilesHere": "Solte arquivos aqui",
     "dragDropTitle": "Arrastar e soltar arquivos",
     "dragDropBody": "Solte arquivos em qualquer lugar desta área para enviá-los",
-    "browseButton": "Ou clique para procurar arquivos",
-    "uploadedHint": "Arquivos enviados aparecerão no seu painel de Ativos"
+    "browseButton": "Escolher arquivos",
+    "uploadedHint": "Os arquivos enviados também aparecem na biblioteca de ativos.",
+    "readOnly": "Você pode ver esta zona de envio, mas só editores podem enviar arquivos.",
+    "inactive": "Esta zona de envio está inativa e não aceita arquivos.",
+    "recentUploads": "Envios recentes"
+  },
+  "emptyBodyReadOnly": "As zonas de envio que você assina aparecerão aqui.",
+  "toasts": {
+    "created": "Zona de envio criada",
+    "updated": "Zona de envio atualizada",
+    "deleted": "Zona de envio excluída",
+    "unsubscribed": "Você cancelou a assinatura de {name}"
   }
 }
-
-

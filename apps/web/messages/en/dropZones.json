@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "Failed to fetch drop zones",
     "deleteFailed": "Failed to delete drop zone",
-    "subscribeFailed": "Failed to subscribe to drop zone",
     "unsubscribeFailed": "Failed to unsubscribe from drop zone",
     "createFailed": "Failed to create drop zone",
     "updateFailed": "Failed to update drop zone",
@@ -19,17 +18,18 @@
     "uploadFailed": "Failed to upload files to drop zone",
     "uploadFailedGeneric": "Failed to upload files"
   },
-  "uploadingCount": "Uploading {count, plural, one {# file} other {# files}}...",
-  "uploadingProgress": "Uploading {completed}/{total} files...",
-  "uploadedSuccess": "Successfully uploaded {count, plural, one {# file} other {# files}}!",
-  "uploadedSuccessWithHint": "Successfully uploaded {count, plural, one {# file} other {# files}}! View them in your Assets Dashboard.",
+  "uploadedSuccess": "Uploaded {count, plural, one {# file} other {# files}}",
+  "uploadedSuccessWithHint": "Uploaded {count, plural, one {# file} other {# files}}. You'll find them in the asset library.",
   "folder": {
     "files": "{count, plural, one {# file} other {# files}}",
     "subscribers": "{count, plural, one {# subscriber} other {# subscribers}}",
     "menuView": "View",
     "menuManage": "Manage",
-    "menuSubscribe": "Subscribe",
-    "menuDelete": "Delete"
+    "menuDelete": "Delete",
+    "inactive": "Inactive",
+    "uploadingFiles": "Uploading {count, plural, one {# file} other {# files}}",
+    "menuLabel": "Actions for {name}",
+    "menuUnsubscribe": "Unsubscribe"
   },
   "modal": {
     "createTitle": "Create Drop Zone",
@@ -66,14 +66,24 @@
     "backToList": "Back to Drop Zones",
     "filesUploadedStat": "{count, plural, one {# file uploaded} other {# files uploaded}}",
     "uploadPortalTitle": "Upload Portal",
-    "uploadPortalBody": "Files uploaded here will automatically be tagged and appear in your Assets Dashboard.",
+    "uploadPortalBody": "Files uploaded here are tagged automatically and added to the asset library.",
     "autoAppliedTags": "Auto-applied tags:",
     "acceptedFileTypes": "Accepted file types:",
     "uploadingTitle": "Uploading files...",
     "dropFilesHere": "Drop files here",
     "dragDropTitle": "Drag & Drop Files",
     "dragDropBody": "Drop files anywhere in this area to upload them",
-    "browseButton": "Or click to browse files",
-    "uploadedHint": "Uploaded files will appear in your Assets Dashboard"
+    "browseButton": "Choose files",
+    "uploadedHint": "Uploaded files also appear in the asset library.",
+    "readOnly": "You can view this drop zone, but only editors can upload to it.",
+    "inactive": "This drop zone is inactive and doesn't accept uploads.",
+    "recentUploads": "Recent uploads"
+  },
+  "emptyBodyReadOnly": "Drop zones you're subscribed to will appear here.",
+  "toasts": {
+    "created": "Drop zone created",
+    "updated": "Drop zone updated",
+    "deleted": "Drop zone deleted",
+    "unsubscribed": "You've unsubscribed from {name}"
   }
 }

@@ -1,0 +1,93 @@
+{
+  "title": "Pastas monitoradas",
+  "subtitle": "Importe automaticamente arquivos novos de pastas do servidor",
+  "containerHint": "O D-cubby roda em um contêiner. Ele vê a pasta do servidor escolhida para pastas monitoradas na instalação (WATCHED_FOLDERS_PATH) em /watched, então todo caminho aqui começa com /watched — por exemplo, /watched/fotos.",
+  "refresh": "Atualizar",
+  "addFolder": "Adicionar pasta",
+  "emptyTitle": "Nenhuma pasta monitorada",
+  "emptyBody": "Adicione uma pasta e o D-cubby importará os arquivos colocados nela.",
+  "confirmDelete": "Parar de monitorar esta pasta? Os arquivos já importados continuam na biblioteca.",
+  "inaccessibleHint": "O D-cubby não consegue ler este caminho. Verifique se ele existe em /watched e se a pasta pode ser lida.",
+  "lastScanned": "Última verificação: {time}",
+  "nextScan": "Próxima verificação: {time}",
+  "status": {
+    "active": "Ativa",
+    "inactive": "Inativa",
+    "inaccessible": "Não é possível ler"
+  },
+  "stats": {
+    "frequency": "Verificar a cada",
+    "maxFileSize": "Tamanho máximo",
+    "processed": "Arquivos importados",
+    "errors": "Erros",
+    "autoTags": "Etiquetas adicionadas às importações:"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# notificação não lida} other {# notificações não lidas}}",
+    "history": "Histórico de verificações",
+    "scanNow": "Verificar agora",
+    "scanning": "Verificando…",
+    "edit": "Editar a pasta",
+    "activate": "Começar a monitorar",
+    "deactivate": "Pausar o monitoramento",
+    "delete": "Remover pasta"
+  },
+  "form": {
+    "createTitle": "Adicionar pasta monitorada",
+    "editTitle": "Editar pasta monitorada",
+    "nameLabel": "Nome",
+    "pathLabel": "Caminho da pasta",
+    "pathHint": "Um caminho dentro do contêiner, em /watched. As subpastas do seu diretório de pastas monitoradas no servidor aparecem ali.",
+    "frequencyLabel": "Verificar a cada",
+    "unitLabel": "Unidade",
+    "minutes": "Minutos",
+    "hours": "Horas",
+    "days": "Dias",
+    "maxFileSizeLabel": "Tamanho máximo de arquivo (GB)",
+    "autoTagsLabel": "Etiquetas para arquivos importados",
+    "autoTagsPlaceholder": "ex.: fotos, eventos, 2026",
+    "autoTagsHint": "Separadas por vírgulas. Cada arquivo importado desta pasta recebe estas etiquetas.",
+    "activeLabel": "Ativa (verificar esta pasta)",
+    "create": "Adicionar pasta",
+    "update": "Salvar"
+  },
+  "history": {
+    "title": "Histórico de verificações",
+    "empty": "Nenhuma verificação ainda",
+    "emptyHint": "As verificações aparecem aqui depois que a pasta for verificada.",
+    "running": "Verificação em andamento",
+    "failed": "A verificação falhou",
+    "noNewFiles": "Nenhum arquivo novo",
+    "processed": "{count, plural, one {# arquivo importado} other {# arquivos importados}}",
+    "skipped": "{count, plural, one {# arquivo já importado foi ignorado} other {# arquivos já importados foram ignorados}}",
+    "completed": "Verificação concluída",
+    "counts": "Encontrados {found} · importados {processed} · ignorados {skipped} · erros {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "CONCLUÍDO",
+      "failed": "FALHOU",
+      "running": "EM ANDAMENTO"
+    }
+  },
+  "notifications": {
+    "title": "Notificações",
+    "empty": "Nenhuma notificação",
+    "emptyHint": "Problemas ao importar arquivos desta pasta aparecem aqui.",
+    "unread": "não lida"
+  },
+  "toasts": {
+    "loadFailed": "Não foi possível carregar as pastas monitoradas",
+    "created": "Pasta monitorada adicionada",
+    "createFailed": "Não foi possível adicionar a pasta",
+    "updated": "Pasta monitorada salva",
+    "updateFailed": "Não foi possível salvar a pasta",
+    "deleted": "Pasta removida",
+    "deleteFailed": "Não foi possível remover a pasta",
+    "scanStarted": "Verificação iniciada",
+    "scanFailed": "Não foi possível iniciar a verificação",
+    "activated": "A pasta está sendo monitorada",
+    "deactivated": "Monitoramento pausado",
+    "historyFailed": "Não foi possível carregar o histórico",
+    "notificationsFailed": "Não foi possível carregar as notificações"
+  }
+}

@@ -32,14 +32,15 @@
   },
   "grid": {
     "bulk": {
-      "confirmBulkDelete": "Tem certeza de que deseja excluir {count} ativo(s)?",
+      "confirmBulkDelete": "Mover {count, plural, one {# arquivo} other {# arquivos}} para a lixeira? Você pode restaurá-los pela lixeira até que sejam removidos definitivamente.",
       "deletedSuccess": "{count} ativo(s) excluído(s) com sucesso",
       "deleteFailed": "Falha ao excluir alguns ativos",
       "selectedAssets": "{count} ativo(s) selecionado(s)",
       "selectAll": "Selecionar tudo",
       "clearSelection": "Limpar seleção",
       "cancel": "Cancelar",
-      "delete": "Excluir {count}"
+      "delete": "Excluir {count}",
+      "confirmTitle": "Mover arquivos para a lixeira?"
     },
     "emptyTitle": "Nenhum ativo encontrado",
     "emptyAllHint": "Comece enviando seu primeiro arquivo.",
@@ -58,7 +59,7 @@
       "doubleClickToViewDetails": "Clique duas vezes para ver detalhes",
       "doubleClickToViewFullSize": "Clique duas vezes para ver em tamanho real"
     },
-    "confirmDeleteAsset": "Tem certeza de que deseja excluir este ativo?",
+    "confirmDeleteAsset": "Mover este arquivo para a lixeira? Você pode restaurá-lo pela lixeira até que seja removido definitivamente.",
     "fileType": "Tipo de arquivo",
     "fileSize": "Tamanho do arquivo",
     "created": "Criado",
@@ -95,7 +96,10 @@
     "videoPlaybackError": "Erro de reprodução de vídeo",
     "audioPlaybackError": "Erro de reprodução de áudio",
     "unsupportedVideo": "Seu navegador não suporta a tag de vídeo.",
-    "unsupportedAudio": "Seu navegador não suporta o elemento de áudio."
+    "unsupportedAudio": "Seu navegador não suporta o elemento de áudio.",
+    "confirmDeleteTitle": "Mover para a lixeira?",
+    "actionsMenu": "Ações para {name}",
+    "deleteFailed": "Não foi possível excluir o arquivo"
   },
   "details": {
     "fileType": "Tipo de arquivo:",
@@ -120,7 +124,8 @@
       "removedTag": "Etiqueta removida com sucesso",
       "removeTagFailed": "Falha ao remover etiqueta",
       "addedTags": "Adicionadas {count} etiqueta(s) com sucesso",
-      "addTagsFailed": "Falha ao adicionar algumas etiquetas"
+      "addTagsFailed": "Falha ao adicionar algumas etiquetas",
+      "removeTagLabel": "Remover a etiqueta {name}"
     },
     "actions": {
       "setPosterFrame": "Definir quadro de pôster",
@@ -152,8 +157,10 @@
       "focalLength": "Distância focal",
       "dateTaken": "Data da captura",
       "location": "Localização",
-      "software": "Software"
-    }
+      "software": "Software",
+      "pixels": "pixels"
+    },
+    "done": "Concluir"
   },
   "posterFrame": {
     "selectFrameFirst": "Selecione primeiro um quadro do vídeo",
@@ -256,7 +263,20 @@
     "applyTagsLabel": "Aplicar tags a todos os arquivos",
     "applyTagsHint": "Essas tags serão adicionadas a cada arquivo deste envio.",
     "tagPlaceholder": "Digite um nome de tag…",
-    "addTag": "Adicionar"
+    "addTag": "Adicionar",
+    "supportsHint": "Suporta imagens, vídeos, áudio e documentos (máx. {maxSize} cada)",
+    "supportsHintNoLimit": "Suporta imagens, vídeos, áudio e documentos",
+    "fileTooLarge": "O arquivo deve ter menos de {maxSize}"
+  },
+  "faces": {
+    "show": "Mostrar rostos",
+    "detect": "Detectar rostos",
+    "detecting": "Detectando…",
+    "detectHint": "Detectar rostos nesta foto",
+    "detectionStarted": "A detecção de rostos começou. Os resultados aparecerão quando estiverem prontos.",
+    "detectionFailed": "Não foi possível iniciar a detecção de rostos",
+    "tagged": "Rosto identificado",
+    "tagFailed": "Não foi possível identificar o rosto",
+    "createFailed": "Não foi possível criar a pessoa ou identificar o rosto"
   }
 }
-

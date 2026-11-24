@@ -1,42 +1,31 @@
 {
-  "pageTitle": {
-    "asset": "Digital Assets — Recycle bin",
-    "media": "Lesson Media — Recycle bin"
-  },
-  "subtitle": {
-    "asset": "Deleted files stay here until they are permanently removed. You can restore them before the removal date.",
-    "media": "Deleted lesson media stays here until it is permanently removed. You can restore items before the removal date."
-  },
-  "loading": "Loading recycle bin…",
-  "emptyTitle": "Recycle bin is empty",
-  "emptyBody": {
-    "asset": "When you delete digital assets, they appear here until automatic cleanup.",
-    "media": "When you delete lesson media, items appear here until automatic cleanup."
-  },
-  "backToLibrary": {
-    "asset": "Back to Digital Assets",
-    "media": "Back to Lesson Media"
-  },
+  "pageTitle": "Papelera",
+  "subtitle": "Los archivos eliminados permanecen aquí hasta que se borran definitivamente. Puedes restaurarlos antes de la fecha de eliminación.",
+  "loading": "Cargando la papelera…",
+  "emptyTitle": "La papelera está vacía",
+  "emptyBody": "Cuando eliminas recursos, aparecen aquí hasta la limpieza automática.",
+  "backToLibrary": "Volver a la biblioteca",
+  "viewersCannotOpen": "Solo los propietarios, administradores y editores pueden abrir la papelera.",
   "columns": {
-    "item": "Item",
-    "deletedAt": "Deleted",
-    "purgeAfter": "Permanent removal",
-    "actions": "Actions"
+    "item": "Elemento",
+    "deletedAt": "Eliminado",
+    "purgeAfter": "Eliminación definitiva",
+    "actions": "Acciones"
   },
-  "restore": "Restore",
-  "restoring": "Restoring…",
-  "purge": "Delete permanently",
-  "purging": "Deleting…",
-  "confirmRestore": "Restore \"{name}\" to your library?",
-  "confirmPurge": "Permanently delete \"{name}\"? This cannot be undone.",
-  "noPermissionRestore": "You can only restore files you uploaded",
+  "restore": "Restaurar",
+  "restoring": "Restaurando…",
+  "purge": "Eliminar definitivamente",
+  "purging": "Eliminando…",
+  "confirmRestore": "¿Restaurar \"{name}\" a tu biblioteca?",
+  "confirmPurge": "¿Eliminar definitivamente \"{name}\"? Esta acción no se puede deshacer.",
+  "noPermissionRestore": "Solo puedes restaurar archivos que subiste",
   "errors": {
-    "loadFailed": "Failed to load recycle bin"
+    "loadFailed": "No se pudo cargar la papelera"
   },
   "toasts": {
-    "restored": "Restored successfully",
-    "purged": "Permanent deletion queued",
-    "restoreFailed": "Failed to restore",
-    "purgeFailed": "Failed to delete permanently"
+    "restored": "Restaurado correctamente",
+    "purged": "Eliminación definitiva en cola",
+    "restoreFailed": "No se pudo restaurar",
+    "purgeFailed": "No se pudo eliminar definitivamente"
   }
 }

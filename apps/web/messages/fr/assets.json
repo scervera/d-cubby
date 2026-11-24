@@ -47,7 +47,7 @@
     "dropFilesHere": "Déposez les fichiers ici",
     "clickToUpload": "Cliquez pour télécharger des fichiers",
     "dragAndDropHint": "Glissez-déposez des fichiers ici, ou cliquez pour sélectionner",
-    "supportsHint": "Prend en charge les images, vidéos, audio et documents (max {maxSizeGB}Go chacun)",
+    "supportsHint": "Prend en charge les images, vidéos, audio et documents ({maxSize} max. chacun)",
     "selectedFiles": "Fichiers sélectionnés ({count})",
     "uploading": "Téléchargement en cours...",
     "processing": "Traitement en cours...",
@@ -57,19 +57,20 @@
     "successfullyUploaded": "{count, plural, one {# fichier téléchargé avec succès} other {# fichiers téléchargés avec succès}}",
     "failedToUpload": "Échec du téléchargement de {count, plural, one {# fichier} other {# fichiers}}",
     "uploadFailed": "Échec du téléchargement",
-    "fileTooLarge": "La taille du fichier doit être inférieure à {maxSizeGB}Go",
+    "fileTooLarge": "Le fichier doit faire moins de {maxSize}",
     "fileTypeNotSupported": "Type de fichier non pris en charge",
     "applyTagsLabel": "Appliquer des étiquettes à tous les fichiers",
     "applyTagsHint": "Ces étiquettes seront ajoutées à chaque fichier de ce téléversement.",
     "tagPlaceholder": "Saisissez un nom d'étiquette…",
-    "addTag": "Ajouter"
+    "addTag": "Ajouter",
+    "supportsHintNoLimit": "Prend en charge les images, vidéos, audio et documents"
   },
   "grid": {
     "emptyTitle": "Aucune ressource trouvée",
     "emptyAllHint": "Commencez par télécharger votre premier fichier.",
     "emptyCategoryHint": "Aucun {category} trouvé. Essayez de télécharger des {category}.",
     "assetCount": "{count, plural, one {# ressource} other {# ressources}}",
-    "confirmDeleteAsset": "Êtes-vous sûr de vouloir supprimer cette ressource ?",
+    "confirmDeleteAsset": "Mettre cette ressource à la corbeille ? Vous pourrez la restaurer depuis la corbeille jusqu'à sa suppression définitive.",
     "tooltips": {
       "tapToViewDetails": "Appuyez pour voir les détails",
       "doubleClickToViewDetails": "Double-cliquez pour voir les détails",
@@ -81,10 +82,14 @@
       "clearSelection": "Effacer la sélection",
       "deleting": "Suppression en cours...",
       "deleteCount": "Supprimer {count}",
-      "confirmBulkDelete": "Êtes-vous sûr de vouloir supprimer {count, plural, one {# ressource} other {# ressources}} ?",
+      "confirmBulkDelete": "Mettre {count, plural, one {# ressource} other {# ressources}} à la corbeille ? Vous pourrez les restaurer depuis la corbeille jusqu'à leur suppression définitive.",
       "deletedSuccess": "{count, plural, one {# ressource supprimée avec succès} other {# ressources supprimées avec succès}}",
-      "deleteFailed": "Échec de la suppression de certaines ressources"
-    }
+      "deleteFailed": "Échec de la suppression de certaines ressources",
+      "confirmTitle": "Mettre les ressources à la corbeille ?"
+    },
+    "confirmDeleteTitle": "Mettre à la corbeille ?",
+    "actionsMenu": "Actions pour {name}",
+    "deleteFailed": "Impossible de supprimer la ressource"
   },
   "details": {
     "fileType": "Type de fichier :",
@@ -104,7 +109,8 @@
       "focalLength": "Distance focale",
       "dateTaken": "Date de prise",
       "location": "Emplacement",
-      "software": "Logiciel"
+      "software": "Logiciel",
+      "pixels": "pixels"
     },
     "tags": {
       "title": "Étiquettes",
@@ -124,7 +130,8 @@
       "removedTag": "Étiquette supprimée avec succès",
       "removeTagFailed": "Échec de la suppression de l'étiquette",
       "addedTags": "{count, plural, one {# étiquette ajoutée avec succès} other {# étiquettes ajoutées avec succès}}",
-      "addTagsFailed": "Échec de l'ajout de certaines étiquettes"
+      "addTagsFailed": "Échec de l'ajout de certaines étiquettes",
+      "removeTagLabel": "Retirer l'étiquette {name}"
     },
     "actions": {
       "setPosterFrame": "Définir l'image de couverture",
@@ -142,7 +149,8 @@
       "delete": "Supprimer",
       "deleteAsset": "Supprimer la ressource",
       "deleteTooltip": "Supprimer la ressource"
-    }
+    },
+    "done": "Terminé"
   },
   "posterFrame": {
     "title": "Définir l'image de couverture",
@@ -229,5 +237,16 @@
       "white": "Blanc",
       "black": "Noir"
     }
+  },
+  "faces": {
+    "show": "Afficher les visages",
+    "detect": "Détecter les visages",
+    "detecting": "Détection…",
+    "detectHint": "Détecter les visages sur cette photo",
+    "detectionStarted": "Détection des visages lancée. Les résultats apparaîtront une fois prêts.",
+    "detectionFailed": "Impossible de lancer la détection des visages",
+    "tagged": "Visage identifié",
+    "tagFailed": "Impossible d'identifier le visage",
+    "createFailed": "Impossible de créer la personne ou d'identifier le visage"
   }
 }

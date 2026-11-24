@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* IGLESIUM Brand Colors - Light Mode */
+  /* Brand colors - light mode */
   --brand-charcoal: #2C3A47;
   --brand-blue: #2E7CF6;
   --brand-sand: #E8DCC2;
@@ -31,8 +31,6 @@
     10px 0 24px -14px rgba(44, 58, 71, 0.09);
   --shell-sidebar-shadow-lg: -4px 0 14px -6px rgba(44, 58, 71, 0.085), 5px 0 16px -5px rgba(44, 58, 71, 0.14),
     12px 0 30px -16px rgba(44, 58, 71, 0.1);
-  /* Landing builder: pressed palette rows — same language as shell, slightly softer */
-  --landing-control-shadow: 0 2px 6px rgba(44, 58, 71, 0.075), 0 6px 16px -12px rgba(44, 58, 71, 0.09);
   /* Native form controls (radio/checkbox/scrollbar) must follow the app's own
      .dark class, not the OS preference — otherwise `light dark` lets the
      browser render them in the OS's dark style even while this page is
@@ -58,7 +56,7 @@
 @variant dark (.dark &);
 
 .dark {
-  /* IGLESIUM Brand Colors for Dark Mode - Golden Yellow Accent Theme */
+  /* Brand colors - dark mode (golden accent) */
   --brand-charcoal: #1E2B33;
   --brand-blue: #2E7CF6;
   --brand-sand: #E8DCC2;
@@ -88,7 +86,6 @@
     12px 0 28px -16px rgba(0, 0, 0, 0.24);
   --shell-sidebar-shadow-lg: -5px 0 16px -8px rgba(0, 0, 0, 0.2), 7px 0 20px -7px rgba(0, 0, 0, 0.35),
     14px 0 34px -18px rgba(0, 0, 0, 0.25);
-  --landing-control-shadow: 0 2px 5px rgba(0, 0, 0, 0.18), 0 5px 14px -12px rgba(0, 0, 0, 0.2);
   color-scheme: dark;
 }
 
@@ -154,20 +151,6 @@ main {
   z-index: 1;
 }
 
-/* Public / learner curriculum pages: Safari scroll + safe-area (fixed body bg breaks iOS scroll extent) */
-body:has(.public-curriculum-page) {
-  background-attachment: scroll;
-}
-
-.public-curriculum-page {
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
-}
-
-.public-curriculum-page .learner-curriculum-main {
-  padding-bottom: max(6rem, calc(env(safe-area-inset-bottom, 0px) + 4rem));
-}
-
 .glass-panel,
 .glass-surface {
   background: var(--glass-surface);
@@ -190,28 +173,6 @@ body:has(.public-curriculum-page) {
 }
 
 .glass-surface.shell-nav {
-  box-shadow: var(--shell-nav-shadow);
-}
-
-/* Curriculum landing builder: panels match shell nav elevation (not legacy --glass-shadow) */
-.glass-panel.landing-elev {
-  box-shadow: var(--shell-nav-shadow);
-}
-
-.landing-palette-item-active {
-  box-shadow: var(--landing-control-shadow);
-}
-
-.landing-chrome-bar {
-  box-shadow: var(--shell-nav-shadow);
-}
-
-/*
- * Landing builder canvas: nested block previews (Callout, cards, etc.) use default glass classes
- * but should match shell elevation; scoped so public curriculum pages keep --glass-shadow.
- */
-.landing-builder-blocks .glass-panel:not(.landing-elev),
-.landing-builder-blocks .glass-panel-soft {
   box-shadow: var(--shell-nav-shadow);
 }
 
@@ -347,17 +308,6 @@ button, a, img, video, [role="button"], .asset-thumbnail {
   color: #000 !important;
 }
 
-/* Tenant-branded learner CTAs: text color is set from brand luminance (see brandContrast.ts) */
-.btn-tenant-primary {
-  background-color: var(--tenant-brand-color-1, var(--accent-primary));
-  color: var(--tenant-brand-color-1-text, var(--solid-warm-button-text));
-}
-
-.btn-tenant-secondary {
-  background-color: var(--tenant-brand-color-2, var(--accent-primary));
-  color: var(--tenant-brand-color-2-text, var(--solid-warm-button-text));
-}
-
 /* Primary action buttons (authoring UI) — accent fill, theme-aware label color */
 .btn-action-primary {
   border-radius: 0.5rem;
@@ -412,15 +362,6 @@ html, body, main, div, section, article {
   }
 }
 
-/* Indeterminate progress bar while lesson AI recreation is queued/running */
-@keyframes lesson-recreate-progress {
-  0% {
-    transform: translateX(-120%);
-  }
-  100% {
-    transform: translateX(320%);
-  }
-}
 .asset-thumbnail {
   position: relative;
   padding: 0;
@@ -661,7 +602,7 @@ textarea::selection {
   overscroll-behavior: contain;
 }
 
-/* ── IGLESIUM toast notifications (react-hot-toast custom) ── */
+/* ── Toast notifications (react-hot-toast custom) ── */
 .app-toast-container {
   z-index: 9999;
   /* react-hot-toast sizes the container to nearly the viewport; keep it inert

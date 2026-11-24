@@ -1,0 +1,93 @@
+{
+  "title": "Carpetas vigiladas",
+  "subtitle": "Importa automáticamente los archivos nuevos de carpetas del servidor",
+  "containerHint": "D-cubby se ejecuta en un contenedor. Ve la carpeta del servidor que elegiste para carpetas vigiladas durante la instalación (WATCHED_FOLDERS_PATH) en /watched, así que cada ruta aquí empieza por /watched; por ejemplo, /watched/fotos.",
+  "refresh": "Actualizar",
+  "addFolder": "Añadir carpeta",
+  "emptyTitle": "No hay carpetas vigiladas",
+  "emptyBody": "Añade una carpeta y D-cubby importará los archivos que pongas en ella.",
+  "confirmDelete": "¿Dejar de vigilar esta carpeta? Los archivos ya importados se quedan en la biblioteca.",
+  "inaccessibleHint": "D-cubby no puede leer esta ruta. Comprueba que existe dentro de /watched y que la carpeta se puede leer.",
+  "lastScanned": "Último escaneo: {time}",
+  "nextScan": "Próximo escaneo: {time}",
+  "status": {
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "inaccessible": "No se puede leer"
+  },
+  "stats": {
+    "frequency": "Escanear cada",
+    "maxFileSize": "Tamaño máximo",
+    "processed": "Archivos importados",
+    "errors": "Errores",
+    "autoTags": "Etiquetas añadidas a lo importado:"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# notificación sin leer} other {# notificaciones sin leer}}",
+    "history": "Historial de escaneos",
+    "scanNow": "Escanear ahora",
+    "scanning": "Escaneando…",
+    "edit": "Editar la carpeta",
+    "activate": "Empezar a vigilar",
+    "deactivate": "Pausar la vigilancia",
+    "delete": "Quitar carpeta"
+  },
+  "form": {
+    "createTitle": "Añadir carpeta vigilada",
+    "editTitle": "Editar carpeta vigilada",
+    "nameLabel": "Nombre",
+    "pathLabel": "Ruta de la carpeta",
+    "pathHint": "Una ruta dentro del contenedor, bajo /watched. Ahí aparecen las subcarpetas de tu directorio de carpetas vigiladas en el servidor.",
+    "frequencyLabel": "Escanear cada",
+    "unitLabel": "Unidad",
+    "minutes": "Minutos",
+    "hours": "Horas",
+    "days": "Días",
+    "maxFileSizeLabel": "Tamaño máximo de archivo (GB)",
+    "autoTagsLabel": "Etiquetas para los archivos importados",
+    "autoTagsPlaceholder": "p. ej. fotos, eventos, 2026",
+    "autoTagsHint": "Separadas por comas. Cada archivo importado de esta carpeta recibe estas etiquetas.",
+    "activeLabel": "Activa (escanear esta carpeta)",
+    "create": "Añadir carpeta",
+    "update": "Guardar"
+  },
+  "history": {
+    "title": "Historial de escaneos",
+    "empty": "Aún no hay escaneos",
+    "emptyHint": "Los escaneos aparecen aquí cuando se revise la carpeta.",
+    "running": "Escaneo en curso",
+    "failed": "El escaneo falló",
+    "noNewFiles": "No hay archivos nuevos",
+    "processed": "Se importaron {count, plural, one {# archivo} other {# archivos}}",
+    "skipped": "Se omitieron {count, plural, one {# archivo ya importado} other {# archivos ya importados}}",
+    "completed": "Escaneo completado",
+    "counts": "Encontrados {found} · importados {processed} · omitidos {skipped} · errores {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "COMPLETADO",
+      "failed": "FALLIDO",
+      "running": "EN CURSO"
+    }
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "empty": "No hay notificaciones",
+    "emptyHint": "Aquí se listan los problemas al importar archivos de esta carpeta.",
+    "unread": "sin leer"
+  },
+  "toasts": {
+    "loadFailed": "No se pudieron cargar las carpetas vigiladas",
+    "created": "Carpeta vigilada añadida",
+    "createFailed": "No se pudo añadir la carpeta",
+    "updated": "Carpeta vigilada guardada",
+    "updateFailed": "No se pudo guardar la carpeta",
+    "deleted": "Carpeta quitada",
+    "deleteFailed": "No se pudo quitar la carpeta",
+    "scanStarted": "Escaneo iniciado",
+    "scanFailed": "No se pudo iniciar el escaneo",
+    "activated": "La carpeta está vigilada",
+    "deactivated": "Vigilancia pausada",
+    "historyFailed": "No se pudo cargar el historial",
+    "notificationsFailed": "No se pudieron cargar las notificaciones"
+  }
+}

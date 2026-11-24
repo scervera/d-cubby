@@ -1,0 +1,93 @@
+{
+  "title": "Dossiers surveillés",
+  "subtitle": "Importez automatiquement les nouveaux fichiers des dossiers du serveur",
+  "containerHint": "D-cubby s'exécute dans un conteneur. Il voit le dossier du serveur choisi pour les dossiers surveillés lors de l'installation (WATCHED_FOLDERS_PATH) sous /watched : chaque chemin ici commence donc par /watched, par exemple /watched/photos.",
+  "refresh": "Actualiser",
+  "addFolder": "Ajouter un dossier",
+  "emptyTitle": "Aucun dossier surveillé",
+  "emptyBody": "Ajoutez un dossier et D-cubby importera les fichiers qui y sont déposés.",
+  "confirmDelete": "Arrêter de surveiller ce dossier ? Les fichiers déjà importés restent dans la bibliothèque.",
+  "inaccessibleHint": "D-cubby ne peut pas lire ce chemin. Vérifiez qu'il existe sous /watched et que le dossier est lisible.",
+  "lastScanned": "Dernière analyse : {time}",
+  "nextScan": "Prochaine analyse : {time}",
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "inaccessible": "Dossier illisible"
+  },
+  "stats": {
+    "frequency": "Analyse toutes les",
+    "maxFileSize": "Taille max.",
+    "processed": "Fichiers importés",
+    "errors": "Erreurs",
+    "autoTags": "Tags ajoutés aux imports :"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# notification non lue} other {# notifications non lues}}",
+    "history": "Historique des analyses",
+    "scanNow": "Analyser maintenant",
+    "scanning": "Analyse en cours…",
+    "edit": "Modifier le dossier",
+    "activate": "Reprendre la surveillance",
+    "deactivate": "Suspendre la surveillance",
+    "delete": "Retirer le dossier"
+  },
+  "form": {
+    "createTitle": "Ajouter un dossier surveillé",
+    "editTitle": "Modifier le dossier surveillé",
+    "nameLabel": "Nom",
+    "pathLabel": "Chemin du dossier",
+    "pathHint": "Un chemin dans le conteneur, sous /watched. Les sous-dossiers de votre répertoire de dossiers surveillés sur le serveur y apparaissent.",
+    "frequencyLabel": "Analyser toutes les",
+    "unitLabel": "Unité",
+    "minutes": "Minutes",
+    "hours": "Heures",
+    "days": "Jours",
+    "maxFileSizeLabel": "Taille max. de fichier (Go)",
+    "autoTagsLabel": "Tags des fichiers importés",
+    "autoTagsPlaceholder": "ex. photos, événements, 2026",
+    "autoTagsHint": "Séparés par des virgules. Chaque fichier importé de ce dossier reçoit ces tags.",
+    "activeLabel": "Active (analyser ce dossier)",
+    "create": "Ajouter le dossier",
+    "update": "Enregistrer"
+  },
+  "history": {
+    "title": "Historique des analyses",
+    "empty": "Aucune analyse pour l'instant",
+    "emptyHint": "Les analyses apparaissent ici une fois le dossier vérifié.",
+    "running": "Analyse en cours",
+    "failed": "Échec de l'analyse",
+    "noNewFiles": "Aucun nouveau fichier",
+    "processed": "{count, plural, one {# fichier importé} other {# fichiers importés}}",
+    "skipped": "{count, plural, one {# fichier déjà importé ignoré} other {# fichiers déjà importés ignorés}}",
+    "completed": "Analyse terminée",
+    "counts": "Trouvés {found} · importés {processed} · ignorés {skipped} · erreurs {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "TERMINÉ",
+      "failed": "ÉCHEC",
+      "running": "EN COURS"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "Aucune notification",
+    "emptyHint": "Les problèmes d'import de ce dossier sont listés ici.",
+    "unread": "non lue"
+  },
+  "toasts": {
+    "loadFailed": "Impossible de charger les dossiers surveillés",
+    "created": "Dossier surveillé ajouté",
+    "createFailed": "Impossible d'ajouter le dossier",
+    "updated": "Dossier surveillé enregistré",
+    "updateFailed": "Impossible d'enregistrer le dossier",
+    "deleted": "Dossier retiré",
+    "deleteFailed": "Impossible de retirer le dossier",
+    "scanStarted": "Analyse lancée",
+    "scanFailed": "Impossible de lancer l'analyse",
+    "activated": "Le dossier est surveillé",
+    "deactivated": "Surveillance suspendue",
+    "historyFailed": "Impossible de charger l'historique",
+    "notificationsFailed": "Impossible de charger les notifications"
+  }
+}

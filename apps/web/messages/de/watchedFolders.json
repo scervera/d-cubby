@@ -1,0 +1,93 @@
+{
+  "title": "Überwachte Ordner",
+  "subtitle": "Neue Dateien aus Ordnern auf dem Server automatisch importieren",
+  "containerHint": "D-cubby läuft in einem Container. Den bei der Installation für überwachte Ordner gewählten Serverordner (WATCHED_FOLDERS_PATH) sieht es unter /watched, daher beginnt jeder Pfad hier mit /watched – zum Beispiel /watched/fotos.",
+  "refresh": "Aktualisieren",
+  "addFolder": "Ordner hinzufügen",
+  "emptyTitle": "Keine überwachten Ordner",
+  "emptyBody": "Fügen Sie einen Ordner hinzu, und D-cubby importiert die dort abgelegten Dateien.",
+  "confirmDelete": "Diesen Ordner nicht mehr überwachen? Bereits importierte Dateien bleiben in der Bibliothek.",
+  "inaccessibleHint": "D-cubby kann diesen Pfad nicht lesen. Prüfen Sie, ob er unter /watched existiert und lesbar ist.",
+  "lastScanned": "Zuletzt geprüft: {time}",
+  "nextScan": "Nächste Prüfung: {time}",
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "inaccessible": "Nicht lesbar"
+  },
+  "stats": {
+    "frequency": "Prüfen alle",
+    "maxFileSize": "Max. Dateigröße",
+    "processed": "Importierte Dateien",
+    "errors": "Fehler",
+    "autoTags": "Tags für Importe:"
+  },
+  "actions": {
+    "notifications": "{count, plural, one {# ungelesene Benachrichtigung} other {# ungelesene Benachrichtigungen}}",
+    "history": "Prüfverlauf",
+    "scanNow": "Jetzt prüfen",
+    "scanning": "Wird geprüft…",
+    "edit": "Ordner bearbeiten",
+    "activate": "Überwachung starten",
+    "deactivate": "Überwachung pausieren",
+    "delete": "Ordner entfernen"
+  },
+  "form": {
+    "createTitle": "Überwachten Ordner hinzufügen",
+    "editTitle": "Überwachten Ordner bearbeiten",
+    "nameLabel": "Name",
+    "pathLabel": "Ordnerpfad",
+    "pathHint": "Ein Pfad im Container unter /watched. Dort erscheinen die Unterordner Ihres Verzeichnisses für überwachte Ordner auf dem Server.",
+    "frequencyLabel": "Prüfen alle",
+    "unitLabel": "Einheit",
+    "minutes": "Minuten",
+    "hours": "Stunden",
+    "days": "Tage",
+    "maxFileSizeLabel": "Max. Dateigröße (GB)",
+    "autoTagsLabel": "Tags für importierte Dateien",
+    "autoTagsPlaceholder": "z. B. fotos, veranstaltungen, 2026",
+    "autoTagsHint": "Durch Kommas getrennt. Jede aus diesem Ordner importierte Datei erhält diese Tags.",
+    "activeLabel": "Aktiv (diesen Ordner prüfen)",
+    "create": "Ordner hinzufügen",
+    "update": "Speichern"
+  },
+  "history": {
+    "title": "Prüfverlauf",
+    "empty": "Noch keine Prüfungen",
+    "emptyHint": "Prüfungen erscheinen hier, sobald der Ordner geprüft wurde.",
+    "running": "Prüfung läuft",
+    "failed": "Prüfung fehlgeschlagen",
+    "noNewFiles": "Keine neuen Dateien",
+    "processed": "{count, plural, one {# Datei importiert} other {# Dateien importiert}}",
+    "skipped": "{count, plural, one {# bereits importierte Datei übersprungen} other {# bereits importierte Dateien übersprungen}}",
+    "completed": "Prüfung abgeschlossen",
+    "counts": "Gefunden {found} · importiert {processed} · übersprungen {skipped} · Fehler {errors}",
+    "duration": "{seconds} s",
+    "status": {
+      "completed": "ABGESCHLOSSEN",
+      "failed": "FEHLGESCHLAGEN",
+      "running": "LÄUFT"
+    }
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "empty": "Keine Benachrichtigungen",
+    "emptyHint": "Probleme beim Import aus diesem Ordner werden hier aufgeführt.",
+    "unread": "ungelesen"
+  },
+  "toasts": {
+    "loadFailed": "Überwachte Ordner konnten nicht geladen werden",
+    "created": "Überwachter Ordner hinzugefügt",
+    "createFailed": "Der Ordner konnte nicht hinzugefügt werden",
+    "updated": "Überwachter Ordner gespeichert",
+    "updateFailed": "Der Ordner konnte nicht gespeichert werden",
+    "deleted": "Ordner entfernt",
+    "deleteFailed": "Der Ordner konnte nicht entfernt werden",
+    "scanStarted": "Prüfung gestartet",
+    "scanFailed": "Die Prüfung konnte nicht gestartet werden",
+    "activated": "Der Ordner wird überwacht",
+    "deactivated": "Überwachung pausiert",
+    "historyFailed": "Der Verlauf konnte nicht geladen werden",
+    "notificationsFailed": "Benachrichtigungen konnten nicht geladen werden"
+  }
+}

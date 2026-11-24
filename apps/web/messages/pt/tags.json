@@ -5,15 +5,12 @@
   "deleteTooltip": "Excluir etiqueta",
   "emptyTitle": "Nenhuma etiqueta ainda",
   "emptyBody": "Crie sua primeira etiqueta para começar a organizar ativos",
-  "assetCount": "{count, plural, one {# ativo} other {# ativos}}",
   "confirmDelete": "Tem certeza de que deseja excluir a etiqueta \"{name}\"? Isso a removerá de todos os ativos.",
   "form": {
     "createTitle": "Criar nova etiqueta",
-    "editTitle": "Editar etiqueta",
     "nameLabel": "Nome da etiqueta",
     "namePlaceholder": "Digite o nome da etiqueta...",
-    "createButton": "Criar etiqueta",
-    "updateButton": "Atualizar etiqueta"
+    "createButton": "Criar etiqueta"
   },
   "toasts": {
     "loadFailed": "Falha ao carregar etiquetas",
@@ -24,5 +21,3 @@
     "deleteFailed": "Falha ao excluir etiqueta"
   }
 }
-
-

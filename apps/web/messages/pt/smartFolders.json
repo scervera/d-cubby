@@ -22,8 +22,21 @@
     "pinLabel": "Fixar na barra lateral",
     "cancel": "Cancelar",
     "create": "Criar",
-    "update": "Atualizar"
-  }
+    "update": "Atualizar",
+    "noGroups": "Ainda não há grupos. Um administrador pode criá-los na página Grupos.",
+    "tagsInputPlaceholder": "Digite uma etiqueta e pressione Enter",
+    "tagsHelperAny": "Os ativos com QUALQUER uma destas etiquetas aparecem nesta pasta.",
+    "tagsHelperAll": "Os ativos com TODAS estas etiquetas aparecem nesta pasta.",
+    "addTags": "Adicionar",
+    "noTagsBody": "Adicione pelo menos uma etiqueta.",
+    "shareUsersHint": "Segure Cmd (Mac) ou Ctrl (Windows) para escolher várias pessoas"
+  },
+  "emptyBodyReadOnly": "Os editores criam pastas inteligentes; as compartilhadas com você aparecerão aqui.",
+  "loadFailed": "Não foi possível carregar as pastas inteligentes",
+  "saveFailed": "Não foi possível salvar a pasta inteligente",
+  "deleteFailed": "Não foi possível excluir a pasta inteligente",
+  "pinFailed": "Não foi possível alterar a fixação na barra lateral",
+  "created": "Pasta inteligente criada",
+  "updated": "Pasta inteligente atualizada",
+  "deleted": "Pasta inteligente excluída"
 }
-
-

@@ -11,7 +11,6 @@
   "errors": {
     "fetchFailed": "Pa t reyisi chaje zòn depo yo",
     "deleteFailed": "Pa t reyisi efase zòn depo a",
-    "subscribeFailed": "Pa t reyisi abòne ak zòn depo a",
     "unsubscribeFailed": "Pa t reyisi sispann abònman an",
     "createFailed": "Pa t reyisi kreye zòn depo a",
     "updateFailed": "Pa t reyisi mete ajou zòn depo a",
@@ -19,17 +18,18 @@
     "uploadFailed": "Pa t reyisi telechaje fichye yo nan zòn depo a",
     "uploadFailedGeneric": "Pa t reyisi telechaje fichye yo"
   },
-  "uploadingCount": "Ap telechaje {count, plural, one {# fichye} other {# fichye}}...",
-  "uploadingProgress": "Ap telechaje {completed}/{total} fichye...",
-  "uploadedSuccess": "{count, plural, one {# fichye} other {# fichye}} telechaje avèk siksè!",
-  "uploadedSuccessWithHint": "{count, plural, one {# fichye} other {# fichye}} telechaje avèk siksè! Gade yo nan tablo Byen ou a.",
+  "uploadedSuccess": "{count, plural, one {# fichye voye} other {# fichye voye}}",
+  "uploadedSuccessWithHint": "{count, plural, one {# fichye voye} other {# fichye voye}}. W ap jwenn yo nan bibliyotèk byen yo.",
   "folder": {
     "files": "{count, plural, one {# fichye} other {# fichye}}",
     "subscribers": "{count, plural, one {# abònen} other {# abònen}}",
     "menuView": "Gade",
     "menuManage": "Jere",
-    "menuSubscribe": "Abòne",
-    "menuDelete": "Efase"
+    "menuDelete": "Efase",
+    "inactive": "Inaktif",
+    "uploadingFiles": "Ap voye {count, plural, one {# fichye} other {# fichye}}",
+    "menuLabel": "Aksyon pou {name}",
+    "menuUnsubscribe": "Dezabòne"
   },
   "modal": {
     "createTitle": "Kreye zòn depo",
@@ -66,16 +66,24 @@
     "backToList": "Retounen nan zòn depo yo",
     "filesUploadedStat": "{count, plural, one {# fichye telechaje} other {# fichye telechaje}}",
     "uploadPortalTitle": "Portal telechajman",
-    "uploadPortalBody": "Fichye ou telechaje la ap jwenn etikèt otomatikman epi ap parèt nan tablo Byen ou a.",
+    "uploadPortalBody": "Fichye ou voye la a resevwa etikèt otomatikman epi yo ajoute nan bibliyotèk byen yo.",
     "autoAppliedTags": "Etikèt otomatik:",
     "acceptedFileTypes": "Kalite fichye aksepte:",
     "uploadingTitle": "Ap telechaje fichye...",
     "dropFilesHere": "Lage fichye yo isit la",
     "dragDropTitle": "Trennen & lage fichye",
     "dragDropBody": "Lage fichye nenpòt kote nan zòn sa a pou telechaje",
-    "browseButton": "Oswa klike pou chwazi fichye",
-    "uploadedHint": "Fichye yo telechaje ap parèt nan tablo Byen ou a"
+    "browseButton": "Chwazi fichye",
+    "uploadedHint": "Fichye ou voye yo parèt tou nan bibliyotèk byen yo.",
+    "readOnly": "Ou ka wè zòn depo sa a, men se editè sèlman ki ka voye fichye ladan l.",
+    "inactive": "Zòn depo sa a inaktif, li pa aksepte fichye.",
+    "recentUploads": "Dènye fichye voye"
+  },
+  "emptyBodyReadOnly": "Zòn depo ou abòne ladan yo ap parèt la a.",
+  "toasts": {
+    "created": "Zòn depo kreye",
+    "updated": "Zòn depo mete ajou",
+    "deleted": "Zòn depo efase",
+    "unsubscribed": "Ou dezabòne nan {name}"
   }
 }
-
-
