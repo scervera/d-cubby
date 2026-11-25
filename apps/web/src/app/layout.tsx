@@ -21,17 +21,17 @@ const THEME_INIT_SCRIPT = `
 })();
 `
 
-const montserrat = localFont({
-  src: '../fonts/montserrat-variable.woff2',
-  weight: '400 700',
-  variable: '--font-montserrat',
+const geistSans = localFont({
+  src: '../fonts/geist-variable.woff2',
+  weight: '100 900',
+  variable: '--font-geist-sans',
   display: 'swap',
 })
 
-const openSans = localFont({
-  src: '../fonts/open-sans-variable.woff2',
-  weight: '400 700',
-  variable: '--font-open-sans',
+const geistMono = localFont({
+  src: '../fonts/geist-mono-variable.woff2',
+  weight: '100 900',
+  variable: '--font-geist-mono',
   display: 'swap',
 })
 
@@ -45,7 +45,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${montserrat.variable} ${openSans.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="min-h-screen antialiased">
         <Script id="theme-init" strategy="beforeInteractive">
           {THEME_INIT_SCRIPT}

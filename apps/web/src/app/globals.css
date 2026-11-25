@@ -1,610 +1,218 @@
 @import "tailwindcss";
+@import "./tokens.css";
 
-:root {
-  /* Brand colors - light mode */
-  --brand-charcoal: #2C3A47;
-  --brand-blue: #2E7CF6;
-  --brand-sand: #E8DCC2;
-  --brand-white: #F0F4F7;
-  --brand-gold: #D4A574;
-  
-  /* Light theme: pure white viewport; glass surfaces keep blue-gray elevation */
-  --background: #ffffff;
-  --foreground: #2C3A47;
-  --glass-surface: rgba(232, 237, 242, 0.95);
-  --glass-surface-soft: rgba(224, 230, 235, 0.90);
-  --glass-highlight: rgba(212, 165, 116, 0.2);
-  --glass-border: #B8C5D1;
-  --glass-border-subtle: #C8D2DC;
-  --glass-shadow: 0 4px 16px rgba(44, 58, 71, 0.12);
-  --glass-shadow-soft: 0 2px 8px rgba(44, 58, 71, 0.08);
-  --glass-blur: 24px;
-  --accent-primary: #D4A574;
-  --accent-secondary: #D4A574;
-  --accent-tertiary: #2C3A47;
-  --surface-elevated: rgba(224, 230, 235, 0.85);
-  /* Solid gold/yellow/amber buttons: white label in light mode */
-  --solid-warm-button-text: #ffffff;
-  /* Top nav + sidebar — subtle, matched elevation */
-  --shell-nav-shadow: 0 4px 14px rgba(44, 58, 71, 0.11), 0 10px 22px -14px rgba(44, 58, 71, 0.12);
-  --shell-sidebar-shadow: -3px 0 12px -5px rgba(44, 58, 71, 0.09), 4px 0 14px -4px rgba(44, 58, 71, 0.14),
-    10px 0 24px -14px rgba(44, 58, 71, 0.09);
-  --shell-sidebar-shadow-lg: -4px 0 14px -6px rgba(44, 58, 71, 0.085), 5px 0 16px -5px rgba(44, 58, 71, 0.14),
-    12px 0 30px -16px rgba(44, 58, 71, 0.1);
-  /* Native form controls (radio/checkbox/scrollbar) must follow the app's own
-     .dark class, not the OS preference — otherwise `light dark` lets the
-     browser render them in the OS's dark style even while this page is
-     showing its light theme, which can make e.g. unchecked radio buttons
-     look like solid filled dots instead of empty circles. */
-  color-scheme: light;
-}
-
+/*
+ * Maps the tokens to Tailwind utilities. Because each utility resolves to a variable that
+ * changes with the theme, components never need a dark: variant.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface-elevated: var(--surface-elevated);
-  --color-accent: var(--accent-primary);
-  --font-heading: var(--font-montserrat);
-  --font-body: var(--font-open-sans);
-  --font-sans: var(--font-open-sans);
-  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
-  /* Default rounded-xl was 0.75rem; tighten primary UI corners to 0.5rem */
-  --radius-xl: 0.5rem;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-text: var(--danger-text);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-warning: var(--warning);
+  --color-warning-text: var(--warning-text);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-success: var(--success);
+  --color-success-text: var(--success-text);
+  --color-success-subtle: var(--success-subtle);
+  --color-focus: var(--focus);
+  --color-backdrop: var(--backdrop);
+  --color-scrim: var(--scrim);
+  --color-on-scrim: var(--on-scrim);
+
+  /* System fallbacks matter: asset and tag names can be in any script. */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --radius-thumb: 4px;
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --radius-dialog: 12px;
+
+  /* The only shadow: things that float above the page (menus, dialogs, toasts). */
+  --shadow-overlay: var(--overlay-shadow);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Dark mode configuration for Tailwind v4 */
-@variant dark (.dark &);
+/* TEMPORARY (removed at the end of the redesign): components still use dark: variants. */
+@custom-variant dark (.dark &);
 
-.dark {
-  /* Brand colors - dark mode (golden accent) */
-  --brand-charcoal: #1E2B33;
-  --brand-blue: #2E7CF6;
-  --brand-sand: #E8DCC2;
-  --brand-white: #E3E1CE;
-  --brand-gold: #F6DAA9;
-  
-  /* Dark theme with golden-yellow accents - using exact colors from design */
-  --background: #1E2B33;
-  --foreground: #E3E1CE;
-  --glass-surface: rgba(18, 31, 39, 0.95);
-  --glass-surface-soft: rgba(18, 31, 39, 0.85);
-  --glass-highlight: rgba(246, 218, 169, 0.3);
-  --glass-border: #263541;
-  --glass-border-subtle: #263541;
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
-  --glass-shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.7);
-  --glass-blur: 24px;
-  --accent-primary: #F6DAA9;
-  --accent-secondary: #F6DAA9;
-  --accent-tertiary: #E3E1CE;
-  --surface-elevated: rgba(18, 31, 39, 0.9);
-  /* Dark text on light gold fills for contrast (yellow / accent-primary CTAs) */
-  --solid-warm-button-text: #1e2b33;
-  /* Navbar + sidebar: reduced dark-mode depth, biased to right-side cast instead of bottom glow */
-  --shell-nav-shadow: 0 2px 6px rgba(0, 0, 0, 0.24), 0 8px 18px -12px rgba(0, 0, 0, 0.28);
-  --shell-sidebar-shadow: -4px 0 14px -6px rgba(0, 0, 0, 0.22), 6px 0 18px -6px rgba(0, 0, 0, 0.34),
-    12px 0 28px -16px rgba(0, 0, 0, 0.24);
-  --shell-sidebar-shadow-lg: -5px 0 16px -8px rgba(0, 0, 0, 0.2), 7px 0 20px -7px rgba(0, 0, 0, 0.35),
-    14px 0 34px -18px rgba(0, 0, 0, 0.25);
-  color-scheme: dark;
+/* Stacking order. Dialogs are portaled, so document order sorts them among themselves. */
+@utility z-header {
+  z-index: 40;
+}
+@utility z-drawer {
+  z-index: 50;
+}
+@utility z-dropdown {
+  z-index: 60;
+}
+@utility z-modal {
+  z-index: 100;
+}
+@utility z-toast {
+  z-index: 200;
 }
 
-/* Main text color utilities */
-.text-main {
-  color: var(--foreground);
+/* Sizes, dimensions, dates, counts, paths: anything read as data rather than prose. */
+@utility text-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--subtle);
 }
 
-.dark .text-main {
-  color: #E3E1CE;
-}
+@layer base {
+  *,
+  ::before,
+  ::after,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--line);
+  }
 
-/* Removed prefers-color-scheme media query - theme is controlled by .dark class */
+  html {
+    /* Prevent iOS from zooming on input focus */
+    -webkit-text-size-adjust: 100%;
+    min-height: 100vh;
+    background-color: var(--canvas);
+  }
 
-html {
-  /* Prevent iOS from zooming on input focus */
-  -webkit-text-size-adjust: 100%;
-  min-height: 100vh;
-  background-color: var(--background);
-}
+  body {
+    min-height: 100vh;
+    background-color: var(--canvas);
+    color: var(--fg);
+    font-family: var(--font-sans);
+  }
 
-body {
-  background-color: var(--background);
-  background-attachment: fixed;
-  color: var(--foreground);
-  font-family: var(--font-body, var(--font-open-sans), 'Open Sans', Arial, Helvetica, sans-serif);
-  position: relative;
-  min-height: 100vh;
-  /* Prevent layout shift when keyboard appears */
-  -webkit-overflow-scrolling: touch;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    color: inherit;
+  }
+
+  /* No double-tap zoom on things that are tapped repeatedly. */
+  button,
+  a,
+  img,
+  video,
+  [role='button'] {
+    touch-action: manipulation;
+  }
+
+  /* Form controls must always allow selection / clipboard (never inherit select-none). */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='submit']):not([type='button']):not([type='reset']),
+  textarea,
+  [contenteditable='true'] {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='range'],
+  progress {
+    accent-color: var(--accent);
+  }
 }
 
 /* Mobile-specific fixes for keyboard handling */
 @media (max-width: 768px) {
-  html, body {
+  html,
+  body {
     min-height: 100vh;
     min-height: -webkit-fill-available; /* iOS Safari fix */
   }
-  
+
   body {
-    /* Use safe area insets for mobile */
     padding-bottom: env(safe-area-inset-bottom);
   }
-  
-  /* Ensure inputs don't cause horizontal scroll */
-  input, textarea, select {
+
+  input,
+  textarea,
+  select {
     max-width: 100%;
     box-sizing: border-box;
   }
-  
-  /* Prevent content from extending beyond viewport */
+
   main {
     max-width: 100vw;
   }
 }
 
-.dark body {
-  background-color: #1E2B33;
-}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 
-main {
-  position: relative;
-  z-index: 1;
-}
-
-.glass-panel,
-.glass-surface {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  transition: border-color 0.2s ease, box-shadow 0.3s ease, transform 0.25s ease;
-}
-
-.dark .glass-panel,
-.dark .glass-surface {
-  background: #121F27;
-  border-color: #263541;
-}
-
-.glass-surface {
-  border-radius: 16px;
-}
-
-.glass-surface.shell-nav {
-  box-shadow: var(--shell-nav-shadow);
-}
-
-/* Sidebar elevation: radius matches panel so dark-mode shadow does not read as a square beyond the outline */
-.shell-sidebar-elev {
-  isolation: isolate;
-  border-radius: 0 1rem 1rem 0;
-  box-shadow: var(--shell-sidebar-shadow);
-}
-
-@media (min-width: 1024px) {
-  .shell-sidebar-elev {
-    border-radius: 1rem;
-    box-shadow: var(--shell-sidebar-shadow-lg);
+  /* A stopped spinner looks like a broken one; slow it instead. */
+  .animate-spin {
+    animation-duration: 2s !important;
+    animation-iteration-count: infinite !important;
   }
 }
 
-@supports not ((backdrop-filter: blur(0))) {
-  .glass-panel,
-  .glass-surface {
-    background: var(--surface-elevated);
-  }
-}
-
-.glass-panel:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(44, 58, 71, 0.15),
-              0 0 20px rgba(212, 165, 116, 0.1);
-}
-
-.dark .glass-panel:hover {
-  border-color: #263541;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 
-              0 0 20px rgba(246, 218, 169, 0.15);
-}
-
-.glass-panel-soft {
-  background: var(--glass-surface-soft);
-  border: 1px solid var(--glass-border-subtle);
-  border-radius: 18px;
-  box-shadow: var(--glass-shadow-soft);
-  backdrop-filter: blur(calc(var(--glass-blur) * 0.75));
-  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.75));
-}
-
-.dark .glass-panel-soft {
-  background: #121F27;
-  border-color: #263541;
-}
-
-.glass-card {
-  background: var(--glass-surface-soft);
-  border: 1px solid var(--glass-border-subtle);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(44, 58, 71, 0.08),
-              0 0 2px rgba(212, 165, 116, 0.1);
-  backdrop-filter: blur(calc(var(--glass-blur) * 0.65));
-  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.65));
-  transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.dark .glass-card {
-  background: #121F27;
-  border-color: #263541;
-  box-shadow: 0 0 3px rgba(246, 218, 169, 0.2),
-              0 0 12px rgba(246, 218, 169, 0.1),
-              0 0 18px rgba(246, 218, 169, 0.08),
-              0 2px 6px rgba(0, 0, 0, 0.4),
-              0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.glass-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--glass-border-subtle);
-  box-shadow: 0 4px 16px rgba(44, 58, 71, 0.12),
-              0 0 20px rgba(212, 165, 116, 0.15),
-              0 8px 16px rgba(156, 163, 175, 0.3);
-}
-
-.dark .glass-card:hover {
-  transform: translateY(-4px);
-  border-color: #263541;
-  box-shadow: 0 0 20px rgba(246, 218, 169, 0.3),
-              0 0 40px rgba(246, 218, 169, 0.15),
-              0 0 60px rgba(246, 218, 169, 0.1),
-              0 30px 70px -30px rgba(0, 0, 0, 0.6);
-}
-
-.glass-divider {
-  border-color: var(--glass-border-subtle);
-}
-
-.glass-border {
-  border: 1px solid var(--glass-border);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--accent-primary);
-}
-
-/* Prevent zoom on double-click for specific interactive elements only */
-button, a, img, video, [role="button"], .asset-thumbnail {
-  touch-action: manipulation;
-}
-
-@keyframes marketing-preview-slide-in {
-  from {
-    transform: translateX(1.25rem);
-    opacity: 0.55;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.marketing-preview-slide-in {
-  animation: marketing-preview-slide-in 700ms ease-out both;
-}
-
-/* Dark mode: solid accent (yellow) buttons use black text for contrast */
-.dark button.bg-\[var\(--accent-primary\)\],
-.dark a.bg-\[var\(--accent-primary\)\],
-.dark [role="button"].bg-\[var\(--accent-primary\)\],
-.dark input[type="submit"].bg-\[var\(--accent-primary\)\],
-.dark input[type="button"].bg-\[var\(--accent-primary\)\] {
-  color: #000 !important;
-}
-
-/* Primary action buttons (authoring UI) — accent fill, theme-aware label color */
-.btn-action-primary {
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  background-color: var(--accent-primary);
-  color: var(--solid-warm-button-text);
-  transition: opacity 150ms ease;
-}
-
-.btn-action-primary:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.btn-action-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-action-primary-sm {
-  border-radius: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-/* Ensure scrolling works everywhere else - explicitly allow on containers */
-html, body, main, div, section, article {
-  touch-action: auto;
-}
-
-/* Specifically prevent zoom on double-click for asset thumbnails */
+/* ── Thumbnails ── */
 .asset-thumbnail {
+  position: relative;
   touch-action: manipulation;
-  user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
 }
 
-/* Thumbnail styling - no border, matches card background */
-
-/* Animation for generating resources */
-@keyframes pulse-ring {
-  0%, 100% {
-    box-shadow: 0 0 0 2px var(--accent-primary), 0 4px 16px rgba(0, 0, 0, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 0 4px var(--accent-primary), 0 4px 16px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.asset-thumbnail {
-  position: relative;
-  padding: 0;
-  border-radius: 16px;
-  background: transparent;
-  box-shadow: none;
-}
-
-.dark .asset-thumbnail {
-  background: transparent;
-}
-
-/* Concave bevel effect - recessed inner area */
-/*
-.asset-thumbnail::before {
-  content: '';
-  position: absolute;
-  inset: 2px; /* Inside the 2px bezel */
-/*  border-radius: 14px; /* Larger radius for flat-topped lip effect */
-  /* background: var(--thumbnail-recessed-bg); */
-  /* Concave bevel: light on top-left, dark on bottom-right */
-/*  box-shadow: 
-    inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-    inset -3px -3px 6px rgba(0, 0, 0, 0.3);
-  z-index: 0;
-  pointer-events: none;
-}
-*/
-/* .dark .asset-thumbnail::before {
-  box-shadow: 
-    inset 3px 3px 6px rgba(255, 255, 255, 0.1),
-    inset -3px -3px 6px rgba(0, 0, 0, 0.7);
-}
-
-/* Inner content container - fills the thumbnail area */
 .asset-thumbnail-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 16px;
   overflow: hidden;
-  z-index: 1;
+  border-radius: var(--radius-thumb);
 }
 
-/* Images and content respect the rounded corners and are centered */
 .asset-thumbnail-inner img,
 .asset-thumbnail-inner video {
-  border-radius: 16px;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
-/* Light mode colors */
-:root {
-  --thumbnail-bezel-bg: #f4f6fb;
-  --thumbnail-recessed-bg: #e8ecf1;
-}
-
-/* Dark mode colors - lighter shade of gray for better visibility */
-.dark {
-  --thumbnail-bezel-bg: #94a3b8;
-  --thumbnail-recessed-bg: #cbd5e1;
-}
-
-/* Hide navbar when modal is open */
-body.modal-open nav {
-  display: none !important;
-}
-
-/* Fix Chrome select dropdown positioning issue */
-/* Chrome has a bug where select dropdowns can appear offset when parent elements have transforms, filters, or perspective */
-/* This fix ensures selects render their dropdowns in the correct position */
-select {
-  /* Create a new stacking context to prevent positioning issues */
-  position: relative;
-  /* Force hardware acceleration and create new layer */
-  transform: translateZ(0);
-  /* Ensure proper rendering context */
-  will-change: auto;
-  /* Prevent inheritance of problematic properties */
-  backface-visibility: hidden;
-}
-
-/* Chrome-specific fix: Ensure dropdown appears correctly when opened */
-@supports (-webkit-appearance: none) {
-  select {
-    /* Reset any inherited transforms that might affect dropdown positioning */
-    transform: translateZ(0) scale(1);
-  }
-  
-  /* When select is focused/active, ensure proper z-index for dropdown */
-  select:focus,
-  select:active {
-    position: relative;
-    z-index: 10;
-    /* Force reflow to fix Chrome positioning bug */
-    transform: translateZ(0) scale(1);
-  }
-}
-
-/* Additional fix: Prevent parent transforms from affecting select dropdowns */
-/* This ensures selects inside transformed containers still render correctly */
-.glass-panel select,
-.glass-panel-soft select,
-.glass-surface select,
-[class*="glass"] select {
-  /* Create isolated rendering context */
-  isolation: isolate;
-  position: relative;
-  transform: translateZ(0);
-  /* Break out of backdrop-filter containing blocks */
-  contain: layout style paint;
-}
-
-/* Chrome-specific fix for selects inside backdrop-filter containers */
-/* backdrop-filter creates a new containing block that breaks select positioning */
-@supports (-webkit-appearance: none) {
-  .glass-panel select,
-  .glass-panel-soft select,
-  .glass-surface select,
-  [class*="glass"] select {
-    /* Force new stacking context independent of backdrop-filter */
-    isolation: isolate;
-    position: relative;
-    z-index: 1;
-    transform: translateZ(0) scale(1);
-    /* Prevent backdrop-filter from affecting dropdown positioning */
-    will-change: transform;
-  }
-  
-  .glass-panel select:focus,
-  .glass-panel-soft select:focus,
-  .glass-surface select:focus,
-  [class*="glass"] select:focus {
-    /* Higher z-index when focused to ensure dropdown appears correctly */
-    z-index: 50;
-    position: relative;
-    transform: translateZ(0) scale(1);
-  }
-}
-
-/* Ensure select dropdowns can overflow glass containers when needed */
-/* Note: :has() is well-supported in Chrome, which is where this fix is needed */
-.glass-panel:has(select),
-.glass-panel-soft:has(select),
-.glass-surface:has(select) {
-  overflow: visible;
-  /* Prevent backdrop-filter from creating containing block for select positioning */
-  /* This is a workaround for Chrome's backdrop-filter containing block bug */
-  contain: layout style;
-}
-
-/* Wrapper for selects that need to break out of backdrop-filter containing blocks */
-/* backdrop-filter creates a containing block that Chrome uses for select dropdown positioning */
-.locale-select-wrapper {
-  position: relative;
-  z-index: 1;
-  /* Create new stacking context independent of backdrop-filter */
-  isolation: isolate;
-  /* Prevent backdrop-filter from creating containing block for this element */
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-.locale-select-wrapper select {
-  position: relative;
-  z-index: 1;
-  /* Force hardware acceleration and new layer */
-  transform: translateZ(0);
-  /* Break out of any containing blocks */
-  contain: layout style paint;
-}
-
-.locale-select-wrapper select:focus,
-.locale-select-wrapper select:active {
-  z-index: 50;
-  position: relative;
-  /* Force reflow to recalculate position */
-  transform: translateZ(0) scale(1);
-}
-
-/* Form controls must always allow selection / clipboard (never inherit select-none). */
-input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='submit']):not([type='button']):not([type='reset']),
-textarea,
-[contenteditable='true'] {
-  -webkit-user-select: text;
-  user-select: text;
-  -webkit-touch-callout: default;
-}
-
-/*
- * Dark-mode form controls often get a transparent ::selection background, so
- * drag-select appears broken even though the selection range exists. Force a
- * visible highlight on inputs/textareas and body text.
- */
-::selection {
-  background-color: rgba(46, 124, 246, 0.4);
-  color: inherit;
-}
-
-.dark ::selection {
-  background-color: rgba(46, 124, 246, 0.55);
-  color: #e3e1ce;
-}
-
-input::selection,
-textarea::selection {
-  background-color: rgba(46, 124, 246, 0.45);
-  color: inherit;
-}
-
-.dark input::selection,
-.dark textarea::selection {
-  background-color: rgba(46, 124, 246, 0.6);
-  color: #e3e1ce;
-}
-
-/* Admin authoring panels: allow text selection; disable content-drag ghosting */
-.admin-authoring-form,
-.admin-authoring-form input,
-.admin-authoring-form textarea,
-.admin-authoring-form pre {
-  -webkit-user-select: text;
-  user-select: text;
-  -webkit-touch-callout: default;
-}
-
-.admin-authoring-form input,
-.admin-authoring-form textarea {
-  -webkit-user-drag: none;
-  /* non-standard but used by Chromium/WebKit for the drag-ghost path */
-  user-drag: none;
-  overscroll-behavior: contain;
+  object-position: center;
 }
 
 /* ── Toast notifications (react-hot-toast custom) ── */
 .app-toast-container {
-  z-index: 9999;
+  z-index: 200;
   /* react-hot-toast sizes the container to nearly the viewport; keep it inert
      except for actual toast nodes (which set pointer-events themselves). */
   pointer-events: none !important;
@@ -619,86 +227,48 @@ textarea::selection {
   align-items: flex-start;
   gap: 0.75rem;
   max-width: min(420px, calc(100vw - 2rem));
-  padding: 0.875rem 1rem;
-  border-radius: 12px;
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--glass-shadow);
-  color: var(--foreground);
-  font-family: var(--font-body, var(--font-open-sans), 'Open Sans', sans-serif);
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radius-card);
+  background: var(--raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--overlay-shadow);
+  color: var(--fg);
+  font-family: var(--font-sans);
   font-size: 0.875rem;
   line-height: 1.4;
   pointer-events: auto;
-  position: relative;
-  overflow: hidden;
-  transition:
-    opacity 0.3s ease,
-    transform 0.35s cubic-bezier(0.21, 1.02, 0.73, 1);
-}
-
-.dark .app-toast {
-  background: #121f27;
-  border-color: #263541;
-}
-
-.app-toast::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: 12px 0 0 12px;
-}
-
-.app-toast--success::before {
-  background: #16a34a;
-}
-
-.app-toast--error::before {
-  background: #dc2626;
-}
-
-.app-toast--warning::before {
-  background: #d97706;
-}
-
-.app-toast--info::before {
-  background: var(--brand-blue);
+  transition: opacity 180ms ease;
 }
 
 .app-toast--visible {
   opacity: 1;
-  transform: translateX(0);
 }
 
 .app-toast--hidden {
   opacity: 0;
-  transform: translateX(100%);
 }
 
 .app-toast__icon {
   flex-shrink: 0;
   width: 1.25rem;
   height: 1.25rem;
-  margin-top: 0.1rem;
+  margin-top: 0.05rem;
 }
 
 .app-toast--success .app-toast__icon {
-  color: #16a34a;
+  color: var(--success-text);
 }
 
 .app-toast--error .app-toast__icon {
-  color: #dc2626;
+  color: var(--danger-text);
 }
 
 .app-toast--warning .app-toast__icon {
-  color: #d97706;
+  color: var(--warning-text);
 }
 
 .app-toast--info .app-toast__icon {
-  color: var(--brand-blue);
+  color: var(--accent-text);
 }
 
 .app-toast__message {
@@ -714,13 +284,36 @@ textarea::selection {
   padding: 0;
   border: none;
   background: none;
-  color: inherit;
-  opacity: 0.45;
+  color: var(--subtle);
   cursor: pointer;
   font-size: 1.125rem;
   line-height: 1;
 }
 
 .app-toast__dismiss:hover {
-  opacity: 1;
+  color: var(--fg);
+}
+
+/*
+ * TEMPORARY (removed at the end of the redesign): flat stand-ins for the old glass
+ * classes and variables, so screens that have not been restyled yet still render.
+ */
+:root,
+.dark {
+  --foreground: var(--fg);
+  --surface-elevated: var(--surface);
+  --glass-border-subtle: var(--line);
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+}
+
+.glass-panel,
+.glass-surface,
+.glass-panel-soft,
+.glass-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
 }
