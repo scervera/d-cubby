@@ -67,8 +67,8 @@ export default function IntegrationStatusList() {
     }
   }
 
-  if (error) return <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-  if (!status) return <p className="text-sm text-slate-500">{t('loading')}</p>
+  if (error) return <p className="text-sm text-danger-text">{error}</p>
+  if (!status) return <p className="text-sm text-subtle">{t('loading')}</p>
 
   const optional = (name: IntegrationName) => name !== 'storage'
 
@@ -84,35 +84,35 @@ export default function IntegrationStatusList() {
             .map((key) => [key, item[key]] as const)
             .filter(([, value]) => value !== null && value !== undefined && value !== '')
           return (
-            <li key={name} className="rounded-2xl border border-[#B8C5D1] bg-white/50 p-4 dark:border-[#263541] dark:bg-[#0d171d]/60">
+            <li key={name} className="rounded-card border border-line bg-surface p-4">
               <div className="flex flex-wrap items-start gap-3">
                 {item.configured ? (
-                  <CheckCircleIcon className="h-6 w-6 shrink-0 text-green-600" aria-hidden />
+                  <CheckCircleIcon className="h-6 w-6 shrink-0 text-success-text" aria-hidden />
                 ) : optional(name) ? (
-                  <MinusCircleIcon className="h-6 w-6 shrink-0 text-slate-400" aria-hidden />
+                  <MinusCircleIcon className="h-6 w-6 shrink-0 text-subtle" aria-hidden />
                 ) : (
-                  <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-amber-500" aria-hidden />
+                  <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-warning-text" aria-hidden />
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{t(`${name}.title`)}</h3>
+                    <h3 className="font-semibold text-fg">{t(`${name}.title`)}</h3>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         item.configured
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
-                          : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+                          ? 'bg-success-subtle text-success-text'
+                          : 'bg-sunken text-muted'
                       }`}
                     >
                       {item.configured ? t('configured') : optional(name) ? t('notConfiguredOptional') : t('notConfigured')}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t(`${name}.description`)}</p>
+                  <p className="mt-1 text-sm text-muted">{t(`${name}.description`)}</p>
                   {details.length > 0 && (
                     <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
                       {details.map(([key, value]) => (
                         <div key={key} className="contents">
-                          <dt className="text-slate-500 dark:text-slate-400">{t(`fields.${key}`)}</dt>
-                          <dd className="break-all font-mono text-[#2C3A47] dark:text-[#E3E1CE]">{String(value)}</dd>
+                          <dt className="text-subtle">{t(`fields.${key}`)}</dt>
+                          <dd className="break-all font-mono text-fg">{String(value)}</dd>
                         </div>
                       ))}
                     </dl>
@@ -120,7 +120,7 @@ export default function IntegrationStatusList() {
                   {result && (
                     <p
                       role="status"
-                      className={`mt-2 flex items-start gap-1.5 text-sm ${result.ok ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}
+                      className={`mt-2 flex items-start gap-1.5 text-sm ${result.ok ? 'text-success-text' : 'text-danger-text'}`}
                     >
                       {result.ok ? <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0" /> : <XCircleIcon className="mt-0.5 h-4 w-4 shrink-0" />}
                       <span className="break-words">{result.message}</span>
@@ -141,8 +141,8 @@ export default function IntegrationStatusList() {
           )
         })}
       </ul>
-      <p className="text-xs text-slate-500 dark:text-slate-400">
-        {t.rich('reconfigureHint', { code: (chunks) => <code className="rounded bg-slate-200 px-1 dark:bg-slate-800">{chunks}</code> })}
+      <p className="text-xs text-subtle">
+        {t.rich('reconfigureHint', { code: (chunks) => <code className="rounded bg-sunken px-1">{chunks}</code> })}
         {version && <span className="ml-1">· {t('version', { version })}</span>}
       </p>
     </div>

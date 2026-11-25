@@ -102,17 +102,17 @@ export default function SmartFoldersPage() {
 
   return (
     <SharedLayout currentPage="smart-folders">
-      <div className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
+      <div className="rounded-card border bg-surface rounded-card border border-line p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
-            <p className="mt-1 text-slate-600 dark:text-slate-200">{t('subtitle')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="mt-1 text-muted">{t('subtitle')}</p>
           </div>
           {writer && (
             <button
               type="button"
               onClick={() => setShowCreateForm(true)}
-              className="flex w-full items-center justify-center rounded-xl bg-[#2E7CF6] px-4 py-2 text-sm text-white transition-colors hover:bg-[#2563eb] sm:w-auto sm:text-base"
+              className="flex w-full items-center justify-center rounded-control bg-accent px-4 py-2 text-sm text-on-accent transition-colors hover:bg-accent-hover sm:w-auto sm:text-base"
             >
               <PlusIcon className="mr-2 h-5 w-5" />
               {t('createButton')}
@@ -127,9 +127,9 @@ export default function SmartFoldersPage() {
         </div>
       ) : smartFolders.length === 0 ? (
         <div className="py-12 text-center">
-          <FolderIcon className="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-slate-300" />
-          <h3 className="mb-2 text-lg font-medium text-slate-900 dark:text-slate-100">{t('emptyTitle')}</h3>
-          <p className="text-slate-600 dark:text-slate-200">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
+          <FolderIcon className="mx-auto mb-4 h-16 w-16 text-subtle" />
+          <h3 className="mb-2 text-lg font-medium text-fg">{t('emptyTitle')}</h3>
+          <p className="text-muted">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -140,25 +140,25 @@ export default function SmartFoldersPage() {
                 className="block w-full text-center"
                 onClick={() => router.push(`/assets?smart_folder=${folder.id}`)}
               >
-                <div className="relative mx-auto mb-4 h-24 w-32 rotate-3 transform transition-transform duration-200 group-hover:rotate-0">
+                <div className="relative mx-auto mb-4 h-24 w-32 rotate-3 transform transition-transform duration-200">
                   <SmartFolderIcon />
                 </div>
-                <h3 className="mb-1 text-lg font-semibold text-slate-900 transition-colors group-hover:text-purple-700 dark:text-slate-100 dark:group-hover:text-purple-300">
+                <h3 className="mb-1 text-lg font-semibold text-fg transition-colors group-hover:text-accent-text">
                   {folder.name}
                 </h3>
-                <p className="mb-3 text-sm text-slate-500 dark:text-slate-200">{t('assetCount', { count: folder.asset_count })}</p>
+                <p className="mb-3 text-sm text-subtle">{t('assetCount', { count: folder.asset_count })}</p>
                 {folder.tag_names.length > 0 && (
                   <div className="mb-3 flex flex-wrap justify-center gap-1">
                     {folder.tag_names.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/30 dark:text-purple-200"
+                        className="inline-flex items-center rounded-full bg-accent-subtle px-2 py-1 text-xs font-medium text-accent-text"
                       >
                         {tag}
                       </span>
                     ))}
                     {folder.tag_names.length > 3 && (
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                      <span className="inline-flex items-center rounded-full bg-sunken px-2 py-1 text-xs font-medium text-muted">
                         +{folder.tag_names.length - 3}
                       </span>
                     )}
@@ -173,8 +173,8 @@ export default function SmartFoldersPage() {
                     onClick={() => handleTogglePin(folder)}
                     className={`p-1 transition-colors ${
                       folder.pinned_to_sidebar
-                        ? 'text-purple-600 hover:text-purple-700 dark:text-purple-300 dark:hover:text-purple-200'
-                        : 'text-slate-400 hover:text-purple-600 dark:text-slate-300 dark:hover:text-purple-300'
+                        ? 'text-accent-text hover:text-accent-text'
+                        : 'text-subtle hover:text-accent-text'
                     }`}
                     title={folder.pinned_to_sidebar ? t('unpinFromSidebar') : t('pinToSidebar')}
                     aria-label={folder.pinned_to_sidebar ? t('unpinFromSidebar') : t('pinToSidebar')}
@@ -186,7 +186,7 @@ export default function SmartFoldersPage() {
                       <button
                         type="button"
                         onClick={() => setEditingFolder(folder)}
-                        className="p-1 text-slate-400 transition-colors hover:text-purple-600 dark:text-slate-300 dark:hover:text-purple-300"
+                        className="p-1 text-subtle transition-colors hover:text-accent-text"
                         title={t('editFolder')}
                         aria-label={t('editFolder')}
                       >
@@ -195,7 +195,7 @@ export default function SmartFoldersPage() {
                       <button
                         type="button"
                         onClick={() => setDeletingFolder(folder)}
-                        className="p-1 text-slate-400 transition-colors hover:text-red-600 dark:text-slate-300 dark:hover:text-red-300"
+                        className="p-1 text-subtle transition-colors hover:text-danger-text"
                         title={t('deleteFolder')}
                         aria-label={t('deleteFolder')}
                       >

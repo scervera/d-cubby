@@ -68,18 +68,18 @@ export default function FaceNamePopover({
 
   return (
     <div
-      className="absolute z-[1001] min-w-[240px] rounded-xl border border-white/20 bg-slate-900/95 p-3 shadow-xl backdrop-blur dark:border-white/10 dark:bg-slate-800/95"
+      className="absolute z-modal min-w-[240px] rounded-control border border-line bg-scrim p-3"
       role="dialog"
       aria-label="Identify face"
     >
-      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
-        <span className="text-sm font-medium text-slate-200">
+      <div className="flex items-center justify-between gap-2 border-b border-line pb-2">
+        <span className="text-sm font-medium text-subtle">
           {face.person_name ? 'Change name' : 'Who is this?'}
         </span>
         <button
           type="button"
           onClick={onClose}
-          className="rounded p-1 text-slate-400 hover:bg-white/10 hover:text-slate-200"
+          className="rounded p-1 text-subtle hover:bg-hover hover:text-subtle"
           aria-label="Close"
         >
           <XMarkIcon className="h-4 w-4" />
@@ -99,13 +99,13 @@ export default function FaceNamePopover({
             if (e.key === 'Escape') onClose();
           }}
           placeholder="Enter name or select below"
-          className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-slate-100 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-subtle placeholder:text-subtle"
           disabled={loading || saving}
         />
 
         {suggestedMatches.length > 0 && (
           <div className="mt-2">
-            <p className="text-xs font-medium text-slate-400">Suggested</p>
+            <p className="text-xs font-medium text-subtle">Suggested</p>
             <div ref={listRef} className="mt-1 max-h-32 space-y-0.5 overflow-y-auto">
               {suggestedMatches.map((m) => (
                 <button
@@ -113,10 +113,10 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={() => handleSaveExisting(m.person_id)}
                   disabled={saving}
-                  className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-sm text-slate-200 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-sm text-subtle hover:bg-hover disabled:opacity-50"
                 >
                   <span>{m.person_name}</span>
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-subtle">
                     {Math.round(m.confidence * 100)}%
                   </span>
                 </button>
@@ -127,7 +127,7 @@ export default function FaceNamePopover({
 
         {showSuggestions && (
           <div className="mt-2">
-            <p className="text-xs font-medium text-slate-400">Existing people</p>
+            <p className="text-xs font-medium text-subtle">Existing people</p>
             <div className="mt-1 max-h-32 space-y-0.5 overflow-y-auto">
               {filteredPeople.slice(0, 10).map((p) => (
                 <button
@@ -135,7 +135,7 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={() => handleSaveExisting(p.id)}
                   disabled={saving}
-                  className="flex w-full items-center rounded px-2 py-1.5 text-left text-sm text-slate-200 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center rounded px-2 py-1.5 text-left text-sm text-subtle hover:bg-hover disabled:opacity-50"
                 >
                   {p.name}
                 </button>
@@ -145,7 +145,7 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={handleCreateAndSave}
                   disabled={saving}
-                  className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-indigo-300 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-accent-text hover:bg-hover disabled:opacity-50"
                 >
                   <UserPlusIcon className="h-4 w-4" />
                   Create &quot;{inputValue.trim()}&quot;
@@ -160,7 +160,7 @@ export default function FaceNamePopover({
             type="button"
             onClick={handleCreateAndSave}
             disabled={saving}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-control bg-accent px-3 py-2 text-sm font-medium text-on-accent hover:bg-accent-hover disabled:opacity-50"
           >
             <UserPlusIcon className="h-4 w-4" />
             {saving ? 'Saving…' : 'Create and tag'}

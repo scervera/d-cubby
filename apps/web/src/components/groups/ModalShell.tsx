@@ -29,7 +29,7 @@ export default function ModalShell({
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -38,16 +38,16 @@ export default function ModalShell({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`flex max-h-[85vh] w-full flex-col overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 ${wide ? 'max-w-2xl' : 'max-w-md'}`}
+        className={`flex max-h-[85vh] w-full flex-col overflow-hidden rounded-control bg-surface ${wide ? 'max-w-2xl' : 'max-w-md'}`}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
-          <h2 id={titleId} className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between border-b border-line p-6">
+          <h2 id={titleId} className="text-xl font-semibold text-fg">
             {title}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+            className="text-subtle hover:text-muted"
             aria-label={tCommon('close')}
           >
             <XMarkIcon className="h-6 w-6" />

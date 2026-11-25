@@ -19,13 +19,13 @@ const AudioThumbnail: React.FC<AudioThumbnailProps> = ({ className = '', size = 
   const waveformPattern = [0.3, 0.6, 0.9, 0.7, 0.4, 0.8, 1.0, 0.5, 0.7, 0.9, 0.6, 0.4, 0.8, 0.7, 0.5];
 
   return (
-    <div className={`relative w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 ${className}`}>
+    <div className={`relative w-full h-full flex items-center justify-center bg-accent ${className}`}>
       {/* Waveform visualization */}
       <div className="flex items-center justify-center gap-px" style={{ gap: `${config.gap}px` }}>
         {waveformPattern.map((height, index) => (
           <div
             key={index}
-            className="bg-white bg-opacity-90 rounded-full"
+            className="bg-surface bg-opacity-90 rounded-full"
             style={{
               width: `${config.barWidth}px`,
               height: `${config.barHeight * height}px`,
@@ -36,7 +36,7 @@ const AudioThumbnail: React.FC<AudioThumbnailProps> = ({ className = '', size = 
       </div>
       
       {/* Optional: Add a subtle overlay pattern for texture */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-accent pointer-events-none" />
     </div>
   );
 };

@@ -431,13 +431,13 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
 
   const getFileIcon = (file: File) => {
     if (file.type.startsWith('image/')) {
-      return <PhotoIcon className="h-8 w-8 text-blue-500" />
+      return <PhotoIcon className="h-8 w-8 text-accent-text" />
     } else if (file.type.startsWith('video/')) {
-      return <VideoCameraIcon className="h-8 w-8 text-purple-500" />
+      return <VideoCameraIcon className="h-8 w-8 text-accent-text" />
     } else if (file.type.startsWith('audio/')) {
-      return <MusicalNoteIcon className="h-8 w-8 text-green-500" />
+      return <MusicalNoteIcon className="h-8 w-8 text-success-text" />
     } else {
-      return <DocumentIcon className="h-8 w-8 text-gray-500" />
+      return <DocumentIcon className="h-8 w-8 text-subtle" />
     }
   }
 
@@ -456,7 +456,7 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
   
   const modalContent = (
     <div 
-      className="fixed inset-x-0 bottom-0 top-[120px] bg-black bg-opacity-50 flex items-center justify-center p-4"
+      className="fixed inset-x-0 bottom-0 top-[120px] bg-sunken bg-opacity-50 flex items-center justify-center p-4"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose()
@@ -466,14 +466,14 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
     >
       <div 
         ref={modalRef}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-2xl w-full flex flex-col" 
+        className="bg-surface rounded-control max-w-2xl w-full flex flex-col" 
         style={{ maxHeight: modalMaxHeight, height: 'auto', overflow: 'hidden', position: 'relative' }}
       >
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{tAssets('upload.modalTitle')}</h2>
+        <div className="flex items-center justify-between p-6 border-b border-line flex-shrink-0">
+          <h2 className="text-xl font-semibold text-fg">{tAssets('upload.modalTitle')}</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-subtle hover:text-muted"
           >
             <XMarkIcon className="h-6 w-6" />
           </button>
@@ -493,24 +493,24 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
 
           {/* Upload Area */}
           <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
+            className={`border-2 border-dashed rounded-control p-8 text-center transition-colors cursor-pointer ${
               dragOver
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                : 'border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500'
+                ? 'border-accent bg-accent-subtle'
+                : 'border-line hover:border-line-strong'
             }`}
             onClick={() => fileInputRef.current?.click()}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
-            <CloudArrowUpIcon className={`h-12 w-12 mx-auto mb-4 ${dragOver ? 'text-blue-500' : 'text-gray-400'}`} />
-            <p className={`text-lg font-medium mb-2 ${dragOver ? 'text-blue-700 dark:text-blue-300' : 'text-gray-900 dark:text-gray-100'}`}>
+            <CloudArrowUpIcon className={`h-12 w-12 mx-auto mb-4 ${dragOver ? 'text-accent-text' : 'text-subtle'}`} />
+            <p className={`text-lg font-medium mb-2 ${dragOver ? 'text-accent-text' : 'text-fg'}`}>
               {dragOver ? tAssets('upload.dropFilesHere') : tAssets('upload.clickToUpload')}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-subtle mb-4">
               {tAssets('upload.dragAndDropHint')}
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-subtle">
               {maxSizeLabel ? tAssets('upload.supportsHint', { maxSize: maxSizeLabel }) : tAssets('upload.supportsHintNoLimit')}
             </p>
           </div>
@@ -531,14 +531,14 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
           {/* File List */}
           {files.length > 0 && (
             <div className="mt-6">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">
+              <h4 className="text-sm font-medium text-fg mb-3">
                 {tAssets('upload.selectedFiles', { count: files.length })}
               </h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {files.map((file, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-sunken rounded-control"
                   >
                     <div className="flex items-center space-x-3">
                       {file.preview ? (
@@ -552,17 +552,17 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
                         getFileIcon(file)
                       )}
                       <div>
-                        <p className="text-sm font-medium text-gray-900 truncate max-w-xs">
+                        <p className="text-sm font-medium text-fg truncate max-w-xs">
                           {(file as FileWithPreview).originalFilename || file.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-subtle">
                           {formatFileSize(file.size)}
                         </p>
                         {/* Progress Bar */}
                         {uploading && uploadProgress[index] !== undefined && (
-                          <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-1">
+                          <div className="w-full bg-sunken rounded-full h-1.5 mt-1">
                             <div
-                              className="bg-blue-600 h-1.5 rounded-full"
+                              className="bg-accent h-1.5 rounded-full"
                               style={{ width: `${uploadProgress[index]}%` }}
                             ></div>
                           </div>
@@ -571,7 +571,7 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
                     </div>
                     <button
                       onClick={() => removeFile(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-danger-text hover:text-danger-text"
                     >
                       <XMarkIcon className="h-5 w-5" />
                     </button>
@@ -583,17 +583,17 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
         </div>
 
         {/* Action Buttons - Moved outside scrollable area for Safari compatibility */}
-        <div className="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0 bg-white dark:bg-slate-800 rounded-b-lg">
+        <div className="flex justify-end space-x-3 p-6 border-t border-line flex-shrink-0 bg-surface rounded-b-control">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 dark:!text-white bg-white dark:bg-slate-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 relative z-10"
+            className="px-4 py-2 text-sm font-medium text-muted bg-surface border border-line rounded-control hover:bg-hover relative z-10"
           >
             {tCommon('cancel')}
           </button>
           <button
             onClick={handleUpload}
             disabled={files.length === 0 || uploading || extracting}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm font-medium text-on-accent bg-accent border border-transparent rounded-control hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {uploading
               ? tAssets('upload.uploading')

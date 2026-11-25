@@ -423,33 +423,33 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[1300] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop px-4" onClick={onClose}>
       <div
-        className="glass-panel w-full max-h-[94vh] max-w-[1320px] overflow-y-auto border border-white/25 px-4 py-4 dark:border-white/10"
+        className="rounded-card border bg-surface w-full max-h-[94vh] max-w-[1320px] overflow-y-auto border border-line px-4 py-4"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('editor.title')}</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-300">{asset.attributes.name}</p>
+            <h3 className="text-lg font-semibold text-fg">{tAssets('editor.title')}</h3>
+            <p className="text-sm text-muted">{asset.attributes.name}</p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-white/40 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200"
+            className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-hover"
           >
             {tAssets('editor.actions.cancel')}
           </button>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1.9fr)_320px]">
-          <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+          <div className="rounded-card border border-line bg-surface p-3">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">
               {tAssets('editor.preview')}
             </p>
             <div className="space-y-3">
               <div
                 ref={cropStageRef}
-                className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-slate-100/80 p-2 dark:border-white/10 dark:bg-slate-900/60"
+                className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-control border border-line bg-sunken p-2"
               >
                 {sourceUrl ? (
                   <>
@@ -458,7 +458,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                       ref={cropImageRef}
                       src={sourceUrl}
                       alt={asset.attributes.name}
-                      className="max-h-[410px] max-w-full select-none rounded border border-white/20 shadow"
+                      className="max-h-[410px] max-w-full select-none rounded border border-line"
                       onLoad={() => {
                         if (!cropStageRef.current || !cropImageRef.current) {
                           return
@@ -477,7 +477,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
 
                     {displayCropRect && (
                       <div
-                        className="absolute border-2 border-indigo-400 bg-indigo-400/10"
+                        className="absolute border-2 border-accent bg-accent-subtle"
                         style={{
                           left: displayCropRect.left,
                           top: displayCropRect.top,
@@ -495,7 +495,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                           <button
                             key={handle}
                             type="button"
-                            className="absolute h-3 w-3 rounded-full border border-white bg-indigo-500 shadow"
+                            className="absolute h-3 w-3 rounded-full border border-line bg-accent"
                             style={{
                               ...HANDLE_STYLES[handle],
                               cursor: HANDLE_CURSORS[handle]
@@ -511,71 +511,71 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                     )}
                   </>
                 ) : (
-                  <p className="text-sm text-slate-500 dark:text-slate-300">{tAssets('editor.previewUnavailable')}</p>
+                  <p className="text-sm text-subtle">{tAssets('editor.previewUnavailable')}</p>
                 )}
               </div>
 
-              <div className="flex min-h-[320px] items-center justify-center rounded-xl border border-white/20 bg-slate-100/80 p-2 dark:border-white/10 dark:bg-slate-900/60">
+              <div className="flex min-h-[320px] items-center justify-center rounded-control border border-line bg-sunken p-2">
                 {sourceImage ? (
-                  <canvas ref={canvasRef} className="max-h-full max-w-full rounded border border-white/20 shadow" />
+                  <canvas ref={canvasRef} className="max-h-full max-w-full rounded border border-line" />
                 ) : (
-                  <p className="text-sm text-slate-500 dark:text-slate-300">{tAssets('editor.previewUnavailable')}</p>
+                  <p className="text-sm text-subtle">{tAssets('editor.previewUnavailable')}</p>
                 )}
               </div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+            <div className="rounded-card border border-line bg-surface p-3">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">
                 {tAssets('editor.output')}
               </p>
               <div className="space-y-2.5">
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-200">
+                <label className="block text-xs font-medium text-muted">
                   {tAssets('editor.fields.name')}
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100"
+                    className="mt-1 w-full rounded-control border border-line bg-surface px-2.5 py-1.5 text-sm text-fg"
                   />
                 </label>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-200">
+                <label className="block text-xs font-medium text-muted">
                   {tAssets('editor.fields.description')}
                   <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                     rows={1}
-                    className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100"
+                    className="mt-1 w-full rounded-control border border-line bg-surface px-2.5 py-1.5 text-sm text-fg"
                   />
                 </label>
-                <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
+                <label className="flex items-center gap-2 text-xs text-muted">
                   <input
                     type="checkbox"
                     checked={copyTags}
                     onChange={(event) => setCopyTags(event.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 text-indigo-500"
+                    className="h-4 w-4 rounded border-line text-accent-text"
                   />
                   {tAssets('editor.fields.copyTags')}
                 </label>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
+            <div className="rounded-card border border-line bg-surface p-3">
               <div className="space-y-3">
                 <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">
                     {tAssets('editor.crop')}
                   </p>
                   <div className="grid grid-cols-2 gap-2">
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       X
-                      <input type="number" value={cropX} onChange={(event) => setCropX(Number(event.target.value || 0))} className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60" />
+                      <input type="number" value={cropX} onChange={(event) => setCropX(Number(event.target.value || 0))} className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm" />
                     </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       Y
-                      <input type="number" value={cropY} onChange={(event) => setCropY(Number(event.target.value || 0))} className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60" />
+                      <input type="number" value={cropY} onChange={(event) => setCropY(Number(event.target.value || 0))} className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm" />
                     </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       {tAssets('editor.fields.width')}
                       <input
                         type="number"
@@ -587,10 +587,10 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                             setCropHeight(clamp(Math.round(next / cropAspect), 1, sourceDimensions.height))
                           }
                         }}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                        className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                       />
                     </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       {tAssets('editor.fields.height')}
                       <input
                         type="number"
@@ -602,62 +602,62 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                             setCropWidth(clamp(Math.round(next * cropAspect), 1, sourceDimensions.width))
                           }
                         }}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                        className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                       />
                     </label>
                   </div>
                 </div>
 
-                <div className="border-t border-white/20 pt-3 dark:border-white/10">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                <div className="border-t border-line pt-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">
                     {tAssets('editor.resize')}
                   </p>
                   <div className="grid grid-cols-2 gap-2">
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       {tAssets('editor.fields.width')}
                       <input
                         type="number"
                         value={resizeWidth}
                         onChange={(event) => onResizeWidthChange(Number(event.target.value || 1))}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                        className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                       />
                     </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
+                    <label className="text-xs text-muted">
                       {tAssets('editor.fields.height')}
                       <input
                         type="number"
                         value={resizeHeight}
                         onChange={(event) => onResizeHeightChange(Number(event.target.value || 1))}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                        className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                       />
                     </label>
                   </div>
 
                   <div className="mt-2 space-y-2">
-                    <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
+                    <label className="flex items-center gap-2 text-xs text-muted">
                       <input
                         type="checkbox"
                         checked={autoSyncResizeToCrop}
                         onChange={(event) => setAutoSyncResizeToCrop(event.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-indigo-500"
+                        className="h-4 w-4 rounded border-line text-accent-text"
                       />
                       Auto-match resize to crop
                     </label>
-                    <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
+                    <label className="flex items-center gap-2 text-xs text-muted">
                       <input
                         type="checkbox"
                         checked={lockAspect}
                         onChange={(event) => setLockAspect(event.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-indigo-500"
+                        className="h-4 w-4 rounded border-line text-accent-text"
                       />
                       {tAssets('editor.fields.lockAspectRatio')}
                     </label>
-                    <label className="block text-xs text-slate-700 dark:text-slate-200">
+                    <label className="block text-xs text-muted">
                       {tAssets('editor.fields.resizeMode')}
                       <select
                         value={resizeMode}
                         onChange={(event) => setResizeMode(event.target.value as 'exact' | 'limit' | 'fill')}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                        className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                       >
                         <option value="exact">{tAssets('editor.resizeModes.exact')}</option>
                         <option value="limit">{tAssets('editor.resizeModes.limit')}</option>
@@ -667,23 +667,23 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 border-t border-white/20 pt-3 dark:border-white/10">
-                  <label className="text-xs text-slate-700 dark:text-slate-200">
+                <div className="grid grid-cols-2 gap-2 border-t border-line pt-3">
+                  <label className="text-xs text-muted">
                     {tAssets('editor.fields.degrees')}
                     <input
                       type="number"
                       step="0.1"
                       value={rotationDegrees}
                       onChange={(event) => setRotationDegrees(Number(event.target.value || 0))}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                      className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                     />
                   </label>
-                  <label className="text-xs text-slate-700 dark:text-slate-200">
+                  <label className="text-xs text-muted">
                     {tAssets('editor.fields.outputFormat')}
                     <select
                       value={outputFormat}
                       onChange={(event) => setOutputFormat(event.target.value as 'keep' | 'jpg' | 'png' | 'webp')}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                      className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                     >
                       <option value="keep">{tAssets('editor.formats.keep')}</option>
                       <option value="jpg">JPEG</option>
@@ -691,7 +691,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                       <option value="webp">WebP</option>
                     </select>
                   </label>
-                  <label className="text-xs text-slate-700 dark:text-slate-200 col-span-2">
+                  <label className="text-xs text-muted col-span-2">
                     {tAssets('editor.fields.quality')}
                     <input
                       type="number"
@@ -699,7 +699,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
                       max={100}
                       value={outputQuality}
                       onChange={(event) => setOutputQuality(clamp(Number(event.target.value || 90), 1, 100))}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
+                      className="mt-1 w-full rounded-control border border-line bg-surface px-2 py-1.5 text-sm"
                     />
                   </label>
                 </div>
@@ -711,7 +711,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
         <div className="mt-4 flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-white/40 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200"
+            className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-hover"
             disabled={isSaving}
           >
             {tAssets('editor.actions.cancel')}
@@ -719,7 +719,7 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
           <button
             onClick={handleSubmit}
             disabled={isSaving || !sourceUrl}
-            className="rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-control bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? tAssets('editor.actions.saving') : tAssets('editor.actions.saveAsNew')}
           </button>

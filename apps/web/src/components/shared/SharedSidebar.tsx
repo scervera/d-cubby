@@ -58,15 +58,15 @@ interface NavLink {
 export const SMART_FOLDERS_CHANGED_EVENT = 'smartFoldersChanged'
 
 const itemClass = (active: boolean) =>
-  `flex w-full items-center gap-2 rounded-lg border px-2 py-1.5 text-left text-sm font-medium transition-all ${
+  `flex w-full items-center gap-2 rounded-control border px-2 py-1.5 text-left text-sm font-medium transition-all ${
     active
-      ? 'border-[#B8C5D1] bg-[#D8DFE6] text-[#2C3A47] shadow-sm dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE]'
-      : 'border-transparent text-slate-600 hover:border-[#B8C5D1] hover:bg-[#D8DFE6] hover:text-[#2C3A47] dark:text-slate-400 dark:hover:border-[#263541] dark:hover:bg-[#121F27]/50 dark:hover:text-[#F6DAA9]'
+      ? 'border-line bg-raised text-fg'
+      : 'border-transparent text-muted hover:border-line hover:bg-raised hover:text-fg'
   }`
 const iconClass = (active: boolean) =>
-  `h-4 w-4 shrink-0 ${active ? 'text-[#D4A574] dark:text-[#F6DAA9]' : 'text-slate-400'}`
+  `h-4 w-4 shrink-0 ${active ? 'text-accent-text' : 'text-subtle'}`
 const sectionLabelClass =
-  'mb-1 px-2 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500'
+  'mb-1 px-2 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-subtle'
 
 export default function SharedSidebar({
   currentPage = 'assets',
@@ -181,7 +181,7 @@ export default function SharedSidebar({
                     <CpuChipIcon className={iconClass(active)} style={folder.color ? { color: folder.color } : undefined} />
                     <span className="truncate">{folder.name}</span>
                     {folder.asset_count > 0 && (
-                      <span className="ml-auto rounded-full border border-[#B8C5D1] px-1.5 py-0.5 text-[0.65rem] font-semibold text-slate-500 dark:border-[#263541] dark:text-[#F6DAA9]">
+                      <span className="ml-auto rounded-full border border-line px-1.5 py-0.5 text-[0.65rem] font-semibold text-subtle">
                         {folder.asset_count}
                       </span>
                     )}
@@ -205,14 +205,14 @@ export default function SharedSidebar({
         </section>
       )}
 
-      <section className="space-y-1 rounded-2xl border border-[#B8C5D1] bg-[#D8DFE6] p-3 dark:border-[#263541] dark:bg-[#121F27]">
+      <section className="space-y-1 rounded-card border border-line bg-raised p-3">
         <div className="flex items-center justify-between px-2 lg:hidden">
-          <span className="text-sm font-medium text-[#2C3A47] dark:text-slate-300">{t('theme')}</span>
+          <span className="text-sm font-medium text-fg">{t('theme')}</span>
           <ThemeToggle />
         </div>
         {user && (
           <>
-            <div className="truncate px-2 text-xs text-slate-500 dark:text-slate-400">{user.email}</div>
+            <div className="truncate px-2 text-xs text-subtle">{user.email}</div>
             <button type="button" onClick={() => router.push('/account')} className={itemClass(pathname === '/account')}>
               <UserCircleIcon className={iconClass(pathname === '/account')} />
               <span>{t('account')}</span>

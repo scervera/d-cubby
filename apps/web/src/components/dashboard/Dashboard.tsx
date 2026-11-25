@@ -217,12 +217,12 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
   return (
     <ThumbnailSizeProvider>
       <SharedLayout currentPage="assets" selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange}>
-        <div className="glass-panel-soft border border-white/30 px-3 py-3 sm:px-5 sm:py-4 dark:border-white/10">
+        <div className="rounded-card border bg-surface border border-line px-3 py-3 sm:px-5 sm:py-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="min-w-0 flex-1">
-              <h1 className="truncate text-xl font-semibold text-slate-900 drop-shadow-sm sm:text-2xl dark:text-[#E3E1CE]">{title}</h1>
+              <h1 className="truncate text-xl font-semibold text-fg sm:text-2xl">{title}</h1>
               {subtitle && (
-                <p className="mt-2 max-w-xl text-xs text-slate-400 sm:text-sm dark:text-slate-400">
+                <p className="mt-2 max-w-xl text-xs text-subtle sm:text-sm">
                   {subtitle.count}
                   {subtitle.tags && <span className="ml-2 hidden sm:inline">• {subtitle.tags}</span>}
                 </p>
@@ -241,11 +241,11 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
           onFiltersChange={handleFiltersChange}
           initialSearch={search || undefined}
           initialCategory={fileCategory}
-          className="glass-panel-soft mt-6 border border-white/25"
+          className="rounded-card border bg-surface mt-6 border border-line"
         />
 
         {(viewMode === 'grid' || mayWrite) && (
-          <div className="glass-panel-soft mt-6 border border-white/25 px-4 py-4 dark:border-white/10">
+          <div className="rounded-card border bg-surface mt-6 border border-line px-4 py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               {viewMode === 'grid' && (
                 <div className="flex items-center gap-3">
@@ -256,7 +256,7 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
                 <div className={`flex w-full gap-2 ${viewMode === 'grid' ? 'flex-col sm:w-auto sm:flex-row' : 'flex-row'}`}>
                   <button
                     onClick={() => setShowUpload(true)}
-                    className={`rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 ${
+                    className={`rounded-control bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition-transform ${
                       viewMode === 'list' ? 'flex-[3]' : 'w-full sm:w-auto'
                     }`}
                   >
@@ -264,7 +264,7 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
                   </button>
                   <button
                     onClick={() => window.dispatchEvent(new Event(TOGGLE_BULK_DELETE_EVENT))}
-                    className={`rounded-xl border border-red-200/60 bg-red-500/80 px-4 py-2 text-sm font-semibold text-white shadow-md backdrop-blur hover:border-red-200 hover:bg-red-500 ${
+                    className={`rounded-control border border-danger bg-danger px-4 py-2 text-sm font-semibold text-on-accent hover:border-danger hover:bg-danger-hover ${
                       viewMode === 'list' ? 'flex-1' : 'w-full sm:w-auto'
                     }`}
                   >
@@ -278,16 +278,16 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
 
         {loading && assets.length === 0 ? (
           <div className="flex min-h-[40vh] items-center justify-center" role="status" aria-live="polite">
-            <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-[#D4A574] dark:border-[#F6DAA9]" />
+            <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-accent" />
           </div>
         ) : error && assets.length === 0 ? (
           <div className="flex min-h-[40vh] items-center justify-center">
-            <div className="glass-panel-soft max-w-md rounded-3xl border border-white/30 p-8 text-center dark:border-white/10">
-              <div className="mb-4 text-lg font-semibold text-rose-500 dark:text-rose-400">{tAssets('errorLoadingAssets')}</div>
-              <div className="mb-6 text-sm text-slate-600 dark:text-slate-300">{error}</div>
+            <div className="rounded-card border bg-surface max-w-md rounded-card border border-line p-8 text-center">
+              <div className="mb-4 text-lg font-semibold text-danger-text">{tAssets('errorLoadingAssets')}</div>
+              <div className="mb-6 text-sm text-muted">{error}</div>
               <button
                 onClick={handleAssetsChange}
-                className="inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-5 py-2 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center rounded-control bg-accent px-5 py-2 text-sm font-semibold text-on-accent transition-transform"
               >
                 {tAssets('tryAgain')}
               </button>
@@ -321,9 +321,9 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
 
 function StatChip({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="rounded-xl border border-[var(--glass-border-subtle)] bg-[var(--surface-elevated)] px-3 py-2 text-xs font-semibold text-[var(--foreground)]">
-      <div className="text-[var(--foreground)]/65">{label}</div>
-      <div className="text-sm text-[var(--foreground)]">{typeof value === 'number' ? value.toLocaleString() : value}</div>
+    <div className="rounded-control border border-line bg-surface px-3 py-2 text-xs font-semibold text-fg">
+      <div className="text-muted">{label}</div>
+      <div className="text-sm text-fg">{typeof value === 'number' ? value.toLocaleString() : value}</div>
     </div>
   )
 }

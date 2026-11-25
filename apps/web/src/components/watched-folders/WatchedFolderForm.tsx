@@ -8,9 +8,9 @@ import type { ScanFrequencyUnit, WatchedFolder, WatchedFolderInput } from '@/lib
 
 const GB = 1024 * 1024 * 1024
 const inputClass =
-  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
-const labelClass = 'mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'
-const hintClass = 'mt-1 text-xs text-gray-500 dark:text-gray-400'
+  'w-full rounded-control border border-line bg-surface px-3 py-2 text-fg'
+const labelClass = 'mb-1 block text-sm font-medium text-muted'
+const hintClass = 'mt-1 text-xs text-subtle'
 
 /** Create or edit a watched folder. */
 export default function WatchedFolderForm({
@@ -141,23 +141,23 @@ export default function WatchedFolderForm({
             type="checkbox"
             checked={active}
             onChange={(e) => setActive(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            className="h-4 w-4 rounded border-line text-accent-text"
           />
-          <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{t('form.activeLabel')}</span>
+          <span className="ml-2 text-sm text-muted">{t('form.activeLabel')}</span>
         </label>
 
         <div className="flex gap-3 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+            className="flex-1 rounded-control border border-line px-4 py-2 text-muted transition-colors hover:bg-hover"
           >
             {tCommon('cancel')}
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+            className="flex-1 rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover disabled:opacity-50"
           >
             {folder ? t('form.update') : t('form.create')}
           </button>

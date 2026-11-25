@@ -16,7 +16,7 @@ interface DropZoneModalProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+  'w-full rounded-control border border-line bg-surface px-3 py-2 text-fg'
 
 export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneModalProps) {
   const t = useTranslations('dropZones')
@@ -60,8 +60,8 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
     <ModalShell title={dropZone ? t('modal.editTitle') : t('modal.createTitle')} onClose={onClose} wide>
       <form onSubmit={handleSubmit} className="space-y-6 p-6">
         {errors.length > 0 && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20" role="alert">
-            <ul className="space-y-1 text-sm text-red-600 dark:text-red-400">
+          <div className="rounded-control border border-danger bg-danger-subtle p-4" role="alert">
+            <ul className="space-y-1 text-sm text-danger-text">
               {errors.map((error) => (
                 <li key={error}>{error}</li>
               ))}
@@ -70,7 +70,7 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
         )}
 
         <div>
-          <label htmlFor="dz-name" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="dz-name" className="mb-2 block text-sm font-medium text-muted">
             {t('modal.nameLabel')} *
           </label>
           <input
@@ -86,7 +86,7 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
         </div>
 
         <div>
-          <label htmlFor="dz-description" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="dz-description" className="mb-2 block text-sm font-medium text-muted">
             {t('modal.descriptionLabel')}
           </label>
           <textarea
@@ -100,13 +100,13 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
         </div>
 
         <fieldset>
-          <legend className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">{t('modal.acceptedFileTypesLabel')}</legend>
-          <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">{t('modal.acceptedFileTypesHint')}</p>
+          <legend className="mb-2 block text-sm font-medium text-muted">{t('modal.acceptedFileTypesLabel')}</legend>
+          <p className="mb-3 text-sm text-subtle">{t('modal.acceptedFileTypesHint')}</p>
           <div className="grid grid-cols-2 gap-3">
             {DROP_ZONE_FILE_TYPES.map((value) => (
               <label
                 key={value}
-                className="flex cursor-pointer items-center rounded-lg border border-gray-300 p-3 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+                className="flex cursor-pointer items-center rounded-control border border-line p-3 transition-colors hover:bg-hover"
               >
                 <input
                   type="checkbox"
@@ -114,13 +114,13 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
                   onChange={(e) =>
                     setFileTypes((prev) => (e.target.checked ? [...prev, value] : prev.filter((type) => type !== value)))
                   }
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
+                  className="h-4 w-4 rounded border-line text-accent-text"
                 />
-                <span className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">{fileTypeLabels[value]}</span>
+                <span className="ml-3 text-sm font-medium text-muted">{fileTypeLabels[value]}</span>
               </label>
             ))}
           </div>
-          {fileTypes.length === 0 && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{t('modal.fileTypeRequired')}</p>}
+          {fileTypes.length === 0 && <p className="mt-2 text-sm text-danger-text">{t('modal.fileTypeRequired')}</p>}
         </fieldset>
 
         <TagAutocompleteInput
@@ -137,17 +137,17 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
             type="checkbox"
             checked={isActive}
             onChange={(e) => setIsActive(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
+            className="h-4 w-4 rounded border-line text-accent-text"
           />
-          <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{t('modal.activeLabel')}</span>
+          <span className="ml-2 text-sm text-muted">{t('modal.activeLabel')}</span>
         </label>
 
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
+        <div className="rounded-control border border-accent bg-accent-subtle p-4">
           <div className="flex">
-            <Info className="mr-3 mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
-            <div className="text-sm text-blue-800 dark:text-blue-200">
+            <Info className="mr-3 mt-0.5 h-5 w-5 shrink-0 text-accent-text" />
+            <div className="text-sm text-accent-text">
               <p className="mb-1 font-medium">{t('modal.howItWorksTitle')}</p>
-              <ul className="space-y-1 text-blue-700 dark:text-blue-300">
+              <ul className="space-y-1 text-accent-text">
                 <li>• {t('modal.howItWorks1')}</li>
                 <li>• {t('modal.howItWorks2')}</li>
                 <li>• {t('modal.howItWorks3')}</li>
@@ -157,18 +157,18 @@ export default function DropZoneModal({ dropZone, onClose, onSave }: DropZoneMod
           </div>
         </div>
 
-        <div className="flex items-center justify-end space-x-3 border-t border-gray-200 pt-6 dark:border-gray-700">
+        <div className="flex items-center justify-end space-x-3 border-t border-line pt-6">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+            className="rounded-control bg-sunken px-4 py-2 text-muted transition-colors hover:bg-hover"
           >
             {tCommon('cancel')}
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? t('modal.saving') : dropZone ? t('modal.update') : t('modal.create')}
           </button>

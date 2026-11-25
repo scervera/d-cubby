@@ -119,21 +119,21 @@ export default function TagsPage() {
       <div className="flex h-full flex-col">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-[#E3E1CE]">{t('title')}</h1>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="mt-1 text-sm text-subtle">
               {t('subtitle')}
               {!loading && tags.length > 0 ? ` · ${tags.length}` : ''}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {selectedTagIds.size > 0 && (
-              <span className="text-sm text-slate-500 dark:text-slate-400">{t('selectedCount', { count: selectedTagIds.size })}</span>
+              <span className="text-sm text-subtle">{t('selectedCount', { count: selectedTagIds.size })}</span>
             )}
             <button
               type="button"
               onClick={goToAssetsWithTags}
               disabled={selectedTagIds.size === 0}
-              className="flex items-center gap-2 rounded-xl border border-indigo-500 bg-white px-4 py-2 text-sm font-semibold text-indigo-600 transition-transform hover:-translate-y-0.5 hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-400 dark:bg-transparent dark:text-indigo-400 dark:hover:bg-indigo-950/50"
+              className="flex items-center gap-2 rounded-control border border-accent bg-surface px-4 py-2 text-sm font-semibold text-accent-text transition-transform hover:bg-accent-subtle disabled:cursor-not-allowed disabled:opacity-50"
             >
               <MagnifyingGlassIcon className="h-5 w-5" />
               {t('searchButton')}
@@ -145,7 +145,7 @@ export default function TagsPage() {
                   setShowCreateForm(true)
                   setNewTagName('')
                 }}
-                className="flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-indigo-600"
+                className="flex items-center gap-2 rounded-control bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition-transform hover:bg-accent-hover"
               >
                 <PlusIcon className="h-5 w-5" />
                 {t('createButton')}
@@ -155,11 +155,11 @@ export default function TagsPage() {
         </div>
 
         {showCreateForm && (
-          <div className="mb-6 rounded-2xl border border-white/20 bg-white/15 p-6 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{t('form.createTitle')}</h2>
+          <div className="mb-6 rounded-card border border-line bg-surface p-6">
+            <h2 className="mb-4 text-lg font-semibold text-fg">{t('form.createTitle')}</h2>
             <form onSubmit={handleCreateTag} className="space-y-4">
               <div>
-                <label htmlFor="tag-name" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label htmlFor="tag-name" className="block text-sm font-medium text-muted">
                   {t('form.nameLabel')}
                 </label>
                 <input
@@ -168,7 +168,7 @@ export default function TagsPage() {
                   value={newTagName}
                   onChange={(e) => setNewTagName(e.target.value)}
                   placeholder={t('form.namePlaceholder')}
-                  className="mt-1 w-full rounded-xl border border-white/30 bg-white/70 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-100"
+                  className="mt-1 w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle"
                   autoFocus
                 />
               </div>
@@ -176,14 +176,14 @@ export default function TagsPage() {
                 <button
                   type="submit"
                   disabled={creating}
-                  className="rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 disabled:opacity-50"
+                  className="rounded-control bg-accent px-4 py-2 text-sm font-semibold text-on-accent hover:bg-accent-hover disabled:opacity-50"
                 >
                   {t('form.createButton')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowCreateForm(false)}
-                  className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+                  className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted hover:bg-hover"
                 >
                   {tCommon('cancel')}
                 </button>
@@ -194,27 +194,27 @@ export default function TagsPage() {
 
         {loading ? (
           <div className="flex h-64 items-center justify-center">
-            <div className="text-slate-500 dark:text-slate-400">{tCommon('loading')}</div>
+            <div className="text-subtle">{tCommon('loading')}</div>
           </div>
         ) : tags.length === 0 ? (
-          <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-white/20 bg-white/15 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <TagIcon className="mb-4 h-12 w-12 text-slate-400 dark:text-slate-500" />
-            <p className="text-lg font-medium text-slate-600 dark:text-slate-400">{t('emptyTitle')}</p>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-500">{t('emptyBody')}</p>
+          <div className="flex h-64 flex-col items-center justify-center rounded-card border border-line bg-surface">
+            <TagIcon className="mb-4 h-12 w-12 text-subtle" />
+            <p className="text-lg font-medium text-muted">{t('emptyTitle')}</p>
+            <p className="mt-1 text-sm text-subtle">{t('emptyBody')}</p>
           </div>
         ) : (
           <>
-            <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">{t('selectTagsHint')}</p>
+            <p className="mb-3 text-sm text-subtle">{t('selectTagsHint')}</p>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {tags.map((tag) => {
                 const isSelected = selectedTagIds.has(tag.id)
                 return (
                   <div
                     key={tag.id}
-                    className={`group relative rounded-2xl border backdrop-blur transition-all hover:shadow-lg dark:bg-slate-800/50 ${
+                    className={`group relative rounded-card border transition-all ${
                       isSelected
-                        ? 'border-indigo-500 bg-indigo-50/80 ring-2 ring-indigo-500 dark:border-indigo-400 dark:bg-indigo-950/40 dark:ring-indigo-400'
-                        : 'border-white/20 bg-white/15 hover:border-indigo-300 dark:border-white/10 dark:hover:border-indigo-600'
+                        ? 'border-accent bg-accent-subtle ring-2 ring-accent'
+                        : 'border-line bg-surface hover:border-accent'
                     }`}
                   >
                     <button
@@ -223,12 +223,12 @@ export default function TagsPage() {
                       onClick={() => toggleTagSelection(tag.id)}
                       className="flex w-full items-center gap-2 p-6 pr-20 text-left"
                     >
-                      <TagIcon className="h-5 w-5 shrink-0 text-indigo-500 dark:text-indigo-400" />
-                      <span className="truncate text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{tag.name}</span>
+                      <TagIcon className="h-5 w-5 shrink-0 text-accent-text" />
+                      <span className="truncate text-lg font-semibold text-fg">{tag.name}</span>
                     </button>
                     <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
                       {isSelected && (
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500 text-white">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-on-accent">
                           <CheckIcon className="h-4 w-4" />
                         </span>
                       )}
@@ -236,7 +236,7 @@ export default function TagsPage() {
                         <button
                           type="button"
                           onClick={() => setDeletingTag(tag)}
-                          className="rounded-lg p-1.5 text-slate-400 opacity-100 transition-opacity hover:text-red-500 lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100 dark:text-slate-500 dark:hover:text-red-400"
+                          className="rounded-control p-1.5 text-subtle opacity-100 transition-opacity hover:text-danger-text lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100"
                           title={t('deleteTooltip')}
                           aria-label={t('deleteTooltip')}
                         >

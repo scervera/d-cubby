@@ -47,19 +47,19 @@ export default function PosterFrameSelector({ asset, onClose, onGenerated }: Pos
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-slate-900/60 px-4 backdrop-blur" onClick={onClose}>
+    <div className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop px-4" onClick={onClose}>
       <div
-        className="glass-panel max-h-[90vh] w-full max-w-4xl overflow-y-auto border border-white/25 px-6 py-6 dark:border-white/10"
+        className="rounded-card border bg-surface max-h-[90vh] w-full max-w-4xl overflow-y-auto border border-line px-6 py-6"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={tAssets('posterFrame.title')}
       >
         <div className="mb-4 flex items-start justify-between">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('posterFrame.title')}</h3>
+          <h3 className="text-lg font-semibold text-fg">{tAssets('posterFrame.title')}</h3>
           <button
             onClick={onClose}
-            className="rounded-full border border-white/30 bg-white/20 px-3 py-1 text-lg text-slate-500 transition-colors hover:border-white/60 hover:text-slate-800 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-white/30"
+            className="rounded-full border border-line bg-surface px-3 py-1 text-lg text-subtle transition-colors hover:border-line-strong hover:text-fg"
             title={tCommon('close')}
             aria-label={tCommon('close')}
           >
@@ -69,7 +69,7 @@ export default function PosterFrameSelector({ asset, onClose, onGenerated }: Pos
 
         <div className="space-y-4">
           <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-white/20 bg-white/20 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
+            <div className="absolute inset-0 overflow-hidden rounded-card border border-line bg-surface">
               <video
                 ref={videoRef}
                 controls
@@ -100,20 +100,20 @@ export default function PosterFrameSelector({ asset, onClose, onGenerated }: Pos
             </div>
           </div>
 
-          <div className="rounded-2xl border border-purple-200/60 bg-purple-500/10 p-4 backdrop-blur-sm dark:border-purple-500/30 dark:bg-purple-500/15">
+          <div className="rounded-card border border-accent bg-accent-subtle p-4">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="mb-1 text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">
+                <p className="mb-1 text-sm font-semibold text-fg">
                   {tAssets('posterFrame.selectedFrame', { seconds: timestamp.toFixed(2) })}
                 </p>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
+                <p className="text-xs text-muted">
                   {tAssets('posterFrame.instructions', { action: tAssets('posterFrame.useCurrentFrame') })}
                 </p>
               </div>
               <button
                 onClick={generate}
                 disabled={generating || !isVideoReady}
-                className="ml-4 whitespace-nowrap rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                className="ml-4 whitespace-nowrap rounded-control bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition-transform disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {generating ? tAssets('posterFrame.generating') : tAssets('posterFrame.useCurrentFrame')}
               </button>
@@ -123,7 +123,7 @@ export default function PosterFrameSelector({ asset, onClose, onGenerated }: Pos
           <div className="flex justify-end gap-3 pt-4">
             <button
               onClick={onClose}
-              className="rounded-xl border border-white/30 bg-white/25 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-white/60 hover:bg-white/40 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-white/30"
+              className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-line-strong hover:bg-hover"
             >
               {tCommon('close')}
             </button>

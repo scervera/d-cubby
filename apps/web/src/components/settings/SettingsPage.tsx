@@ -25,8 +25,8 @@ export default function SettingsPage({
   return (
     <SharedLayout currentPage={currentPage} showAssetCategories={false}>
       <header>
-        <h1 className="font-heading text-2xl font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{title}</h1>
-        {description && <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{description}</p>}
+        <h1 className="text-2xl font-semibold text-fg">{title}</h1>
+        {description && <p className="mt-1 text-sm text-muted">{description}</p>}
       </header>
       {children}
     </SharedLayout>
@@ -35,10 +35,10 @@ export default function SettingsPage({
 
 export function Panel({ title, children, actions }: { title?: string; children: ReactNode; actions?: ReactNode }) {
   return (
-    <section className="glass-panel rounded-2xl p-4 sm:p-6">
+    <section className="rounded-card border bg-surface rounded-card p-4 sm:p-6">
       {(title || actions) && (
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          {title && <h2 className="font-heading text-lg font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{title}</h2>}
+          {title && <h2 className="text-lg font-semibold text-fg">{title}</h2>}
           {actions}
         </div>
       )}

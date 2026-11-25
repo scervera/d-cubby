@@ -98,8 +98,8 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
-        <span className="ml-2 text-gray-600 dark:text-gray-300">{t('loadingSingle')}</span>
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-accent" />
+        <span className="ml-2 text-muted">{t('loadingSingle')}</span>
       </div>
     )
   }
@@ -107,13 +107,13 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
   if (error || !dropZone) {
     return (
       <div className="py-12 text-center">
-        <FolderIcon className="mx-auto mb-4 h-16 w-16 text-gray-400 dark:text-gray-500" />
-        <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('detail.notFoundTitle')}</h3>
-        <p className="mb-6 text-gray-600 dark:text-gray-300">{error ?? t('detail.notFoundBody')}</p>
+        <FolderIcon className="mx-auto mb-4 h-16 w-16 text-subtle" />
+        <h3 className="mb-2 text-lg font-medium text-fg">{t('detail.notFoundTitle')}</h3>
+        <p className="mb-6 text-muted">{error ?? t('detail.notFoundBody')}</p>
         <button
           type="button"
           onClick={() => router.push('/drop-zones')}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+          className="rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover"
         >
           {t('detail.backToList')}
         </button>
@@ -128,35 +128,35 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
           <button
             type="button"
             onClick={() => router.push('/drop-zones')}
-            className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="rounded-control p-2 transition-colors hover:bg-hover"
             aria-label={t('detail.backToList')}
           >
-            <ArrowLeftIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            <ArrowLeftIcon className="h-5 w-5 text-muted" />
           </button>
           <div className="min-w-0">
-            <h1 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 dark:text-white">
-              <FolderIcon className="h-8 w-8 shrink-0 text-blue-500" />
+            <h1 className="flex items-center space-x-2 text-2xl font-bold text-fg">
+              <FolderIcon className="h-8 w-8 shrink-0 text-accent-text" />
               <span className="truncate">{dropZone.name}</span>
             </h1>
-            {dropZone.description && <p className="mt-1 text-gray-600 dark:text-gray-300">{dropZone.description}</p>}
+            {dropZone.description && <p className="mt-1 text-muted">{dropZone.description}</p>}
           </div>
         </div>
-        <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center space-x-4 text-sm text-subtle">
           <span>{t('detail.filesUploadedStat', { count: dropZone.file_count })}</span>
           <span aria-hidden="true">•</span>
           <span>{t('folder.subscribers', { count: dropZone.subscriber_count })}</span>
         </div>
       </div>
 
-      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
-        <h3 className="mb-2 text-sm font-medium text-blue-900 dark:text-blue-300">{t('detail.uploadPortalTitle')}</h3>
-        <p className="mb-3 text-sm text-blue-700 dark:text-blue-400">{t('detail.uploadPortalBody')}</p>
+      <div className="rounded-control border border-accent bg-accent-subtle p-4">
+        <h3 className="mb-2 text-sm font-medium text-accent-text">{t('detail.uploadPortalTitle')}</h3>
+        <p className="mb-3 text-sm text-accent-text">{t('detail.uploadPortalBody')}</p>
         {dropZone.preset_tags.length > 0 && (
           <div>
-            <p className="mb-2 text-xs text-blue-600 dark:text-blue-400">{t('detail.autoAppliedTags')}</p>
+            <p className="mb-2 text-xs text-accent-text">{t('detail.autoAppliedTags')}</p>
             <div className="flex flex-wrap gap-2">
               {dropZone.preset_tags.map((tag) => (
-                <span key={tag} className="inline-block rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                <span key={tag} className="inline-block rounded-full bg-accent-subtle px-2 py-1 text-xs text-accent-text">
                   {tag}
                 </span>
               ))}
@@ -165,10 +165,10 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
         )}
         {dropZone.accepted_file_types.length > 0 && (
           <div className="mt-3">
-            <p className="mb-2 text-xs text-blue-600 dark:text-blue-400">{t('detail.acceptedFileTypes')}</p>
+            <p className="mb-2 text-xs text-accent-text">{t('detail.acceptedFileTypes')}</p>
             <div className="flex flex-wrap gap-2">
               {dropZone.accepted_file_types.map((type) => (
-                <span key={type} className="inline-block rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                <span key={type} className="inline-block rounded-full bg-accent-subtle px-2 py-1 text-xs text-accent-text">
                   {fileTypeLabels[type] ?? type}
                 </span>
               ))}
@@ -179,38 +179,38 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
 
       {canUpload ? (
         <div
-          className={`relative flex min-h-[360px] items-center justify-center rounded-xl border-4 border-dashed transition-all duration-200 ${
+          className={`relative flex min-h-[360px] items-center justify-center rounded-control border-4 border-dashed transition-all duration-200 ${
             dragOver
-              ? 'scale-[1.01] border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+              ? 'scale-[1.01] border-accent bg-accent-subtle'
               : uploading
-                ? 'border-green-400 bg-green-50 dark:bg-green-900/20'
-                : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800/50'
+                ? 'border-success bg-success-subtle'
+                : 'border-line hover:border-accent hover:bg-hover'
           }`}
           {...dropHandlers}
         >
           <div className="px-6 py-12 text-center">
             {uploading ? (
               <>
-                <div className="mx-auto mb-6 h-20 w-20 animate-spin rounded-full border-b-4 border-green-500" />
-                <h3 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">{t('detail.uploadingTitle')}</h3>
+                <div className="mx-auto mb-6 h-20 w-20 animate-spin rounded-full border-b-4 border-success" />
+                <h3 className="mb-3 text-2xl font-bold text-fg">{t('detail.uploadingTitle')}</h3>
                 <div className="mx-auto mt-4 max-w-md">
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-                    <div className="h-3 rounded-full bg-green-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                  <div className="h-3 w-full overflow-hidden rounded-full bg-sunken">
+                    <div className="h-3 rounded-full bg-success transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
                   </div>
-                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{uploadProgress}%</p>
+                  <p className="mt-2 text-sm text-muted">{uploadProgress}%</p>
                 </div>
               </>
             ) : (
               <>
-                <CloudArrowUpIcon className={`mx-auto mb-6 h-24 w-24 transition-colors ${dragOver ? 'text-blue-500' : 'text-gray-400 dark:text-gray-500'}`} />
-                <h3 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
+                <CloudArrowUpIcon className={`mx-auto mb-6 h-24 w-24 transition-colors ${dragOver ? 'text-accent-text' : 'text-subtle'}`} />
+                <h3 className="mb-3 text-2xl font-bold text-fg">
                   {dragOver ? t('detail.dropFilesHere') : t('detail.dragDropTitle')}
                 </h3>
-                <p className="mb-6 text-lg text-gray-600 dark:text-gray-300">{t('detail.dragDropBody')}</p>
+                <p className="mb-6 text-lg text-muted">{t('detail.dragDropBody')}</p>
                 <button
                   type="button"
                   onClick={() => inputRef.current?.click()}
-                  className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+                  className="inline-flex items-center rounded-control bg-accent px-6 py-3 font-medium text-on-accent transition-colors hover:bg-accent-hover"
                 >
                   <CloudArrowUpIcon className="mr-2 h-5 w-5" />
                   {t('detail.browseButton')}
@@ -226,36 +226,36 @@ export default function DropZoneFolderView({ dropZoneId }: { dropZoneId: string 
                     upload(selected)
                   }}
                 />
-                <p className="mt-6 text-sm text-gray-500 dark:text-gray-400">{t('detail.uploadedHint')}</p>
+                <p className="mt-6 text-sm text-subtle">{t('detail.uploadedHint')}</p>
               </>
             )}
           </div>
         </div>
       ) : (
-        <p className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        <p className="rounded-control border border-line bg-sunken p-4 text-sm text-muted">
           {dropZone.is_active ? t('detail.readOnly') : t('detail.inactive')}
         </p>
       )}
 
       {files && files.length > 0 && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">{t('detail.recentUploads')}</h2>
+          <h2 className="mb-3 text-lg font-semibold text-fg">{t('detail.recentUploads')}</h2>
           <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {files.map((file) => (
-              <li key={file.id} className="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-                <div className="flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-900">
+              <li key={file.id} className="overflow-hidden rounded-control border border-line bg-surface">
+                <div className="flex aspect-square items-center justify-center bg-sunken">
                   {file.asset.thumbnail_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={file.asset.thumbnail_url} alt="" className="h-full w-full object-cover" loading="lazy" />
                   ) : (
-                    <DocumentIcon className="h-10 w-10 text-gray-400" />
+                    <DocumentIcon className="h-10 w-10 text-subtle" />
                   )}
                 </div>
                 <div className="p-2">
-                  <p className="truncate text-xs font-medium text-gray-900 dark:text-white" title={file.asset.name}>
+                  <p className="truncate text-xs font-medium text-fg" title={file.asset.name}>
                     {file.asset.name}
                   </p>
-                  <p className="truncate text-[0.7rem] text-gray-500 dark:text-gray-400">
+                  <p className="truncate text-[0.7rem] text-subtle">
                     {file.uploaded_by.email} · {new Date(file.uploaded_at).toLocaleDateString()}
                   </p>
                 </div>

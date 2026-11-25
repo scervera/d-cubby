@@ -22,7 +22,7 @@ interface DropZoneFolderProps {
 }
 
 const menuItemClass =
-  'flex w-full items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+  'flex w-full items-center space-x-2 px-3 py-2 text-sm text-muted hover:bg-hover'
 
 export default function DropZoneFolder({
   dropZone,
@@ -80,32 +80,32 @@ export default function DropZoneFolder({
       <button
         type="button"
         onClick={onOpen}
-        className={`flex h-80 w-full flex-col items-center rounded-lg border-2 border-dashed bg-white p-6 text-left transition-colors dark:bg-gray-800 ${
+        className={`flex h-80 w-full flex-col items-center rounded-control border-2 border-dashed bg-surface p-6 text-left transition-colors ${
           uploading
-            ? 'border-green-400 dark:border-green-500'
+            ? 'border-success'
             : dragOver
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
-              : 'border-gray-300 hover:border-blue-400 dark:border-gray-600 dark:hover:border-blue-500'
+              ? 'border-accent bg-accent-subtle'
+              : 'border-line hover:border-accent'
         }`}
       >
         <div className="relative flex-shrink-0">
-          <FolderIcon className="mb-3 h-16 w-16 text-blue-500 dark:text-blue-400" />
+          <FolderIcon className="mb-3 h-16 w-16 text-accent-text" />
           {dropZone.file_count > 0 && (
-            <div className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-blue-600 px-1 text-xs text-white">
+            <div className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs text-on-accent">
               {dropZone.file_count}
             </div>
           )}
         </div>
 
-        <h3 className="mb-2 w-full flex-shrink-0 truncate text-center font-medium text-gray-900 dark:text-white">{dropZone.name}</h3>
+        <h3 className="mb-2 w-full flex-shrink-0 truncate text-center font-medium text-fg">{dropZone.name}</h3>
 
         <div className="mb-3 flex h-10 flex-shrink-0 items-center justify-center">
           {dropZone.description && (
-            <p className="line-clamp-2 text-center text-sm text-gray-500 dark:text-gray-400">{dropZone.description}</p>
+            <p className="line-clamp-2 text-center text-sm text-subtle">{dropZone.description}</p>
           )}
         </div>
 
-        <div className="mb-3 flex flex-shrink-0 items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+        <div className="mb-3 flex flex-shrink-0 items-center space-x-4 text-xs text-subtle">
           <div className="flex items-center space-x-1">
             <FileText className="h-3 w-3" />
             <span>{t('folder.files', { count: dropZone.file_count })}</span>
@@ -120,12 +120,12 @@ export default function DropZoneFolder({
           {dropZone.preset_tags.length > 0 && (
             <div className="flex max-w-full flex-wrap justify-center gap-1">
               {dropZone.preset_tags.slice(0, 4).map((tag) => (
-                <span key={tag} className="inline-block rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                <span key={tag} className="inline-block rounded-full bg-accent-subtle px-2 py-1 text-xs text-accent-text">
                   {tag}
                 </span>
               ))}
               {dropZone.preset_tags.length > 4 && (
-                <span className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                <span className="inline-block rounded-full bg-sunken px-2 py-1 text-xs text-muted">
                   +{dropZone.preset_tags.length - 4}
                 </span>
               )}
@@ -133,22 +133,22 @@ export default function DropZoneFolder({
           )}
         </div>
         {!dropZone.is_active && (
-          <span className="mt-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+          <span className="mt-2 rounded-full bg-sunken px-2 py-0.5 text-xs text-muted">
             {t('folder.inactive')}
           </span>
         )}
       </button>
 
       {uploading && (
-        <div className="pointer-events-none absolute inset-x-3 bottom-3 rounded-lg border border-gray-200 bg-white/90 px-3 py-2 backdrop-blur dark:border-gray-700 dark:bg-gray-900/85">
+        <div className="pointer-events-none absolute inset-x-3 bottom-3 rounded-control border border-line bg-surface px-3 py-2">
           <div className="flex items-center justify-between gap-3">
-            <span className="truncate text-xs text-gray-700 dark:text-gray-200">
+            <span className="truncate text-xs text-muted">
               {t('folder.uploadingFiles', { count: uploadTotalFiles })}
             </span>
-            <span className="text-xs font-medium tabular-nums text-gray-800 dark:text-gray-100">{percent}%</span>
+            <span className="text-xs font-medium tabular-nums text-fg">{percent}%</span>
           </div>
-          <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-            <div className="h-2 rounded-full bg-green-500 transition-all duration-200" style={{ width: `${percent}%` }} />
+          <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-sunken">
+            <div className="h-2 rounded-full bg-success transition-all duration-200" style={{ width: `${percent}%` }} />
           </div>
         </div>
       )}
@@ -157,15 +157,15 @@ export default function DropZoneFolder({
         <button
           type="button"
           onClick={() => setShowMenu((open) => !open)}
-          className="rounded-full bg-white p-1 opacity-100 shadow-md transition-opacity dark:bg-gray-800 lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100"
+          className="rounded-full bg-surface p-1 opacity-100 transition-opacity lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100"
           aria-label={t('folder.menuLabel', { name: dropZone.name })}
           aria-expanded={showMenu}
         >
-          <MoreVertical className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <MoreVertical className="h-4 w-4 text-subtle" />
         </button>
 
         {showMenu && (
-          <div className="absolute right-0 top-8 z-10 min-w-[150px] rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+          <div className="absolute right-0 top-8 z-10 min-w-[150px] rounded-control border border-line bg-surface py-1">
             <button type="button" onClick={() => runMenu(onOpen)} className={menuItemClass}>
               <Eye className="h-4 w-4" />
               <span>{t('folder.menuView')}</span>
@@ -179,7 +179,7 @@ export default function DropZoneFolder({
                 <button
                   type="button"
                   onClick={() => runMenu(onDelete)}
-                  className="flex w-full items-center space-x-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                  className="flex w-full items-center space-x-2 px-3 py-2 text-sm text-danger-text hover:bg-danger-subtle"
                 >
                   <Trash2 className="h-4 w-4" />
                   <span>{t('folder.menuDelete')}</span>

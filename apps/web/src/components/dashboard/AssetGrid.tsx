@@ -245,10 +245,10 @@ export default function AssetGrid({
   if (safeAssets.length === 0) {
     return (
       <div className="flex justify-center px-2 py-4 sm:px-4 sm:py-10">
-        <div className="glass-panel-soft w-full max-w-md rounded-3xl border border-white/25 p-4 text-center sm:p-8 dark:border-white/10">
-          <PhotoIcon className="mx-auto h-8 w-8 text-indigo-400 sm:h-12 sm:w-12" />
-          <h3 className="mt-3 text-sm font-semibold text-slate-900 sm:mt-4 sm:text-base dark:text-[#E3E1CE]">{tAssets('grid.emptyTitle')}</h3>
-          <p className="mt-2 text-xs text-slate-600 sm:text-sm dark:text-slate-300">
+        <div className="rounded-card border bg-surface w-full max-w-md rounded-card border border-line p-4 text-center sm:p-8">
+          <PhotoIcon className="mx-auto h-8 w-8 text-accent-text sm:h-12 sm:w-12" />
+          <h3 className="mt-3 text-sm font-semibold text-fg sm:mt-4 sm:text-base">{tAssets('grid.emptyTitle')}</h3>
+          <p className="mt-2 text-xs text-muted sm:text-sm">
             {categoryLabel ? tAssets('grid.emptyCategoryHint', { category: categoryLabel }) : tAssets('grid.emptyAllHint')}
           </p>
         </div>
@@ -268,13 +268,13 @@ export default function AssetGrid({
         onDoubleClick={(e) => e.stopPropagation()}
         aria-label={tAssets('grid.actionsMenu', { name: asset.attributes.name })}
         aria-expanded={openMenuId === asset.id}
-        className="rounded-full border border-white/50 bg-white/80 p-1 shadow-sm transition-all duration-200 hover:border-white/80 hover:bg-white/95 dark:border-white/20 dark:bg-slate-900/70"
+        className="rounded-full border border-line bg-surface p-1 transition-all duration-200 hover:border-line-strong hover:bg-hover"
       >
-        <EllipsisVerticalIcon className={`${compact ? 'h-4 w-4' : size.fileIconSize} text-gray-600 dark:text-slate-300`} />
+        <EllipsisVerticalIcon className={`${compact ? 'h-4 w-4' : size.fileIconSize} text-muted`} />
       </button>
       {openMenuId === asset.id && (
         <div
-          className="absolute right-0 top-8 z-[100] min-w-[140px] rounded-xl border border-white/40 bg-white/80 py-1 shadow-xl backdrop-blur-lg dark:border-white/10 dark:bg-slate-900/80"
+          className="absolute right-0 top-8 z-dropdown min-w-[140px] rounded-control border border-line bg-surface py-1"
           onClick={(e) => e.stopPropagation()}
           onDoubleClick={(e) => e.stopPropagation()}
         >
@@ -283,7 +283,7 @@ export default function AssetGrid({
               setSelectedAsset(asset)
               setOpenMenuId(null)
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 transition-colors hover:bg-white/50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-slate-100"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-muted transition-colors hover:bg-hover hover:text-fg"
           >
             <EyeIcon className="h-4 w-4" />
             {tAssets('details.actions.view')}
@@ -293,7 +293,7 @@ export default function AssetGrid({
               handleDownload(asset)
               setOpenMenuId(null)
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-indigo-500 transition-colors hover:bg-indigo-50/60 dark:hover:bg-indigo-500/20"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-accent-text transition-colors hover:bg-accent-subtle"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
             {tAssets('details.actions.download')}
@@ -302,7 +302,7 @@ export default function AssetGrid({
             <button
               onClick={() => requestDelete(asset)}
               disabled={deletingId === asset.id}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-500 transition-colors hover:bg-rose-50/60 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-rose-500/20"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-danger-text transition-colors hover:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50"
             >
               <TrashIcon className="h-4 w-4" />
               {deletingId === asset.id ? tAssets('grid.bulk.deleting') : tAssets('details.actions.delete')}
@@ -315,14 +315,14 @@ export default function AssetGrid({
 
   const renderBulkCheckbox = (asset: Asset, compact: boolean) => (
     <div className={`pointer-events-none absolute z-50 ${compact ? 'left-1 top-1' : 'left-2 top-2'}`}>
-      <div className="rounded-full border border-white/50 bg-white/80 p-1 shadow-sm backdrop-blur-sm dark:border-white/20 dark:bg-slate-900/70">
+      <div className="rounded-full border border-line bg-surface p-1">
         <input
           type="checkbox"
           checked={bulkSelection.has(asset.id)}
           onChange={() => toggleBulkSelection(asset.id)}
           onClick={(e) => e.stopPropagation()}
           aria-label={asset.attributes.name}
-          className={`${compact || thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} pointer-events-auto rounded border-slate-300 text-indigo-500 focus:ring-2 focus:ring-indigo-500`}
+          className={`${compact || thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} pointer-events-auto rounded border-line text-accent-text`}
         />
       </div>
     </div>
@@ -330,8 +330,8 @@ export default function AssetGrid({
 
   const renderSelectedBadge = (asset: Asset, compact: boolean) =>
     selectionMode && isSelected(asset) ? (
-      <div className="absolute left-2 top-2 z-20 rounded-full bg-green-500 p-1 shadow-lg">
-        <CheckCircleIcon className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} text-white`} />
+      <div className="absolute left-2 top-2 z-20 rounded-full bg-success p-1">
+        <CheckCircleIcon className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} text-on-accent`} />
       </div>
     ) : null
 
@@ -343,13 +343,13 @@ export default function AssetGrid({
         {tags.slice(0, 3).map((tag) => (
           <span
             key={String(tag.id)}
-            className={`inline-flex max-w-full items-center truncate rounded-full bg-indigo-100/70 px-2 py-0.5 font-medium text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200 ${tagClass}`}
+            className={`inline-flex max-w-full items-center truncate rounded-full bg-accent-subtle px-2 py-0.5 font-medium text-accent-text ${tagClass}`}
           >
             {tagName(tag) || tAssets('details.tags.unknownTag')}
           </span>
         ))}
         {tags.length > 3 && (
-          <span className={`inline-flex items-center rounded-full bg-white/50 px-1.5 py-0.5 font-medium text-slate-600 dark:bg-slate-700/60 dark:text-slate-200 ${tagClass}`}>
+          <span className={`inline-flex items-center rounded-full bg-surface px-1.5 py-0.5 font-medium text-muted ${tagClass}`}>
             +{tags.length - 3}
           </span>
         )}
@@ -363,24 +363,24 @@ export default function AssetGrid({
     <div className="p-2 sm:p-4 lg:p-6">
       {!category.startsWith('smart_folder_') && (
         <div className="mb-6">
-          {categoryLabel && <h2 className="text-2xl font-bold text-slate-900 dark:text-[#E3E1CE]">{categoryLabel}</h2>}
-          <p className="mt-1 text-slate-400 dark:text-slate-400">{tAssets('grid.assetCount', { count: safeAssets.length })}</p>
+          {categoryLabel && <h2 className="text-2xl font-bold text-fg">{categoryLabel}</h2>}
+          <p className="mt-1 text-subtle">{tAssets('grid.assetCount', { count: safeAssets.length })}</p>
         </div>
       )}
 
       {!selectionMode && bulkDeleteMode && (
-        <div className="mb-5 rounded-2xl border border-rose-200/60 bg-rose-500/10 p-4 shadow-sm backdrop-blur-sm dark:border-rose-500/30 dark:bg-rose-500/15">
+        <div className="mb-5 rounded-card border border-danger bg-danger-subtle p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-              <span className="text-sm font-semibold text-rose-600 dark:text-rose-300">{tAssets('grid.bulk.selected', { count: bulkSelection.size })}</span>
-              <div className="flex gap-3 text-xs font-semibold text-rose-500 dark:text-rose-300">
+              <span className="text-sm font-semibold text-danger-text">{tAssets('grid.bulk.selected', { count: bulkSelection.size })}</span>
+              <div className="flex gap-3 text-xs font-semibold text-danger-text">
                 <button
                   onClick={() => setBulkSelection(new Set(safeAssets.filter(deletable).map((a) => a.id)))}
-                  className="transition-colors hover:text-rose-700 dark:hover:text-rose-200"
+                  className="transition-colors hover:text-danger-text"
                 >
                   {tAssets('grid.bulk.selectAll')}
                 </button>
-                <button onClick={() => setBulkSelection(new Set())} className="transition-colors hover:text-rose-700 dark:hover:text-rose-200">
+                <button onClick={() => setBulkSelection(new Set())} className="transition-colors hover:text-danger-text">
                   {tAssets('grid.bulk.clearSelection')}
                 </button>
               </div>
@@ -391,14 +391,14 @@ export default function AssetGrid({
                   setBulkDeleteMode(false)
                   setBulkSelection(new Set())
                 }}
-                className="rounded-xl border border-rose-300/60 px-3 py-1.5 text-sm font-medium text-rose-500 transition-colors hover:border-rose-400 hover:text-rose-700 dark:border-rose-500/30 dark:text-rose-300 dark:hover:border-rose-400 dark:hover:text-rose-200"
+                className="rounded-control border border-danger px-3 py-1.5 text-sm font-medium text-danger-text transition-colors hover:border-danger hover:text-danger-text"
               >
                 {tCommon('cancel')}
               </button>
               <button
                 onClick={() => setPendingDelete({ kind: 'bulk' })}
                 disabled={bulkSelection.size === 0 || bulkDeleting}
-                className="rounded-xl bg-gradient-to-r from-rose-500 to-red-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-control bg-danger px-4 py-2 text-sm font-semibold text-on-accent transition-transform disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {bulkDeleting ? tAssets('grid.bulk.deleting') : tAssets('grid.bulk.deleteCount', { count: bulkSelection.size })}
               </button>
@@ -415,8 +415,8 @@ export default function AssetGrid({
             return (
               <div
                 key={asset.id}
-                className={`glass-card group relative flex items-center gap-2 overflow-hidden border border-white/25 p-2 sm:gap-4 sm:p-3 dark:border-white/10 ${
-                  bulkDeleteMode ? 'ring-1 ring-red-300/40 dark:ring-red-500/30' : ''
+                className={`rounded-card border bg-surface group relative flex items-center gap-2 overflow-hidden border border-line p-2 sm:gap-4 sm:p-3 ${
+                  bulkDeleteMode ? 'ring-1 ring-danger' : ''
                 }`}
               >
                 {renderSelectedBadge(asset, true)}
@@ -440,14 +440,14 @@ export default function AssetGrid({
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon className="pointer-events-none h-6 w-6 text-gray-400" />
+                        <Icon className="pointer-events-none h-6 w-6 text-subtle" />
                       </div>
                     )}
                   </div>
                   {isVideo(asset) && (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div className="rounded-full bg-black/50 p-1">
-                        <PlayIcon className="h-4 w-4 text-white" />
+                      <div className="rounded-full bg-scrim p-1">
+                        <PlayIcon className="h-4 w-4 text-on-accent" />
                       </div>
                     </div>
                   )}
@@ -456,10 +456,10 @@ export default function AssetGrid({
                 </div>
 
                 <div className="min-w-0 flex-1 overflow-hidden">
-                  <h3 className="truncate text-sm font-medium text-slate-900 sm:text-base dark:text-[#E3E1CE]" title={asset.attributes.name}>
+                  <h3 className="truncate text-sm font-medium text-fg sm:text-base" title={asset.attributes.name}>
                     {asset.attributes.name}
                   </h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500 sm:gap-4 sm:text-sm dark:text-slate-300">
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-subtle sm:gap-4 sm:text-sm">
                     <span className="flex items-center gap-1 whitespace-nowrap">
                       <Icon className={`h-3 w-3 sm:h-4 sm:w-4 ${iconColor}`} />
                       {fileTypeLabel(asset.attributes.file_type)}
@@ -482,8 +482,8 @@ export default function AssetGrid({
             return (
               <div
                 key={asset.id}
-                className={`glass-card group relative overflow-hidden border border-white/25 dark:border-white/10 ${
-                  bulkDeleteMode ? 'ring-1 ring-red-300/40 dark:ring-red-500/30' : ''
+                className={`rounded-card border bg-surface group relative overflow-hidden border border-line ${
+                  bulkDeleteMode ? 'ring-1 ring-danger' : ''
                 }`}
               >
                 {renderSelectedBadge(asset, false)}
@@ -514,8 +514,8 @@ export default function AssetGrid({
 
                   {isVideo(asset) && (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div className={`rounded-full bg-black/50 ${thumbnailSize === 'small' ? 'p-1' : thumbnailSize === 'medium' ? 'p-2' : 'p-3'}`}>
-                        <PlayIcon className={`${thumbnailSize === 'small' ? 'h-4 w-4' : thumbnailSize === 'medium' ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
+                      <div className={`rounded-full bg-scrim ${thumbnailSize === 'small' ? 'p-1' : thumbnailSize === 'medium' ? 'p-2' : 'p-3'}`}>
+                        <PlayIcon className={`${thumbnailSize === 'small' ? 'h-4 w-4' : thumbnailSize === 'medium' ? 'h-6 w-6' : 'h-8 w-8'} text-on-accent`} />
                       </div>
                     </div>
                   )}
@@ -523,11 +523,11 @@ export default function AssetGrid({
                   {!bulkDeleteMode && !selectionMode && (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                       <div
-                        className={`rounded-full bg-white/90 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 dark:bg-gray-800/90 ${
+                        className={`rounded-full bg-surface opacity-0 transition-opacity duration-200 group-hover:opacity-100 ${
                           thumbnailSize === 'small' ? 'p-1' : 'p-2'
                         }`}
                       >
-                        <EyeIcon className={`${thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} text-gray-600 dark:text-slate-300`} />
+                        <EyeIcon className={`${thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} text-muted`} />
                       </div>
                     </div>
                   )}
@@ -537,19 +537,19 @@ export default function AssetGrid({
                 </div>
 
                 <div className={size.padding}>
-                  <h3 className={`truncate font-medium text-slate-900 dark:text-[#E3E1CE] ${size.titleSize}`} title={asset.attributes.name}>
+                  <h3 className={`truncate font-medium text-fg ${size.titleSize}`} title={asset.attributes.name}>
                     {asset.attributes.name}
                   </h3>
                   {!size.showMinimal && (
                     <>
-                      <div className={`mt-2 flex items-center justify-between ${size.infoSize} text-slate-500 dark:text-slate-300`}>
+                      <div className={`mt-2 flex items-center justify-between ${size.infoSize} text-subtle`}>
                         <span className="flex items-center">
                           <Icon className={`${size.fileIconSize} ${iconColor} mr-1`} />
                           {fileTypeLabel(asset.attributes.file_type)}
                         </span>
                         <span>{formatFileSize(asset.attributes.file_size)}</span>
                       </div>
-                      <p className="mt-1 text-xs text-slate-400 dark:text-slate-400">{formatDate(asset.attributes.created_at)}</p>
+                      <p className="mt-1 text-xs text-subtle">{formatDate(asset.attributes.created_at)}</p>
                       {renderTags(asset, size.tagSize)}
                     </>
                   )}

@@ -76,7 +76,7 @@ function AccountPageContent() {
                   <option key={l} value={l}>{localeNames[l]}</option>
                 ))}
               </SelectField>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{t('role', { role: t(`roles.${user.role}`) })}</p>
+              <p className="text-xs text-subtle">{t('role', { role: t(`roles.${user.role}`) })}</p>
               <Button type="submit" loading={saving}>{t('save')}</Button>
             </form>
           </Panel>

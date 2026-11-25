@@ -69,7 +69,7 @@ interface FacePerson {
 }
 
 const BUTTON_OVERLAY =
-  'flex items-center gap-2 rounded-lg border border-white/40 bg-white/80 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:border-white/20 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-700'
+  'flex items-center gap-2 rounded-control border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-hover'
 
 /** Asset details: preview, metadata, tags, EXIF, lineage and actions. */
 export default function AssetDetailModal({
@@ -480,14 +480,14 @@ export default function AssetDetailModal({
   return (
     <>
       {createPortal(
-        <div className="fixed inset-0 z-[1000] overflow-y-auto bg-slate-900/60 backdrop-blur" role="dialog" aria-modal="true" aria-label={attrs.name}>
+        <div className="fixed inset-0 z-modal overflow-y-auto bg-backdrop" role="dialog" aria-modal="true" aria-label={attrs.name}>
           <div className="flex min-h-screen items-center justify-center p-4">
-            <div className="glass-panel my-4 w-full max-w-4xl border border-white/25 px-6 py-6 dark:border-white/10">
+            <div className="rounded-card border bg-surface my-4 w-full max-w-4xl border border-line px-6 py-6">
               <div className="flex items-start justify-between gap-4">
-                <h3 className="min-w-0 flex-1 break-words text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{attrs.name}</h3>
+                <h3 className="min-w-0 flex-1 break-words text-lg font-semibold text-fg">{attrs.name}</h3>
                 <button
                   onClick={onClose}
-                  className="rounded-xl border border-white/40 bg-white/30 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-white/70 hover:bg-white/50 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-white/30"
+                  className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-line-strong hover:bg-hover"
                 >
                   {tAssets('details.done')}
                 </button>
@@ -496,8 +496,8 @@ export default function AssetDetailModal({
               <div className="mt-4 space-y-4">
                 {/* Preview */}
                 <div
-                  className={`relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/20 ${
-                    isImage(asset) ? 'p-0' : 'bg-white/20 p-4 backdrop-blur-sm dark:bg-slate-800/40'
+                  className={`relative flex items-center justify-center overflow-hidden rounded-card border border-line ${
+                    isImage(asset) ? 'p-0' : 'bg-surface p-4'
                   } ${isImage(asset) || isVideo(asset) ? 'min-h-[400px]' : 'aspect-video'}`}
                 >
                   <div className="absolute right-4 top-4 z-10 flex flex-wrap items-center justify-end gap-2">
@@ -525,7 +525,7 @@ export default function AssetDetailModal({
                           onClick={() => setShowFaces(!showFaces)}
                           className={
                             showFaces
-                              ? 'flex items-center gap-2 rounded-lg border border-indigo-400 bg-indigo-500/80 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm transition-colors dark:bg-indigo-600/80'
+                              ? 'flex items-center gap-2 rounded-control border border-accent bg-accent px-3 py-1.5 text-xs font-medium text-on-accent transition-colors'
                               : BUTTON_OVERLAY
                           }
                           title={tAssets('faces.show')}
@@ -581,18 +581,18 @@ export default function AssetDetailModal({
                     </div>
                   ) : isAudio(asset) ? (
                     <div className="flex h-full w-full flex-col items-center justify-center p-8">
-                      <div className="mb-6 h-48 w-48 overflow-hidden rounded-2xl shadow-lg">
+                      <div className="mb-6 h-48 w-48 overflow-hidden rounded-card">
                         <AudioThumbnail size="xlarge" />
                       </div>
-                      <div className="w-full max-w-md rounded-xl border border-white/25 bg-white/30 p-4 shadow-inner backdrop-blur dark:border-white/10 dark:bg-slate-800/60">
+                      <div className="w-full max-w-md rounded-control border border-line bg-surface p-4">
                         <audio controls className="w-full" preload="metadata">
                           <source src={withStreamToken(attrs.file_url || attrs.download_url)} type={attrs.file_type} />
                           {tAssets('viewer.audioNotSupported')}
                         </audio>
                       </div>
                       <div className="mt-4 text-center">
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{attrs.name}</p>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-sm font-medium text-muted">{attrs.name}</p>
+                        <p className="mt-1 text-xs text-subtle">
                           {fileTypeLabel(attrs.file_type, 'AUDIO')} • {formatFileSize(attrs.file_size)}
                         </p>
                       </div>
@@ -636,7 +636,7 @@ export default function AssetDetailModal({
                         />
                       )}
                       {popoverFace && (
-                        <div className="absolute left-1/2 top-1/2 z-[1001] -translate-x-1/2 -translate-y-1/2">
+                        <div className="absolute left-1/2 top-1/2 z-modal -translate-x-1/2 -translate-y-1/2">
                           <FaceNamePopover
                             face={popoverFace}
                             suggestedMatches={popoverFace.suggested_matches ?? []}
@@ -665,25 +665,25 @@ export default function AssetDetailModal({
                 {/* Metadata */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.fileType')}</span>
-                    <p className="break-all text-slate-900 dark:text-[#E3E1CE]">{attrs.file_type}</p>
+                    <span className="font-medium text-muted">{tAssets('details.fileType')}</span>
+                    <p className="break-all text-fg">{attrs.file_type}</p>
                   </div>
                   <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.fileSize')}</span>
-                    <p className="text-slate-900 dark:text-[#E3E1CE]">{formatFileSize(attrs.file_size)}</p>
+                    <span className="font-medium text-muted">{tAssets('details.fileSize')}</span>
+                    <p className="text-fg">{formatFileSize(attrs.file_size)}</p>
                   </div>
                   <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.created')}</span>
-                    <p className="text-slate-900 dark:text-[#E3E1CE]">{formatDate(attrs.created_at)}</p>
+                    <span className="font-medium text-muted">{tAssets('details.created')}</span>
+                    <p className="text-fg">{formatDate(attrs.created_at)}</p>
                   </div>
                   <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.assetId')}</span>
-                    <p className="font-mono text-xs text-slate-900 dark:text-[#E3E1CE]">{asset.id}</p>
+                    <span className="font-medium text-muted">{tAssets('details.assetId')}</span>
+                    <p className="font-mono text-xs text-fg">{asset.id}</p>
                   </div>
                   {resolution && (
                     <div className="col-span-2">
-                      <span className="font-medium text-slate-600 dark:text-slate-300">{resolution.label}</span>
-                      <p className="text-slate-900 dark:text-[#E3E1CE]">{resolution.value}</p>
+                      <span className="font-medium text-muted">{resolution.label}</span>
+                      <p className="text-fg">{resolution.value}</p>
                     </div>
                   )}
                 </div>
@@ -691,14 +691,14 @@ export default function AssetDetailModal({
                 {/* Tags */}
                 <div>
                   <div className="mb-3 flex items-center justify-between">
-                    <h4 className="flex items-center text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">
+                    <h4 className="flex items-center text-sm font-semibold text-fg">
                       <TagIcon className="mr-2 h-4 w-4" />
                       {tAssets('details.tags.title')}
                     </h4>
                     {mayTag && (
                       <button
                         onClick={() => setIsAddingTag(true)}
-                        className="flex items-center text-xs font-semibold text-indigo-500 transition-colors hover:text-indigo-300 dark:text-indigo-300 dark:hover:text-indigo-200"
+                        className="flex items-center text-xs font-semibold text-accent-text transition-colors hover:text-accent-text"
                       >
                         <PlusIcon className="mr-1 h-3 w-3" />
                         {tAssets('details.tags.addTag')}
@@ -710,14 +710,14 @@ export default function AssetDetailModal({
                     {assetTags.map((tag) => (
                       <span
                         key={String(tag.id)}
-                        className="inline-flex items-center gap-2 rounded-full bg-indigo-100/70 px-3 py-1 text-xs font-medium text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200"
+                        className="inline-flex items-center gap-2 rounded-full bg-accent-subtle px-3 py-1 text-xs font-medium text-accent-text"
                       >
                         {tagName(tag) || tAssets('details.tags.unknownTag')}
                         {mayTag && (
                           <button
                             onClick={() => removeTag(tag)}
                             aria-label={tAssets('details.tags.removeTagLabel', { name: tagName(tag) })}
-                            className="ml-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-indigo-300/70 text-indigo-400 transition-colors hover:border-indigo-500 hover:text-indigo-600 dark:border-indigo-500/30 dark:text-indigo-200 dark:hover:border-indigo-300 dark:hover:text-indigo-100"
+                            className="ml-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-accent text-accent-text transition-colors hover:border-accent hover:text-accent-text"
                           >
                             <XMarkIcon className="h-3 w-3" />
                           </button>
@@ -725,7 +725,7 @@ export default function AssetDetailModal({
                       </span>
                     ))}
                     {assetTags.length === 0 && (
-                      <span className="text-sm italic text-slate-500 dark:text-slate-400">{tAssets('details.tags.noneAssigned')}</span>
+                      <span className="text-sm italic text-subtle">{tAssets('details.tags.noneAssigned')}</span>
                     )}
                   </div>
 
@@ -745,7 +745,7 @@ export default function AssetDetailModal({
                             }, 200)
                           }
                           placeholder={tAssets('details.tags.enterTagName')}
-                          className="w-full rounded-xl border border-white/30 bg-white/70 px-3 py-1.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-100"
+                          className="w-full rounded-control border border-line bg-surface px-3 py-1.5 text-sm text-fg placeholder:text-subtle"
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault()
@@ -763,12 +763,12 @@ export default function AssetDetailModal({
                           autoFocus
                         />
                         {showTagSuggestions && tagSuggestions.length > 0 && (
-                          <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
+                          <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-control border border-line bg-surface">
                             {tagSuggestions.map((tag) => (
                               <button
                                 key={tag.id}
                                 type="button"
-                                className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-gray-900 hover:bg-indigo-50 focus:bg-indigo-50 focus:outline-none dark:text-white dark:hover:bg-indigo-900/20 dark:focus:bg-indigo-900/20"
+                                className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-fg hover:bg-accent-subtle focus:bg-accent-subtle"
                                 onClick={() => handleTagSuggestionClick(tag.name)}
                                 onMouseDown={(e) => e.preventDefault()}
                               >
@@ -781,7 +781,7 @@ export default function AssetDetailModal({
                       <button
                         onClick={handleAddTag}
                         disabled={!newTagName.trim() || addingTag}
-                        className="flex items-center rounded-xl bg-indigo-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex items-center rounded-control bg-accent px-3 py-1.5 text-sm font-semibold text-on-accent transition-transform disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {addingTag ? tAssets('details.tags.adding') : tAssets('details.tags.add')}
                       </button>
@@ -790,7 +790,7 @@ export default function AssetDetailModal({
                           setIsAddingTag(false)
                           setNewTagName('')
                         }}
-                        className="rounded-xl px-3 py-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100"
+                        className="rounded-control px-3 py-1.5 text-sm font-medium text-subtle transition-colors hover:text-fg"
                       >
                         {tCommon('cancel')}
                       </button>
@@ -798,15 +798,15 @@ export default function AssetDetailModal({
                   )}
 
                   {mayTag && availableTags.length > 0 && (
-                    <div className="mt-3 rounded-2xl border border-white/20 bg-white/15 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
+                    <div className="mt-3 rounded-card border border-line bg-surface p-3">
                       <div className="mb-2 flex items-center justify-between">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-subtle">
                           {tAssets('details.tags.availableTags')}
                         </p>
                         {selectedTagsToAdd.length > 0 && (
                           <button
                             onClick={handleAddSelectedTags}
-                            className="rounded-lg bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-600"
+                            className="rounded-control bg-accent px-2 py-1 text-xs font-semibold text-on-accent hover:bg-accent-hover"
                           >
                             {tAssets('details.tags.addSelected', { count: selectedTagsToAdd.length })}
                           </button>
@@ -824,8 +824,8 @@ export default function AssetDetailModal({
                                 key={id}
                                 className={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
                                   checked
-                                    ? 'border-indigo-200 bg-indigo-100/70 text-indigo-600 shadow-sm dark:border-indigo-400/30 dark:bg-indigo-500/20 dark:text-indigo-200'
-                                    : 'border-white/30 bg-white/20 text-slate-600 hover:border-white/60 hover:bg-white/30 dark:border-white/10 dark:bg-slate-700/40 dark:text-slate-300 dark:hover:border-white/30'
+                                    ? 'border-accent bg-accent-subtle text-accent-text'
+                                    : 'border-line bg-surface text-muted hover:border-line-strong hover:bg-hover'
                                 }`}
                               >
                                 <input
@@ -834,14 +834,14 @@ export default function AssetDetailModal({
                                   onChange={() =>
                                     setSelectedTagsToAdd((prev) => (checked ? prev.filter((x) => x !== id) : [...prev, id]))
                                   }
-                                  className="mr-1 h-3 w-3 rounded border-slate-300 text-indigo-500 focus:ring-indigo-400"
+                                  className="mr-1 h-3 w-3 rounded border-line text-accent-text"
                                 />
                                 {tagName(tag) || tAssets('details.tags.unknownTag')}
                               </label>
                             )
                           })}
                       </div>
-                      <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">{tAssets('details.tags.multiSelectHint')}</div>
+                      <div className="mt-2 text-xs text-subtle">{tAssets('details.tags.multiSelectHint')}</div>
                     </div>
                   )}
                 </div>
@@ -849,8 +849,8 @@ export default function AssetDetailModal({
                 {/* EXIF */}
                 {isImage(asset) && exif && (
                   <div>
-                    <h4 className="mb-2 text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('details.exif.exifInformation')}</h4>
-                    <div className="space-y-2 rounded-2xl border border-white/25 bg-white/25 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
+                    <h4 className="mb-2 text-sm font-semibold text-fg">{tAssets('details.exif.exifInformation')}</h4>
+                    <div className="space-y-2 rounded-card border border-line bg-surface p-3">
                       {(exif.camera_make || exif.camera_model) && (
                         <ExifRow label={tAssets('details.exif.camera')} value={[exif.camera_make, exif.camera_model].filter(Boolean).join(' ')} />
                       )}
@@ -876,14 +876,14 @@ export default function AssetDetailModal({
                 {isImage(asset) && (
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('lineage.title')}</h4>
+                      <h4 className="text-sm font-semibold text-fg">{tAssets('lineage.title')}</h4>
                       {lineage && (
-                        <span className="text-xs text-slate-500 dark:text-slate-300">{tAssets('lineage.summary', { count: lineage.relatives.length })}</span>
+                        <span className="text-xs text-subtle">{tAssets('lineage.summary', { count: lineage.relatives.length })}</span>
                       )}
                     </div>
-                    <div className="rounded-2xl border border-white/25 bg-white/25 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
+                    <div className="rounded-card border border-line bg-surface p-3">
                       {loadingLineage ? (
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{tAssets('lineage.loading')}</p>
+                        <p className="text-sm text-muted">{tAssets('lineage.loading')}</p>
                       ) : lineage && lineage.relatives.length > 0 ? (
                         <div className="space-y-2">
                           {lineage.relatives.map((relative) => (
@@ -891,28 +891,28 @@ export default function AssetDetailModal({
                               key={relative.id}
                               onClick={() => handleOpenRelatedAsset(String(relative.id))}
                               disabled={loadingRelatedAssetId === String(relative.id)}
-                              className="flex w-full items-center gap-3 rounded-xl border border-white/20 bg-white/30 px-3 py-2 text-left transition-colors hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-900/40 dark:hover:bg-slate-900/60"
+                              className="flex w-full items-center gap-3 rounded-control border border-line bg-surface px-3 py-2 text-left transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-60"
                             >
                               {relative.thumbnail_url ? (
                                 // eslint-disable-next-line @next/next/no-img-element
-                                <img src={relative.thumbnail_url} alt={relative.name} className="h-10 w-10 rounded-lg object-cover" />
+                                <img src={relative.thumbnail_url} alt={relative.name} className="h-10 w-10 rounded-control object-cover" />
                               ) : (
-                                <PhotoIcon className="h-8 w-8 text-slate-400" />
+                                <PhotoIcon className="h-8 w-8 text-subtle" />
                               )}
                               <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{relative.name}</p>
-                                <p className="text-xs text-slate-500 dark:text-slate-300">
+                                <p className="truncate text-sm font-medium text-fg">{relative.name}</p>
+                                <p className="text-xs text-subtle">
                                   {tAssets(`lineage.relations.${relative.relation}`)} · {formatDate(relative.created_at)}
                                 </p>
                               </div>
-                              <span className="text-xs text-indigo-500 dark:text-indigo-300">
+                              <span className="text-xs text-accent-text">
                                 {loadingRelatedAssetId === String(relative.id) ? tAssets('lineage.opening') : tAssets('lineage.open')}
                               </span>
                             </button>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{tAssets('lineage.none')}</p>
+                        <p className="text-sm text-muted">{tAssets('lineage.none')}</p>
                       )}
                     </div>
                   </div>
@@ -923,7 +923,7 @@ export default function AssetDetailModal({
                   {isVideo(asset) && mayEditAsset && (
                     <button
                       onClick={() => setShowPosterFrameSelector(true)}
-                      className="flex items-center gap-2 rounded-xl border border-purple-200/60 px-4 py-2 text-sm font-medium text-purple-600 transition-colors hover:border-purple-300 hover:bg-purple-50/70 dark:border-purple-500/30 dark:text-purple-300 dark:hover:border-purple-400 dark:hover:bg-purple-500/20"
+                      className="flex items-center gap-2 rounded-control border border-accent px-4 py-2 text-sm font-medium text-accent-text transition-colors hover:border-accent hover:bg-accent-subtle"
                       title={tAssets('details.actions.setPosterFrameTooltip')}
                     >
                       <VideoCameraIcon className="h-5 w-5" />
@@ -933,7 +933,7 @@ export default function AssetDetailModal({
                   {isImage(asset) && mayTag && (
                     <button
                       onClick={() => setShowImageEditor(true)}
-                      className="flex items-center gap-2 rounded-xl border border-amber-200/60 px-4 py-2 text-sm font-medium text-amber-600 transition-colors hover:border-amber-300 hover:bg-amber-50/70 dark:border-amber-500/30 dark:text-amber-300 dark:hover:border-amber-400 dark:hover:bg-amber-500/20"
+                      className="flex items-center gap-2 rounded-control border border-warning px-4 py-2 text-sm font-medium text-warning-text transition-colors hover:border-warning hover:bg-warning-subtle"
                       title={tAssets('details.actions.editImageTooltip')}
                     >
                       <ScissorsIcon className="h-5 w-5" />
@@ -944,7 +944,7 @@ export default function AssetDetailModal({
                     <button
                       onClick={handleAutoTag}
                       disabled={autoTagging}
-                      className="flex items-center gap-2 rounded-xl border border-emerald-200/60 px-4 py-2 text-sm font-medium text-emerald-600 transition-colors hover:border-emerald-300 hover:bg-emerald-50/70 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-500/30 dark:text-emerald-300 dark:hover:border-emerald-400 dark:hover:bg-emerald-500/20"
+                      className="flex items-center gap-2 rounded-control border border-success px-4 py-2 text-sm font-medium text-success-text transition-colors hover:border-success hover:bg-success-subtle disabled:cursor-not-allowed disabled:opacity-50"
                       title={tAssets('details.actions.autoTagTooltip')}
                     >
                       <SparklesIcon className="h-5 w-5" />
@@ -953,7 +953,7 @@ export default function AssetDetailModal({
                   )}
                   <button
                     onClick={() => onDownload(asset)}
-                    className="flex items-center gap-2 rounded-xl border border-indigo-200/60 px-4 py-2 text-sm font-medium text-indigo-500 transition-colors hover:border-indigo-300 hover:bg-indigo-50/70 dark:border-indigo-500/30 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/20"
+                    className="flex items-center gap-2 rounded-control border border-accent px-4 py-2 text-sm font-medium text-accent-text transition-colors hover:border-accent hover:bg-accent-subtle"
                     title={tAssets('details.actions.downloadTooltip')}
                   >
                     <ArrowDownTrayIcon className="h-5 w-5" />
@@ -963,7 +963,7 @@ export default function AssetDetailModal({
                     <button
                       onClick={handleDelete}
                       disabled={deletingAssetId === asset.id}
-                      className="flex items-center gap-2 rounded-xl border border-rose-200/60 px-4 py-2 text-sm font-medium text-rose-500 transition-colors hover:border-rose-300 hover:bg-rose-50/70 disabled:cursor-not-allowed disabled:opacity-50 dark:border-rose-500/30 dark:text-rose-300 dark:hover:border-rose-400 dark:hover:bg-rose-500/20"
+                      className="flex items-center gap-2 rounded-control border border-danger px-4 py-2 text-sm font-medium text-danger-text transition-colors hover:border-danger hover:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50"
                       title={tAssets('details.actions.deleteTooltip')}
                     >
                       <TrashIcon className="h-5 w-5" />
@@ -981,7 +981,7 @@ export default function AssetDetailModal({
       {fullScreenUrl &&
         createPortal(
           <div
-            className="fixed inset-0 flex items-center justify-center bg-slate-950/90 backdrop-blur"
+            className="fixed inset-0 flex items-center justify-center bg-backdrop"
             style={{ zIndex: 1200 }}
             onClick={(e) => {
               if (e.target === e.currentTarget) setFullScreenUrl(null)
@@ -998,7 +998,7 @@ export default function AssetDetailModal({
                 <img src={fullScreenUrl} alt={tAssets('viewer.fullSizePreviewAlt')} className="max-h-[95vh] max-w-full object-contain" />
               )}
             </div>
-            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/30 bg-white/20 px-4 py-2 text-sm text-white backdrop-blur">
+            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-line bg-surface px-4 py-2 text-sm text-on-accent">
               {tAssets('viewer.closeHint')}
             </div>
           </div>,
@@ -1025,8 +1025,8 @@ export default function AssetDetailModal({
 function ExifRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">{label}</span>
-      <p className="text-sm text-slate-700 dark:text-slate-200">{value}</p>
+      <span className="text-xs font-semibold uppercase tracking-wide text-subtle">{label}</span>
+      <p className="text-sm text-muted">{value}</p>
     </div>
   )
 }

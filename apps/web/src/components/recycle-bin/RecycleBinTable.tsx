@@ -53,16 +53,16 @@ export default function RecycleBinTable({
     iso ? format.dateTime(new Date(iso), { dateStyle: 'medium', timeStyle: 'short' }) : '—'
 
   if (loading && assets.length === 0) {
-    return <div className="flex h-64 items-center justify-center text-slate-500 dark:text-slate-400">{t('loading')}</div>
+    return <div className="flex h-64 items-center justify-center text-subtle">{t('loading')}</div>
   }
 
   if (!loading && assets.length === 0) {
     return (
-      <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-white/20 bg-white/15 px-6 text-center backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-        <TrashIcon className="mb-4 h-12 w-12 text-slate-400 dark:text-slate-500" />
-        <p className="text-lg font-medium text-slate-700 dark:text-slate-300">{t('emptyTitle')}</p>
-        <p className="mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">{t('emptyBody')}</p>
-        <Link href="/assets" className="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
+      <div className="flex h-64 flex-col items-center justify-center rounded-card border border-line bg-surface px-6 text-center">
+        <TrashIcon className="mb-4 h-12 w-12 text-subtle" />
+        <p className="text-lg font-medium text-muted">{t('emptyTitle')}</p>
+        <p className="mt-2 max-w-md text-sm text-subtle">{t('emptyBody')}</p>
+        <Link href="/assets" className="mt-4 text-sm font-medium text-accent-text hover:text-accent-text">
           {t('backToLibrary')}
         </Link>
       </div>
@@ -73,21 +73,21 @@ export default function RecycleBinTable({
 
   return (
     <div className="space-y-4">
-      <div className="overflow-x-auto rounded-2xl border border-white/20 bg-white/15 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-        <table className="min-w-full divide-y divide-slate-200/60 dark:divide-slate-700/60">
-          <thead className="bg-slate-50/80 dark:bg-slate-900/40">
+      <div className="overflow-x-auto rounded-card border border-line bg-surface">
+        <table className="min-w-full divide-y divide-line">
+          <thead className="bg-sunken">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{t('columns.item')}</th>
-              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 sm:table-cell dark:text-slate-400">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-subtle">{t('columns.item')}</th>
+              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-subtle sm:table-cell">
                 {t('columns.deletedAt')}
               </th>
-              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 md:table-cell dark:text-slate-400">
+              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-subtle md:table-cell">
                 {t('columns.purgeAfter')}
               </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{t('columns.actions')}</th>
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-subtle">{t('columns.actions')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200/60 dark:divide-slate-700/60">
+          <tbody className="divide-y divide-line">
             {assets.map((asset) => {
               const attrs = asset.attributes
               const thumb = attrs.thumbnail_url || attrs.preview_url
@@ -95,36 +95,36 @@ export default function RecycleBinTable({
               const busy = actingId === asset.id
               const restoreAllowed = canRestore(asset)
               return (
-                <tr key={asset.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                <tr key={asset.id} className="hover:bg-hover">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-700">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-control bg-sunken">
                         {thumb ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={thumb} alt="" className="h-full w-full object-cover" />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center">
-                            <Icon className="h-6 w-6 text-slate-400" />
+                            <Icon className="h-6 w-6 text-subtle" />
                           </div>
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate font-medium text-slate-900 dark:text-slate-100">{attrs.name}</p>
-                        <p className="text-xs text-slate-500 sm:hidden dark:text-slate-400">
+                        <p className="truncate font-medium text-fg">{attrs.name}</p>
+                        <p className="text-xs text-subtle sm:hidden">
                           {t('columns.deletedAt')}: {formatDate(attrs.deleted_at)}
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td className="hidden px-4 py-3 text-sm text-slate-600 sm:table-cell dark:text-slate-300">{formatDate(attrs.deleted_at)}</td>
-                  <td className="hidden px-4 py-3 text-sm text-slate-600 md:table-cell dark:text-slate-300">{formatDate(attrs.purge_after)}</td>
+                  <td className="hidden px-4 py-3 text-sm text-muted sm:table-cell">{formatDate(attrs.deleted_at)}</td>
+                  <td className="hidden px-4 py-3 text-sm text-muted md:table-cell">{formatDate(attrs.purge_after)}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
                       <button
                         type="button"
                         disabled={!restoreAllowed || busy}
                         onClick={() => setPending({ kind: 'restore', asset })}
-                        className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-300"
+                        className="inline-flex items-center gap-1 rounded-control border border-accent bg-accent-subtle px-3 py-1.5 text-sm font-medium text-accent-text hover:bg-accent-subtle disabled:cursor-not-allowed disabled:opacity-50"
                         title={!restoreAllowed ? t('noPermissionRestore') : undefined}
                       >
                         <ArrowPathIcon className="h-4 w-4" />
@@ -135,7 +135,7 @@ export default function RecycleBinTable({
                           type="button"
                           disabled={busy}
                           onClick={() => setPending({ kind: 'purge', asset })}
-                          className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400"
+                          className="inline-flex items-center gap-1 rounded-control border border-danger bg-danger-subtle px-3 py-1.5 text-sm font-medium text-danger-text hover:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <TrashIcon className="h-4 w-4" />
                           {busy ? t('purging') : t('purge')}

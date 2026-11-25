@@ -108,17 +108,17 @@ export default function DropZonesList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
-        <span className="ml-2 text-gray-600 dark:text-gray-300">{t('loadingList')}</span>
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-accent" />
+        <span className="ml-2 text-muted">{t('loadingList')}</span>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-        <p className="text-red-600 dark:text-red-400">{error}</p>
-        <button type="button" onClick={fetchDropZones} className="mt-2 text-sm text-red-600 hover:underline dark:text-red-400">
+      <div className="rounded-control border border-danger bg-danger-subtle p-4">
+        <p className="text-danger-text">{error}</p>
+        <button type="button" onClick={fetchDropZones} className="mt-2 text-sm text-danger-text hover:underline">
           {t('tryAgain')}
         </button>
       </div>
@@ -127,17 +127,17 @@ export default function DropZonesList() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
+      <div className="rounded-card border bg-surface rounded-card border border-line p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
-            <p className="mt-1 text-slate-600 dark:text-slate-200">{t('subtitle')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="mt-1 text-muted">{t('subtitle')}</p>
           </div>
           {writer && (
             <button
               type="button"
               onClick={() => setShowCreateModal(true)}
-              className="flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700 sm:w-auto sm:text-base"
+              className="flex w-full items-center justify-center rounded-control bg-accent px-4 py-2 text-sm text-on-accent transition-colors hover:bg-accent-hover sm:w-auto sm:text-base"
             >
               <PlusIcon className="mr-2 h-4 w-4" />
               {t('createButton')}
@@ -148,9 +148,9 @@ export default function DropZonesList() {
 
       {dropZones.length === 0 ? (
         <div className="py-12 text-center">
-          <FolderOpen className="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-slate-300" />
-          <h3 className="mb-2 text-lg font-medium text-slate-900 dark:text-slate-100">{t('emptyTitle')}</h3>
-          <p className="text-slate-600 dark:text-slate-200">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
+          <FolderOpen className="mx-auto mb-4 h-16 w-16 text-subtle" />
+          <h3 className="mb-2 text-lg font-medium text-fg">{t('emptyTitle')}</h3>
+          <p className="text-muted">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">

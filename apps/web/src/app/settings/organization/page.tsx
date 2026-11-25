@@ -111,11 +111,11 @@ function OrganizationSettingsPageContent() {
             <div className="flex flex-wrap items-center gap-4">
               {org.logo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={org.logo_url} alt={t('currentLogo')} className="h-16 w-16 rounded-xl border border-[#B8C5D1] object-contain p-1 dark:border-[#263541]" />
+                <img src={org.logo_url} alt={t('currentLogo')} className="h-16 w-16 rounded-control border border-line object-contain p-1" />
               ) : (
-                <span className="text-sm text-slate-500">{t('noLogo')}</span>
+                <span className="text-sm text-subtle">{t('noLogo')}</span>
               )}
-              <label className={`inline-flex cursor-pointer items-center rounded-xl border border-[#B8C5D1] bg-[#D8DFE6] px-4 py-2 text-sm font-semibold text-[#2C3A47] dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE] ${logoBusy ? 'pointer-events-none opacity-60' : ''}`}>
+              <label className={`inline-flex cursor-pointer items-center rounded-control border border-line bg-raised px-4 py-2 text-sm font-semibold text-fg ${logoBusy ? 'pointer-events-none opacity-60' : ''}`}>
                 {t('uploadLogo')}
                 <input type="file" accept={LOGO_TYPES.join(',')} className="sr-only" onChange={(e) => uploadLogo(e.target.files?.[0])} />
               </label>
@@ -123,7 +123,7 @@ function OrganizationSettingsPageContent() {
                 <Button variant="secondary" onClick={removeLogo} disabled={logoBusy}>{t('removeLogo')}</Button>
               )}
             </div>
-            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('logoHint')}</p>
+            <p className="mt-2 text-xs text-subtle">{t('logoHint')}</p>
           </Panel>
         </>
       )}

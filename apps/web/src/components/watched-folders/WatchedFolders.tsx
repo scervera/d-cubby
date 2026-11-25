@@ -29,7 +29,7 @@ import NotificationsModal from './NotificationsModal'
 import ScanHistoryModal from './ScanHistoryModal'
 import WatchedFolderForm from './WatchedFolderForm'
 
-const iconButton = 'rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700'
+const iconButton = 'rounded-control p-2 text-subtle transition-colors hover:bg-hover'
 
 /**
  * Folders on the server that D-cubby scans for new files to import. The API container sees
@@ -126,33 +126,33 @@ export default function WatchedFolders() {
   }
 
   const status = (folder: WatchedFolder) => {
-    if (!folder.active) return { icon: <PauseIcon className="h-5 w-5 text-gray-400" />, text: t('status.inactive'), className: 'text-gray-500' }
+    if (!folder.active) return { icon: <PauseIcon className="h-5 w-5 text-subtle" />, text: t('status.inactive'), className: 'text-subtle' }
     if (!folder.can_scan)
-      return { icon: <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />, text: t('status.inaccessible'), className: 'text-red-500' }
-    return { icon: <CheckCircleIcon className="h-5 w-5 text-green-500" />, text: t('status.active'), className: 'text-green-500' }
+      return { icon: <ExclamationTriangleIcon className="h-5 w-5 text-danger-text" />, text: t('status.inaccessible'), className: 'text-danger-text' }
+    return { icon: <CheckCircleIcon className="h-5 w-5 text-success-text" />, text: t('status.active'), className: 'text-success-text' }
   }
 
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-accent" />
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
+      <div className="rounded-card border bg-surface rounded-card border border-line p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
-            <p className="text-slate-600 dark:text-slate-200">{t('subtitle')}</p>
+            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+            <p className="text-muted">{t('subtitle')}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={loadFolders}
-              className="flex items-center gap-2 rounded-lg bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700"
+              className="flex items-center gap-2 rounded-control bg-line-strong px-4 py-2 text-on-accent transition-colors hover:bg-sunken"
             >
               <ArrowPathIcon className="h-5 w-5" />
               {t('refresh')}
@@ -160,7 +160,7 @@ export default function WatchedFolders() {
             <button
               type="button"
               onClick={() => setFormFolder('new')}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+              className="flex items-center gap-2 rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover"
             >
               <PlusIcon className="h-5 w-5" />
               {t('addFolder')}
@@ -169,20 +169,20 @@ export default function WatchedFolders() {
         </div>
       </div>
 
-      <div className="flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200">
+      <div className="flex gap-3 rounded-control border border-accent bg-accent-subtle p-4 text-sm text-accent-text">
         <InformationCircleIcon className="h-5 w-5 shrink-0" />
         <p>{t('containerHint')}</p>
       </div>
 
       {folders.length === 0 ? (
         <div className="py-12 text-center">
-          <FolderIcon className="mx-auto mb-4 h-12 w-12 text-slate-400 dark:text-slate-300" />
-          <h3 className="mb-2 text-lg font-medium text-slate-900 dark:text-slate-100">{t('emptyTitle')}</h3>
-          <p className="mb-4 text-slate-600 dark:text-slate-200">{t('emptyBody')}</p>
+          <FolderIcon className="mx-auto mb-4 h-12 w-12 text-subtle" />
+          <h3 className="mb-2 text-lg font-medium text-fg">{t('emptyTitle')}</h3>
+          <p className="mb-4 text-muted">{t('emptyBody')}</p>
           <button
             type="button"
             onClick={() => setFormFolder('new')}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+            className="rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover"
           >
             {t('addFolder')}
           </button>
@@ -193,49 +193,49 @@ export default function WatchedFolders() {
             const s = status(folder)
             const isScanning = scanning.has(folder.id)
             return (
-              <li key={folder.id} className="glass-panel-soft rounded-xl border border-white/30 p-6 dark:border-white/10">
+              <li key={folder.id} className="rounded-card border bg-surface rounded-control border border-line p-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="mb-2 flex flex-wrap items-center gap-3">
-                      <FolderIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{folder.name}</h3>
+                      <FolderIcon className="h-6 w-6 text-accent-text" />
+                      <h3 className="text-lg font-semibold text-fg">{folder.name}</h3>
                       <span className="flex items-center gap-1">
                         {s.icon}
                         <span className={`text-sm font-medium ${s.className}`}>{s.text}</span>
                       </span>
                     </div>
-                    <p className="mb-3 break-all font-mono text-sm text-slate-600 dark:text-slate-200">{folder.path}</p>
+                    <p className="mb-3 break-all font-mono text-sm text-muted">{folder.path}</p>
                     {folder.active && !folder.can_scan && (
-                      <p className="mb-3 text-sm text-red-600 dark:text-red-400">{t('inaccessibleHint')}</p>
+                      <p className="mb-3 text-sm text-danger-text">{t('inaccessibleHint')}</p>
                     )}
 
                     <dl className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.frequency')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.scan_frequency_display}</dd>
+                        <dt className="text-subtle">{t('stats.frequency')}</dt>
+                        <dd className="font-medium text-fg">{folder.scan_frequency_display}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.maxFileSize')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.max_file_size_display}</dd>
+                        <dt className="text-subtle">{t('stats.maxFileSize')}</dt>
+                        <dd className="font-medium text-fg">{folder.max_file_size_display}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.processed')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.total_files_processed}</dd>
+                        <dt className="text-subtle">{t('stats.processed')}</dt>
+                        <dd className="font-medium text-fg">{folder.total_files_processed}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.errors')}</dt>
-                        <dd className="font-medium text-red-600 dark:text-red-400">{folder.total_errors}</dd>
+                        <dt className="text-subtle">{t('stats.errors')}</dt>
+                        <dd className="font-medium text-danger-text">{folder.total_errors}</dd>
                       </div>
                     </dl>
 
                     {folder.auto_tag_names.length > 0 && (
                       <div className="mt-3">
-                        <span className="text-sm text-slate-500 dark:text-slate-400">{t('stats.autoTags')}</span>
+                        <span className="text-sm text-subtle">{t('stats.autoTags')}</span>
                         <div className="mt-1 flex flex-wrap gap-1">
                           {folder.auto_tag_names.map((tag) => (
                             <span
                               key={tag}
-                              className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                              className="inline-flex items-center rounded-full bg-accent-subtle px-2 py-1 text-xs font-medium text-accent-text"
                             >
                               {tag}
                             </span>
@@ -244,7 +244,7 @@ export default function WatchedFolders() {
                       </div>
                     )}
 
-                    <div className="mt-3 space-y-0.5 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="mt-3 space-y-0.5 text-sm text-subtle">
                       {folder.last_scanned_at && <p>{t('lastScanned', { time: new Date(folder.last_scanned_at).toLocaleString() })}</p>}
                       {folder.active && folder.next_scan_at && (
                         <p>{t('nextScan', { time: new Date(folder.next_scan_at).toLocaleString() })}</p>
@@ -257,12 +257,12 @@ export default function WatchedFolders() {
                       <button
                         type="button"
                         onClick={() => setNotificationsFolder(folder)}
-                        className={`${iconButton} relative hover:text-red-600`}
+                        className={`${iconButton} relative hover:text-danger-text`}
                         title={t('actions.notifications', { count: folder.unread_notifications_count })}
                         aria-label={t('actions.notifications', { count: folder.unread_notifications_count })}
                       >
                         <ExclamationTriangleIcon className="h-5 w-5" />
-                        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-xs text-on-accent">
                           {folder.unread_notifications_count}
                         </span>
                       </button>
@@ -270,7 +270,7 @@ export default function WatchedFolders() {
                     <button
                       type="button"
                       onClick={() => setHistoryFolder(folder)}
-                      className={`${iconButton} hover:text-blue-600`}
+                      className={`${iconButton} hover:text-accent-text`}
                       title={t('actions.history')}
                       aria-label={t('actions.history')}
                     >
@@ -280,16 +280,16 @@ export default function WatchedFolders() {
                       type="button"
                       onClick={() => !isScanning && handleScanNow(folder)}
                       disabled={!folder.can_scan || isScanning}
-                      className={`${iconButton} hover:text-green-600 disabled:cursor-not-allowed disabled:opacity-50`}
+                      className={`${iconButton} hover:text-success-text disabled:cursor-not-allowed disabled:opacity-50`}
                       title={isScanning ? t('actions.scanning') : t('actions.scanNow')}
                       aria-label={isScanning ? t('actions.scanning') : t('actions.scanNow')}
                     >
-                      <ArrowPathIcon className={`h-5 w-5 ${isScanning ? 'animate-spin text-green-600' : ''}`} />
+                      <ArrowPathIcon className={`h-5 w-5 ${isScanning ? 'animate-spin text-success-text' : ''}`} />
                     </button>
                     <button
                       type="button"
                       onClick={() => setFormFolder(folder)}
-                      className={`${iconButton} hover:text-blue-600`}
+                      className={`${iconButton} hover:text-accent-text`}
                       title={t('actions.edit')}
                       aria-label={t('actions.edit')}
                     >
@@ -298,7 +298,7 @@ export default function WatchedFolders() {
                     <button
                       type="button"
                       onClick={() => handleToggleActive(folder)}
-                      className={`${iconButton} ${folder.active ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'}`}
+                      className={`${iconButton} ${folder.active ? 'text-danger-text hover:text-danger-text' : 'text-success-text hover:text-success-text'}`}
                       title={folder.active ? t('actions.deactivate') : t('actions.activate')}
                       aria-label={folder.active ? t('actions.deactivate') : t('actions.activate')}
                     >
@@ -307,7 +307,7 @@ export default function WatchedFolders() {
                     <button
                       type="button"
                       onClick={() => setDeletingFolder(folder)}
-                      className={`${iconButton} hover:text-red-600`}
+                      className={`${iconButton} hover:text-danger-text`}
                       title={t('actions.delete')}
                       aria-label={t('actions.delete')}
                     >

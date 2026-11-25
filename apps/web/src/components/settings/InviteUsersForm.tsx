@@ -69,27 +69,27 @@ export default function InviteUsersForm({ smtpEnabled, onInvited }: { smtpEnable
         </SelectField>
         <Button type="submit" loading={submitting}>{t('invite')}</Button>
       </form>
-      <p className="text-xs text-slate-500 dark:text-slate-400">{smtpEnabled ? t('inviteByEmailHint') : t('inviteNoEmailHint')}</p>
+      <p className="text-xs text-subtle">{smtpEnabled ? t('inviteByEmailHint') : t('inviteNoEmailHint')}</p>
       <FormError message={error} />
 
       {invited.length > 0 && (
         <ul className="space-y-2">
           {invited.map(({ user: u, invitation_sent, temporary_password }) => (
-            <li key={u.id} className="rounded-xl border border-[#B8C5D1] bg-white/50 p-3 text-sm dark:border-[#263541] dark:bg-[#0d171d]/60">
-              <div className="font-medium text-[#2C3A47] dark:text-[#E3E1CE]">
+            <li key={u.id} className="rounded-control border border-line bg-surface p-3 text-sm">
+              <div className="font-medium text-fg">
                 {u.name} · {u.email} · {t(`roles.${u.role}`)}
               </div>
               {invitation_sent ? (
-                <p className="text-slate-600 dark:text-slate-400">{t('invitationSent')}</p>
+                <p className="text-muted">{t('invitationSent')}</p>
               ) : (
                 temporary_password && (
                   <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <span className="text-slate-600 dark:text-slate-400">{t('temporaryPassword')}</span>
-                    <code className="rounded bg-slate-200 px-2 py-0.5 font-mono dark:bg-slate-800">{temporary_password}</code>
-                    <button type="button" onClick={() => copy(temporary_password)} className="inline-flex items-center gap-1 text-xs font-medium text-[#2C3A47] hover:underline dark:text-[#F6DAA9]">
+                    <span className="text-muted">{t('temporaryPassword')}</span>
+                    <code className="rounded bg-sunken px-2 py-0.5 font-mono">{temporary_password}</code>
+                    <button type="button" onClick={() => copy(temporary_password)} className="inline-flex items-center gap-1 text-xs font-medium text-fg hover:underline">
                       <ClipboardDocumentIcon className="h-4 w-4" /> {t('copy')}
                     </button>
-                    <span className="w-full text-xs text-amber-700 dark:text-amber-400">{t('temporaryPasswordOnce')}</span>
+                    <span className="w-full text-xs text-warning-text">{t('temporaryPasswordOnce')}</span>
                   </div>
                 )
               )}

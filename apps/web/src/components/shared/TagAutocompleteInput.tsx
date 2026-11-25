@@ -69,13 +69,13 @@ export default function TagAutocompleteInput({
   return (
     <div>
       {label ? (
-        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="mb-2 block text-sm font-medium text-muted">
           <TagIcon className="mr-1 inline h-4 w-4" />
           {label}
         </label>
       ) : null}
       {hint ? (
-        <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">{hint}</p>
+        <p className="mb-3 text-sm text-subtle">{hint}</p>
       ) : null}
 
       <div className="mb-3 flex space-x-2">
@@ -110,17 +110,17 @@ export default function TagAutocompleteInput({
                 firstSuggestion?.focus()
               }
             }}
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="w-full rounded-control border border-line bg-surface px-3 py-2 text-fg"
             placeholder={placeholder}
           />
 
           {visibleSuggestions ? (
-            <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
+            <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-control border border-line bg-surface">
               {tagSuggestions.map((tag) => (
                 <button
                   key={tag.id}
                   type="button"
-                  className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none dark:text-white dark:hover:bg-blue-900/20 dark:focus:bg-blue-900/20"
+                  className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-fg hover:bg-accent-subtle focus:bg-accent-subtle"
                   onClick={() => handleTagSuggestionClick(tag.name)}
                   onMouseDown={(e) => e.preventDefault()}
                 >
@@ -134,7 +134,7 @@ export default function TagAutocompleteInput({
         <button
           type="button"
           onClick={handleAddTag}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+          className="rounded-control bg-accent px-4 py-2 text-on-accent transition-colors hover:bg-accent-hover"
         >
           {addButtonLabel}
         </button>
@@ -145,13 +145,13 @@ export default function TagAutocompleteInput({
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              className="inline-flex items-center rounded-full bg-accent-subtle px-3 py-1 text-sm text-accent-text"
             >
               {tag}
               <button
                 type="button"
                 onClick={() => handleRemoveTag(tag)}
-                className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
+                className="ml-2 text-accent-text hover:text-accent-text"
                 aria-label={`Remove tag ${tag}`}
               >
                 <X className="h-3 w-3" />

@@ -20,12 +20,12 @@ export function getFileIcon(fileType: string | null | undefined): ComponentType<
 }
 
 export function getFileTypeColor(fileType: string | null | undefined): string {
-  if (!fileType) return 'text-gray-600'
-  if (fileType.startsWith('image/')) return 'text-blue-600'
-  if (fileType.startsWith('video/')) return 'text-purple-600'
-  if (fileType.startsWith('audio/')) return 'text-green-600'
-  if (fileType.includes('pdf') || fileType.includes('document')) return 'text-red-600'
-  return 'text-gray-600'
+  if (!fileType) return 'text-muted'
+  if (fileType.startsWith('image/')) return 'text-accent-text'
+  if (fileType.startsWith('video/')) return 'text-accent-text'
+  if (fileType.startsWith('audio/')) return 'text-success-text'
+  if (fileType.includes('pdf') || fileType.includes('document')) return 'text-danger-text'
+  return 'text-muted'
 }
 
 /** "JPEG", "MP4", ... from a MIME type. */

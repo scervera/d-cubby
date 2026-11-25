@@ -72,31 +72,31 @@ export default function ConfirmDialog({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur p-4"
+      className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop p-4"
       onClick={(event) => {
         if (event.target === event.currentTarget && !loading) onCancel()
       }}
       role="presentation"
     >
       <div
-        className="glass-panel mx-auto w-full max-w-md border border-white/25 px-6 py-6 shadow-xl dark:border-white/10"
+        className="rounded-card border bg-surface mx-auto w-full max-w-md border border-line px-6 py-6"
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-body"
       >
         <div className="mb-3 flex items-center gap-2">
-          <ExclamationTriangleIcon className="h-5 w-5 shrink-0 text-amber-500" aria-hidden />
-          <h3 id="confirm-dialog-title" className="text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">
+          <ExclamationTriangleIcon className="h-5 w-5 shrink-0 text-warning-text" aria-hidden />
+          <h3 id="confirm-dialog-title" className="text-lg font-semibold text-fg">
             {title}
           </h3>
         </div>
-        <p id="confirm-dialog-body" className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-line">
+        <p id="confirm-dialog-body" className="text-sm text-muted whitespace-pre-line">
           {body}
         </p>
         {requiresTypedAck ? (
           <div className="mt-4 space-y-2">
-            <label htmlFor={inputId} className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+            <label htmlFor={inputId} className="block text-sm font-medium text-muted">
               {confirmPrompt || `Type ${phrase} to confirm`}
             </label>
             <input
@@ -109,7 +109,7 @@ export default function ConfirmDialog({
               onChange={(event) => setTypedValue(event.target.value)}
               disabled={loading}
               placeholder={phrase}
-              className="w-full rounded-xl border border-white/40 bg-white/50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30 disabled:opacity-50 dark:border-white/10 dark:bg-slate-900/60 dark:text-[#E3E1CE] dark:placeholder:text-slate-500"
+              className="w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle disabled:opacity-50"
               onKeyDown={(event) => {
                 if (event.key === 'Enter' && canConfirm) {
                   event.preventDefault()
@@ -121,7 +121,7 @@ export default function ConfirmDialog({
         ) : null}
         {error ? (
           <p
-            className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300"
+            className="mt-3 rounded-control border border-danger bg-danger-subtle px-3 py-2 text-sm text-danger-text"
             role="alert"
           >
             {error}
@@ -132,7 +132,7 @@ export default function ConfirmDialog({
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className="rounded-xl border border-white/40 bg-white/30 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-white/70 hover:bg-white/50 disabled:opacity-50 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-white/30"
+            className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-line-strong hover:bg-hover disabled:opacity-50"
           >
             {cancelLabel}
           </button>
@@ -140,7 +140,7 @@ export default function ConfirmDialog({
             type="button"
             onClick={onConfirm}
             disabled={!canConfirm}
-            className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-700 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-control bg-danger px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-danger-hover disabled:opacity-50"
           >
             {confirmLabel}
           </button>

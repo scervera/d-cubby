@@ -15,8 +15,8 @@ interface SmartFolderFormProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
-const labelClass = 'mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'
+  'w-full rounded-control border border-line bg-surface px-3 py-2 text-fg'
+const labelClass = 'mb-1 block text-sm font-medium text-muted'
 
 function splitTags(criteria: string): string[] {
   return criteria
@@ -85,7 +85,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -94,16 +94,16 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
         role="dialog"
         aria-modal="true"
         aria-labelledby="smart-folder-form-title"
-        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white shadow-xl dark:bg-gray-800"
+        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-control bg-surface"
       >
-        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
-          <h2 id="smart-folder-form-title" className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between border-b border-line p-6">
+          <h2 id="smart-folder-form-title" className="text-xl font-semibold text-fg">
             {folder ? t('form.editTitle') : t('form.createTitle')}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+            className="text-subtle hover:text-muted"
             aria-label={tCommon('close')}
           >
             <XMarkIcon className="h-6 w-6" />
@@ -153,7 +153,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
               addButtonLabel={t('form.addTags')}
             />
             {tagsError && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
+              <p className="mt-1 text-sm text-danger-text" role="alert">
                 {t('form.noTagsBody')}
               </p>
             )}
@@ -170,9 +170,9 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
                     value={value}
                     checked={matchLogic === value}
                     onChange={() => setMatchLogic(value)}
-                    className="h-4 w-4 border-gray-300 text-purple-600 focus:ring-purple-500"
+                    className="h-4 w-4 border-line text-accent-text"
                   />
-                  <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                  <span className="ml-2 text-sm text-muted">
                     {value === 'any' ? t('form.matchAnyLabel') : t('form.matchAllLabel')}
                   </span>
                 </label>
@@ -219,7 +219,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
                   </option>
                 ))}
               </select>
-              {groups.length === 0 && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('form.noGroups')}</p>}
+              {groups.length === 0 && <p className="mt-1 text-xs text-subtle">{t('form.noGroups')}</p>}
             </div>
           )}
 
@@ -242,7 +242,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('form.shareUsersHint')}</p>
+              <p className="mt-1 text-xs text-subtle">{t('form.shareUsersHint')}</p>
             </div>
           )}
 
@@ -255,7 +255,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="h-10 w-20 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                className="h-10 w-20 cursor-pointer rounded border border-line"
                 aria-label={t('form.folderColorLabel')}
               />
               <input
@@ -268,7 +268,7 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
                 pattern="^#[0-9A-Fa-f]{6}$"
               />
             </div>
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('form.folderColorHint')}</p>
+            <p className="mt-1 text-xs text-subtle">{t('form.folderColorHint')}</p>
           </div>
 
           <label className="flex items-center">
@@ -276,9 +276,9 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
               type="checkbox"
               checked={pinned}
               onChange={(e) => setPinned(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              className="h-4 w-4 rounded border-line text-accent-text"
             />
-            <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{t('form.pinLabel')}</span>
+            <span className="ml-2 text-sm text-muted">{t('form.pinLabel')}</span>
           </label>
 
           <label className="flex items-center">
@@ -286,9 +286,9 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
               type="checkbox"
               checked={active}
               onChange={(e) => setActive(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              className="h-4 w-4 rounded border-line text-accent-text"
             />
-            <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{t('form.activeLabel')}</span>
+            <span className="ml-2 text-sm text-muted">{t('form.activeLabel')}</span>
           </label>
 
           <div>
@@ -303,21 +303,21 @@ export default function SmartFolderForm({ folder, onSubmit, onClose }: SmartFold
               className={inputClass}
               min={0}
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('form.sortOrderHint')}</p>
+            <p className="mt-1 text-xs text-subtle">{t('form.sortOrderHint')}</p>
           </div>
 
-          <div className="mt-6 flex items-center justify-end space-x-3 border-t border-gray-200 pt-4 dark:border-gray-700">
+          <div className="mt-6 flex items-center justify-end space-x-3 border-t border-line pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+              className="rounded-control bg-sunken px-4 py-2 font-medium text-muted hover:bg-hover"
             >
               {tCommon('cancel')}
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="rounded-lg bg-purple-600 px-4 py-2 font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+              className="rounded-control bg-accent px-4 py-2 font-medium text-on-accent hover:bg-accent-hover disabled:opacity-50"
             >
               {saving ? t('form.saving') : folder ? t('form.update') : t('form.create')}
             </button>

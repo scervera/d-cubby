@@ -92,12 +92,12 @@ function UsersSettingsPageContent() {
 
       <Panel title={t('people', { count: users.length })}>
         {loading ? (
-          <p className="text-sm text-slate-500">{t('loading')}</p>
+          <p className="text-sm text-subtle">{t('loading')}</p>
         ) : (
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[40rem] text-sm">
               <thead>
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                <tr className="text-left text-xs uppercase tracking-wide text-subtle">
                   <th className="px-2 py-1 font-medium">{t('name')}</th>
                   <th className="px-2 py-1 font-medium">{t('role')}</th>
                   <th className="px-2 py-1 font-medium">{t('status')}</th>
@@ -110,12 +110,12 @@ function UsersSettingsPageContent() {
                   const manageable = !!me && canManage(me, u)
                   const roles = me?.permissions.assignable_roles ?? []
                   return (
-                    <tr key={u.id} className="border-t border-[#B8C5D1]/60 align-middle dark:border-[#263541]">
+                    <tr key={u.id} className="border-t border-line align-middle">
                       <td className="px-2 py-2">
-                        <div className="font-medium text-[#2C3A47] dark:text-[#E3E1CE]">
-                          {u.name} {u.id === me?.id && <span className="text-xs text-slate-500">({t('you')})</span>}
+                        <div className="font-medium text-fg">
+                          {u.name} {u.id === me?.id && <span className="text-xs text-subtle">({t('you')})</span>}
                         </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">{u.email}</div>
+                        <div className="text-xs text-subtle">{u.email}</div>
                       </td>
                       <td className="px-2 py-2">
                         {manageable ? (
@@ -124,7 +124,7 @@ function UsersSettingsPageContent() {
                             value={u.role}
                             disabled={busyId === u.id}
                             onChange={(e) => update(u, { role: e.target.value as Role })}
-                            className="rounded-lg border border-[#B8C5D1] bg-white/80 px-2 py-1 text-sm dark:border-[#263541] dark:bg-[#0d171d] dark:text-[#E3E1CE]"
+                            className="rounded-control border border-line bg-surface px-2 py-1 text-sm"
                           >
                             {(roles.includes(u.role) ? roles : [u.role, ...roles]).map((r) => (
                               <option key={r} value={r}>{t(`roles.${r}`)}</option>
@@ -136,14 +136,14 @@ function UsersSettingsPageContent() {
                       </td>
                       <td className="px-2 py-2">
                         {u.disabled ? (
-                          <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs dark:bg-slate-800">{t('disabled')}</span>
+                          <span className="rounded-full bg-sunken px-2 py-0.5 text-xs">{t('disabled')}</span>
                         ) : u.password_change_required ? (
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">{t('pendingPassword')}</span>
+                          <span className="rounded-full bg-warning-subtle px-2 py-0.5 text-xs text-warning-text">{t('pendingPassword')}</span>
                         ) : (
-                          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800 dark:bg-green-900/40 dark:text-green-300">{t('active')}</span>
+                          <span className="rounded-full bg-success-subtle px-2 py-0.5 text-xs text-success-text">{t('active')}</span>
                         )}
                       </td>
-                      <td className="px-2 py-2 text-xs text-slate-500 dark:text-slate-400">
+                      <td className="px-2 py-2 text-xs text-subtle">
                         {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : t('never')}
                       </td>
                       <td className="px-2 py-2">

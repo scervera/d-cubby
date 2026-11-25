@@ -83,14 +83,14 @@ export default function GroupsPage() {
     <SharedLayout currentPage="groups">
       <div className="mb-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-          <p className="mt-1 text-gray-600 dark:text-gray-400">{admin ? t('subtitle') : t('subtitleReadOnly')}</p>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+          <p className="mt-1 text-muted">{admin ? t('subtitle') : t('subtitleReadOnly')}</p>
         </div>
         {admin && (
           <button
             type="button"
             onClick={() => setShowCreateForm(true)}
-            className="flex items-center justify-center space-x-2 rounded-lg bg-purple-600 px-4 py-2 font-medium text-white hover:bg-purple-700"
+            className="flex items-center justify-center space-x-2 rounded-control bg-accent px-4 py-2 font-medium text-on-accent hover:bg-accent-hover"
           >
             <PlusIcon className="h-5 w-5" />
             <span>{t('createButton')}</span>
@@ -100,29 +100,29 @@ export default function GroupsPage() {
 
       {loading ? (
         <div className="flex min-h-[300px] items-center justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600" />
+          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-accent" />
         </div>
       ) : groups.length === 0 ? (
         <div className="py-12 text-center">
-          <UserGroupIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">{t('emptyTitle')}</h3>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{admin ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
+          <UserGroupIcon className="mx-auto h-12 w-12 text-subtle" />
+          <h3 className="mt-2 text-sm font-medium text-fg">{t('emptyTitle')}</h3>
+          <p className="mt-1 text-sm text-subtle">{admin ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {groups.map((group) => (
-            <div key={group.id} className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
+            <div key={group.id} className="rounded-card border bg-surface rounded-card border border-line p-6">
               <div className="mb-4 flex items-start justify-between">
                 <div className="min-w-0 flex-1">
-                  <h3 className="mb-1 truncate text-lg font-semibold text-gray-900 dark:text-white">{group.name}</h3>
-                  {group.description && <p className="text-sm text-gray-600 dark:text-gray-400">{group.description}</p>}
+                  <h3 className="mb-1 truncate text-lg font-semibold text-fg">{group.name}</h3>
+                  {group.description && <p className="text-sm text-muted">{group.description}</p>}
                 </div>
                 {admin && (
                   <div className="flex space-x-1">
                     <button
                       type="button"
                       onClick={() => setEditingGroup(group)}
-                      className="p-1 text-gray-400 hover:text-purple-600 dark:text-gray-500 dark:hover:text-purple-400"
+                      className="p-1 text-subtle hover:text-accent-text"
                       title={t('tooltips.editGroup')}
                       aria-label={t('tooltips.editGroup')}
                     >
@@ -131,7 +131,7 @@ export default function GroupsPage() {
                     <button
                       type="button"
                       onClick={() => setDeletingGroup(group)}
-                      className="p-1 text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400"
+                      className="p-1 text-subtle hover:text-danger-text"
                       title={t('tooltips.deleteGroup')}
                       aria-label={t('tooltips.deleteGroup')}
                     >
@@ -141,12 +141,12 @@ export default function GroupsPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
-                <span className="text-sm text-gray-600 dark:text-gray-400">{t('memberCount', { count: group.member_count })}</span>
+              <div className="flex items-center justify-between border-t border-line pt-4">
+                <span className="text-sm text-muted">{t('memberCount', { count: group.member_count })}</span>
                 <button
                   type="button"
                   onClick={() => setManagingGroup(group)}
-                  className="flex items-center text-sm font-medium text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
+                  className="flex items-center text-sm font-medium text-accent-text hover:text-accent-text"
                 >
                   <UserPlusIcon className="mr-1 h-4 w-4" />
                   {admin ? t('manageMembers') : t('viewMembers')}

@@ -14,24 +14,24 @@ export default function AuthCard({ title, subtitle, children, wide }: { title: s
       <div className="fixed right-4 top-4">
         <ThemeToggle variant="toolbar" />
       </div>
-      <div className={`glass-panel w-full ${wide ? 'max-w-2xl' : 'max-w-md'} rounded-3xl p-6 sm:p-8`}>
+      <div className={`rounded-card border bg-surface w-full ${wide ? 'max-w-2xl' : 'max-w-md'} rounded-card p-6 sm:p-8`}>
         <div className="mb-6 flex items-center gap-3">
           {org?.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={org.logo_url} alt="" className="h-11 w-11 rounded-xl object-contain" />
+            <img src={org.logo_url} alt="" className="h-11 w-11 rounded-control object-contain" />
           ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#2C3A47] font-heading font-bold text-[#F6DAA9] dark:bg-[#F6DAA9] dark:text-[#121F27]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-control bg-accent font-bold text-accent-text">
               D³
             </span>
           )}
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <p className="truncate text-xs font-semibold uppercase tracking-[0.2em] text-subtle">
               {org?.name ?? 'D-cubby'}
             </p>
-            <h1 className="font-heading text-xl font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{title}</h1>
+            <h1 className="text-xl font-semibold text-fg">{title}</h1>
           </div>
         </div>
-        {subtitle && <div className="mb-5 text-sm text-slate-600 dark:text-slate-400">{subtitle}</div>}
+        {subtitle && <div className="mb-5 text-sm text-muted">{subtitle}</div>}
         {children}
       </div>
     </div>

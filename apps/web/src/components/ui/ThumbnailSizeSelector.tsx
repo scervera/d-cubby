@@ -84,10 +84,10 @@ export default function ThumbnailSizeSelector() {
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+      <span className="text-sm text-muted font-medium">
         {t('thumbnailSize.label')}
       </span>
-      <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+      <div className="flex items-center space-x-1 bg-sunken rounded-control p-1">
         {Object.entries(sizeConfig).map(([size, config]) => {
           const Icon = config.icon
           const isActive = thumbnailSize === size
@@ -98,10 +98,10 @@ export default function ThumbnailSizeSelector() {
             <button
               key={size}
               onClick={() => setThumbnailSize(size as ThumbnailSize)}
-              className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-control text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-600'
+                  ? 'bg-surface text-fg'
+                  : 'text-muted hover:text-fg hover:bg-hover'
               }`}
               title={`${label} - ${description}`}
             >

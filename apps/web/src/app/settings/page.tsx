@@ -38,9 +38,9 @@ function SettingsOverviewPageContent() {
     <>
       <div className="grid gap-3 sm:grid-cols-3">
         {tiles.map((tile) => (
-          <div key={tile.label} className="glass-panel rounded-2xl p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{tile.label}</div>
-            <div className="mt-1 font-heading text-2xl font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{tile.value}</div>
+          <div key={tile.label} className="rounded-card border bg-surface rounded-card p-4">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-subtle">{tile.label}</div>
+            <div className="mt-1 text-2xl font-semibold text-fg">{tile.value}</div>
           </div>
         ))}
       </div>
@@ -49,7 +49,7 @@ function SettingsOverviewPageContent() {
         <Panel title={t('byType')}>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              <tr className="text-left text-xs uppercase tracking-wide text-subtle">
                 <th className="py-1 font-medium">{t('type')}</th>
                 <th className="py-1 text-right font-medium">{t('count')}</th>
                 <th className="py-1 text-right font-medium">{t('size')}</th>
@@ -57,8 +57,8 @@ function SettingsOverviewPageContent() {
             </thead>
             <tbody>
               {CATEGORIES.map((c) => (
-                <tr key={c} className="border-t border-[#B8C5D1]/60 dark:border-[#263541]">
-                  <td className="py-2 text-[#2C3A47] dark:text-[#E3E1CE]">{t(`categories.${c}`)}</td>
+                <tr key={c} className="border-t border-line">
+                  <td className="py-2 text-fg">{t(`categories.${c}`)}</td>
                   <td className="py-2 text-right tabular-nums">{(stats.by_category[c]?.count ?? 0).toLocaleString()}</td>
                   <td className="py-2 text-right tabular-nums">{formatBytes(stats.by_category[c]?.bytes ?? 0)}</td>
                 </tr>
@@ -72,9 +72,9 @@ function SettingsOverviewPageContent() {
         <ul className="grid gap-2 sm:grid-cols-2">
           {(['users', 'organization', 'watched-folders', 'system'] as const).map((key) => (
             <li key={key}>
-              <Link href={`/settings/${key}`} className="block rounded-xl border border-[#B8C5D1] bg-white/50 p-3 hover:border-[#D4A574] dark:border-[#263541] dark:bg-[#0d171d]/60 dark:hover:border-[#F6DAA9]">
-                <div className="font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">{t(`links.${key}.title`)}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">{t(`links.${key}.description`)}</div>
+              <Link href={`/settings/${key}`} className="block rounded-control border border-line bg-surface p-3 hover:border-accent">
+                <div className="font-semibold text-fg">{t(`links.${key}.title`)}</div>
+                <div className="text-sm text-muted">{t(`links.${key}.description`)}</div>
               </Link>
             </li>
           ))}

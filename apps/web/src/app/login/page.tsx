@@ -57,11 +57,11 @@ function LoginForm() {
         </Button>
         <p className="text-center text-sm">
           {config?.password_reset_by_email ? (
-            <Link href="/forgot-password" className="font-medium text-[#2C3A47] underline-offset-2 hover:underline dark:text-[#F6DAA9]">
+            <Link href="/forgot-password" className="font-medium text-fg underline-offset-2 hover:underline">
               {t('forgotPassword')}
             </Link>
           ) : (
-            <span className="text-slate-500 dark:text-slate-400">{t('forgotPasswordAskAdmin')}</span>
+            <span className="text-subtle">{t('forgotPasswordAskAdmin')}</span>
           )}
         </p>
       </form>

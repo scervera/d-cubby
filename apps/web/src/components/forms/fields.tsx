@@ -3,7 +3,7 @@
 import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
 
 const inputClass =
-  'block w-full rounded-xl border border-[#B8C5D1] bg-white/80 px-3 py-2 text-sm text-[#2C3A47] shadow-sm placeholder:text-slate-400 focus:border-[#D4A574] focus:outline-none focus:ring-2 focus:ring-[#D4A574]/40 disabled:opacity-60 dark:border-[#263541] dark:bg-[#0d171d] dark:text-[#E3E1CE] dark:focus:border-[#F6DAA9] dark:focus:ring-[#F6DAA9]/30'
+  'block w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle disabled:opacity-60'
 
 interface FieldProps {
   label: string
@@ -16,7 +16,7 @@ export const TextField = forwardRef<HTMLInputElement, FieldProps & InputHTMLAttr
     const inputId = id ?? props.name
     return (
       <div className={className}>
-        <label htmlFor={inputId} className="mb-1 block text-sm font-medium text-[#2C3A47] dark:text-[#E3E1CE]">
+        <label htmlFor={inputId} className="mb-1 block text-sm font-medium text-fg">
           {label}
         </label>
         <input
@@ -28,7 +28,7 @@ export const TextField = forwardRef<HTMLInputElement, FieldProps & InputHTMLAttr
           {...props}
         />
         {(error || hint) && (
-          <p id={`${inputId}-help`} className={`mt-1 text-xs ${error ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400'}`}>
+          <p id={`${inputId}-help`} className={`mt-1 text-xs ${error ? 'text-danger-text' : 'text-subtle'}`}>
             {error || hint}
           </p>
         )}
@@ -48,13 +48,13 @@ export function SelectField({
   const selectId = id ?? props.name
   return (
     <div className={className}>
-      <label htmlFor={selectId} className="mb-1 block text-sm font-medium text-[#2C3A47] dark:text-[#E3E1CE]">
+      <label htmlFor={selectId} className="mb-1 block text-sm font-medium text-fg">
         {label}
       </label>
       <select id={selectId} className={inputClass} {...props}>
         {children}
       </select>
-      {hint && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-subtle">{hint}</p>}
     </div>
   )
 }
@@ -70,15 +70,15 @@ export function Button({
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'danger'; loading?: boolean }) {
   const styles = {
     primary:
-      'bg-[#2C3A47] text-white hover:bg-[#1E2B33] dark:bg-[#F6DAA9] dark:text-[#121F27] dark:hover:bg-[#ecc98a]',
+      'bg-accent text-on-accent hover:bg-accent-hover',
     secondary:
-      'border border-[#B8C5D1] bg-[#D8DFE6] text-[#2C3A47] hover:bg-[#ccd7e0] dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE] dark:hover:bg-[#1a2832]',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
+      'border border-line bg-raised text-fg hover:bg-hover',
+    danger: 'bg-danger text-on-accent hover:bg-danger-hover',
   }[variant]
   return (
     <button
       type={type}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${styles} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-control px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${styles} ${className}`}
       disabled={disabled || loading}
       {...props}
     >
@@ -91,7 +91,7 @@ export function Button({
 export function FormError({ message }: { message?: string | null }) {
   if (!message) return null
   return (
-    <div role="alert" className="rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+    <div role="alert" className="rounded-control border border-danger bg-danger-subtle px-3 py-2 text-sm text-danger-text">
       {message}
     </div>
   )
@@ -110,15 +110,15 @@ export function passwordStrength(password: string): number {
 
 export function PasswordStrengthMeter({ password, labels }: { password: string; labels: string[] }) {
   const score = passwordStrength(password)
-  const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-600']
+  const colors = ['bg-danger', 'bg-warning', 'bg-warning', 'bg-success', 'bg-success']
   return (
     <div className="mt-2" aria-live="polite">
       <div className="flex gap-1">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className={`h-1.5 flex-1 rounded-full ${i < score ? colors[score] : 'bg-slate-200 dark:bg-slate-700'}`} />
+          <div key={i} className={`h-1.5 flex-1 rounded-full ${i < score ? colors[score] : 'bg-sunken'}`} />
         ))}
       </div>
-      {password && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{labels[score]}</p>}
+      {password && <p className="mt-1 text-xs text-subtle">{labels[score]}</p>}
     </div>
   )
 }

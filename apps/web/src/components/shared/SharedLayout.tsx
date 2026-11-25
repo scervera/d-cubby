@@ -82,19 +82,19 @@ export default function SharedLayout({
         <div className="flex max-w-full gap-3 sm:gap-4 lg:gap-6">
           {sidebarOpen && (
             <div
-              className="fixed inset-0 top-16 z-[60] bg-slate-900/40 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 top-16 z-drawer bg-backdrop lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
           )}
 
           <aside
             id="sidebar"
-            className={`fixed bottom-0 left-0 top-16 z-[70] w-72 transform transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:z-auto lg:w-64 lg:flex-shrink-0 lg:translate-x-0 lg:self-start ${
+            className={`fixed bottom-0 left-0 top-16 z-drawer w-72 transform transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:z-auto lg:w-64 lg:flex-shrink-0 lg:translate-x-0 lg:self-start ${
               sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
             }`}
           >
-            <div className="shell-sidebar-elev h-full lg:h-auto">
-              <div className="h-full min-h-0 overflow-y-auto rounded-r-2xl border-r border-[#B8C5D1] bg-[#E8EDF2] p-3 sm:p-4 lg:max-h-[calc(100vh-6rem)] lg:rounded-2xl lg:border lg:bg-transparent lg:glass-panel-soft dark:border-[#263541] dark:bg-[#121F27] lg:dark:bg-transparent">
+            <div className="h-full lg:h-auto">
+              <div className="h-full min-h-0 overflow-y-auto rounded-r-card border-r border-line bg-surface p-3 sm:p-4 lg:max-h-[calc(100vh-6rem)] lg:rounded-card lg:border lg:bg-transparent lg:rounded-card lg:border lg:bg-surface">
                 <Suspense fallback={null}>
                   <SharedSidebar
                     currentPage={currentPage}

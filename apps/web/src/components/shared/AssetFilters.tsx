@@ -226,28 +226,28 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
   };
 
     return (
-      <div className={`rounded-3xl ${className}`}>
+      <div className={`rounded-card ${className}`}>
       <div className="p-3 sm:p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <div className="flex-1 min-w-0">
-              <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 truncate">
+              <h2 className="text-base sm:text-lg font-semibold text-fg truncate">
               {getContextLabel()}
             </h2>
-              <p className="hidden sm:block text-xs sm:text-sm text-slate-500 dark:text-slate-300">
+              <p className="hidden sm:block text-xs sm:text-sm text-subtle">
               {t('filters.subtitle')}
             </p>
           </div>
           
           <div className="flex items-center space-x-1 sm:space-x-2 ml-2">
             {/* View Mode Toggle */}
-              <div className="flex items-center rounded-xl border border-white/25 bg-white/20 p-1 backdrop-blur-sm dark:border-white/10 dark:bg-slate-800/40">
+              <div className="flex items-center rounded-control border border-line bg-surface p-1">
               <button
                 onClick={() => handleFilterChange('viewMode', 'grid')}
-                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
+                  className={`p-1.5 sm:p-2 rounded-control transition-colors ${
                   filters.viewMode === 'grid'
-                      ? 'border border-white/60 bg-white/75 text-slate-900 shadow-sm dark:border-white/10 dark:bg-slate-700/70 dark:text-white'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                      ? 'border border-line bg-surface text-fg'
+                      : 'text-subtle hover:text-fg'
                 }`}
                 title={t('filters.gridView')}
               >
@@ -255,10 +255,10 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
               </button>
               <button
                 onClick={() => handleFilterChange('viewMode', 'list')}
-                  className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
+                  className={`p-1.5 sm:p-2 rounded-control transition-colors ${
                   filters.viewMode === 'list'
-                      ? 'border border-white/60 bg-white/75 text-slate-900 shadow-sm dark:border-white/10 dark:bg-slate-700/70 dark:text-white'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                      ? 'border border-line bg-surface text-fg'
+                      : 'text-subtle hover:text-fg'
                 }`}
                 title={t('filters.listView')}
               >
@@ -270,10 +270,10 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
             {!lockCategoryTo && (
             <button
               onClick={() => setShowFilters(!showFilters)}
-                className={`p-1.5 sm:p-2 rounded-xl border transition-colors backdrop-blur ${
+                className={`p-1.5 sm:p-2 rounded-control border transition-colors ${
                 showFilters
-                    ? 'border-white/40 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-600 dark:border-white/10 dark:text-indigo-300'
-                    : 'border-white/25 bg-white/15 text-slate-600 hover:border-white/50 hover:text-slate-900 dark:border-white/10 dark:bg-slate-800/40 dark:text-slate-300 dark:hover:border-white/30 dark:hover:text-slate-100'
+                    ? 'border-line bg-accent text-accent-text'
+                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-fg'
               }`}
               title={t('filters.toggleFilters')}
             >
@@ -286,7 +286,7 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
         {/* Search Bar */}
         <div className="relative mb-3 sm:mb-4 scroll-mt-20">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
+              <MagnifyingGlassIcon className="h-4 w-4 sm:h-5 sm:w-5 text-subtle" />
           </div>
           <input
             type="text"
@@ -316,12 +316,12 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
                 setSearchInputValue(filters.search)
               }
             }}
-              className="block w-full rounded-xl border border-white/30 bg-white/70 pl-9 pr-9 py-3.5 text-sm text-slate-900 shadow-sm backdrop-blur placeholder-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-white/10 dark:bg-slate-800/70 dark:text-slate-100 dark:placeholder-slate-400"
+              className="block w-full rounded-control border border-line bg-surface pl-9 pr-9 py-3.5 text-sm text-fg placeholder:text-subtle"
           />
           {searchInputValue && (
             <button
               onClick={clearSearch}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-subtle transition-colors hover:text-muted"
             >
               <XMarkIcon className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
@@ -331,14 +331,14 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
         {/* Filters Panel */}
         {showFilters && !lockCategoryTo && (
             <div 
-              className="space-y-3 rounded-2xl border border-white/20 bg-white/15 p-4 backdrop-blur dark:border-white/10 dark:bg-slate-800/50"
+              className="space-y-3 rounded-card border border-line bg-surface p-4"
               onMouseDown={(e) => e.stopPropagation()} // Prevent mouse events from bubbling
               onClick={(e) => e.stopPropagation()} // Prevent clicks inside panel from closing it
             >
             {/* Category Filters */}
             {!lockCategoryTo && (
             <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-subtle">
                 {t('filters.fileTypeLabel')}
               </label>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -364,10 +364,10 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
                         setShowFilters(true);
                         handleFilterChange('category', category.value);
                       }}
-                        className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-medium transition-all ${
+                        className={`inline-flex items-center gap-2 rounded-control border px-3 py-2 text-xs font-medium transition-all ${
                         filters.category === category.value
-                            ? 'border-white/60 bg-white/75 text-indigo-600 shadow-sm dark:border-white/10 dark:bg-slate-700/70 dark:text-indigo-300'
-                            : 'border-white/20 bg-white/10 text-slate-600 hover:border-white/50 hover:bg-white/20 hover:text-slate-900 dark:border-white/10 dark:bg-slate-700/30 dark:text-slate-300 dark:hover:border-white/30 dark:hover:text-slate-100'
+                            ? 'border-line bg-surface text-accent-text'
+                            : 'border-line bg-surface text-muted hover:border-line-strong hover:bg-hover hover:text-fg'
                       }`}
                     >
                         <IconComponent className="h-4 w-4" />

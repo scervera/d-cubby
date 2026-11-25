@@ -67,13 +67,13 @@ export default function AssetsRecycleBinPage() {
 
   return (
     <SharedLayout currentPage="recycle-bin" showAssetCategories={false}>
-      <div className="glass-panel-soft border border-white/30 p-4 md:p-6 lg:p-8 dark:border-white/10">
+      <div className="rounded-card border bg-surface border border-line p-4 md:p-6 lg:p-8">
         <div className="mb-6">
-          <Link href="/assets" className="text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
+          <Link href="/assets" className="text-sm font-medium text-accent-text hover:text-accent-text">
             {t('backToLibrary')}
           </Link>
-          <h1 className="mt-2 text-2xl font-bold text-slate-900 dark:text-[#E3E1CE]">{t('pageTitle')}</h1>
-          <p className="mt-1 max-w-2xl text-sm text-slate-600 dark:text-slate-400">{t('subtitle')}</p>
+          <h1 className="mt-2 text-2xl font-bold text-fg">{t('pageTitle')}</h1>
+          <p className="mt-1 max-w-2xl text-sm text-muted">{t('subtitle')}</p>
         </div>
 
         {mayView ? (
@@ -96,7 +96,7 @@ export default function AssetsRecycleBinPage() {
             actingId={actingId}
           />
         ) : (
-          <p className="text-sm text-slate-600 dark:text-slate-300">{t('viewersCannotOpen')}</p>
+          <p className="text-sm text-muted">{t('viewersCannotOpen')}</p>
         )}
       </div>
     </SharedLayout>

@@ -64,7 +64,7 @@ export default function FaceOverlay({
               <button
                 key={face.id}
                 type="button"
-                className="absolute rounded-lg border-2 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 hover:border-indigo-400"
+                className="absolute rounded-control border-2 transition-all hover:border-accent"
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
@@ -90,7 +90,7 @@ export default function FaceOverlay({
       </div>
       {hoveredFace && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed z-[1000] pointer-events-none px-2 py-1 rounded-md text-xs font-medium text-white bg-slate-900/90 shadow-lg border border-white/20 whitespace-nowrap"
+          className="fixed z-modal pointer-events-none px-2 py-1 rounded-control text-xs font-medium text-on-accent bg-scrim border border-line whitespace-nowrap"
           style={{
             left: tooltipPos.x + CURSOR_OFFSET,
             top: tooltipPos.y + CURSOR_OFFSET

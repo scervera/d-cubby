@@ -7,7 +7,7 @@ import type { Group, GroupInput } from '@/lib/groupsApi'
 import ModalShell from './ModalShell'
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+  'w-full rounded-control border border-line bg-surface px-3 py-2 text-fg'
 
 export default function GroupFormModal({
   group,
@@ -39,7 +39,7 @@ export default function GroupFormModal({
     <ModalShell title={group ? t('form.editTitle') : t('form.createTitle')} onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4 p-6">
         <div>
-          <label htmlFor="group-name" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="group-name" className="mb-1 block text-sm font-medium text-muted">
             {t('form.nameLabel')} *
           </label>
           <input
@@ -54,7 +54,7 @@ export default function GroupFormModal({
           />
         </div>
         <div>
-          <label htmlFor="group-description" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="group-description" className="mb-1 block text-sm font-medium text-muted">
             {t('form.descriptionLabel')}
           </label>
           <textarea
@@ -71,22 +71,22 @@ export default function GroupFormModal({
             type="checkbox"
             checked={active}
             onChange={(e) => setActive(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            className="h-4 w-4 rounded border-line text-accent-text"
           />
-          <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{t('form.activeLabel')}</span>
+          <span className="ml-2 text-sm text-muted">{t('form.activeLabel')}</span>
         </label>
         <div className="flex items-center justify-end space-x-3 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+            className="rounded-control bg-sunken px-4 py-2 font-medium text-muted hover:bg-hover"
           >
             {tCommon('cancel')}
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-purple-600 px-4 py-2 font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+            className="rounded-control bg-accent px-4 py-2 font-medium text-on-accent hover:bg-accent-hover disabled:opacity-50"
           >
             {group ? t('form.update') : t('form.create')}
           </button>

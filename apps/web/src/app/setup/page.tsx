@@ -134,7 +134,7 @@ export default function SetupPage() {
     case 'token':
       body = (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('tokenHelp')}</p>
+          <p className="text-sm text-muted">{t('tokenHelp')}</p>
           <TextField label={t('tokenLabel')} name="setup_token" autoComplete="off" autoFocus required value={setupToken} onChange={(e) => setSetupToken(e.target.value)} className="font-mono" />
           <SelectField label={t('language')} name="language" value={locale} onChange={(e) => chooseLanguage(e.target.value as Locale)}>
             {locales.map((l) => (
@@ -155,9 +155,9 @@ export default function SetupPage() {
             ))}
           </SelectField>
           <div>
-            <label htmlFor="logo" className="mb-1 block text-sm font-medium text-[#2C3A47] dark:text-[#E3E1CE]">{t('logo')}</label>
-            <input id="logo" type="file" accept={LOGO_TYPES.join(',')} onChange={(e) => onLogo(e.target.files?.[0] ?? null)} className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-[#D8DFE6] file:px-3 file:py-2 file:text-sm file:font-medium dark:text-slate-300 dark:file:bg-[#121F27] dark:file:text-[#E3E1CE]" />
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t('logoHint')}</p>
+            <label htmlFor="logo" className="mb-1 block text-sm font-medium text-fg">{t('logo')}</label>
+            <input id="logo" type="file" accept={LOGO_TYPES.join(',')} onChange={(e) => onLogo(e.target.files?.[0] ?? null)} className="block w-full text-sm text-muted file:mr-3 file:rounded-control file:border-0 file:bg-raised file:px-3 file:py-2 file:text-sm file:font-medium" />
+            <p className="mt-1 text-xs text-subtle">{t('logoHint')}</p>
           </div>
           <div className="flex justify-between">{back('token')}<Button type="submit">{t('next')}</Button></div>
         </>
@@ -166,7 +166,7 @@ export default function SetupPage() {
     case 'owner':
       body = (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('ownerHelp')}</p>
+          <p className="text-sm text-muted">{t('ownerHelp')}</p>
           <TextField label={t('yourName')} name="name" autoComplete="name" autoFocus required value={ownerName} onChange={(e) => setOwnerName(e.target.value)} />
           <TextField label={ta('email')} name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           <div>
@@ -181,7 +181,7 @@ export default function SetupPage() {
     case 'retention':
       body = (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('retentionHelp')}</p>
+          <p className="text-sm text-muted">{t('retentionHelp')}</p>
           <TextField label={t('retentionDays')} name="retention_days" type="number" min={1} max={3650} required value={retentionDays} onChange={(e) => setRetentionDays(Number(e.target.value))} />
           <div className="flex justify-between">{back('owner')}<Button type="submit" loading={submitting}>{t('createOrganization')}</Button></div>
         </>
@@ -190,7 +190,7 @@ export default function SetupPage() {
     case 'integrations':
       body = (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('integrationsHelp')}</p>
+          <p className="text-sm text-muted">{t('integrationsHelp')}</p>
           <IntegrationStatusList />
           <div className="flex justify-end"><Button type="button" onClick={() => go('invite')}>{t('next')}</Button></div>
         </>
@@ -199,7 +199,7 @@ export default function SetupPage() {
     case 'invite':
       body = (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('inviteHelp')}</p>
+          <p className="text-sm text-muted">{t('inviteHelp')}</p>
           <InviteUsersForm smtpEnabled={!!config?.smtp_enabled} />
           <div className="flex justify-end"><Button type="button" onClick={() => go('done')}>{t('finishInvites')}</Button></div>
         </>
@@ -208,8 +208,8 @@ export default function SetupPage() {
     case 'done':
       body = (
         <div className="space-y-4 text-center">
-          <CheckIcon className="mx-auto h-12 w-12 rounded-full bg-green-100 p-2 text-green-700 dark:bg-green-900/40 dark:text-green-300" />
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t('doneHelp')}</p>
+          <CheckIcon className="mx-auto h-12 w-12 rounded-full bg-success-subtle p-2 text-success-text" />
+          <p className="text-sm text-muted">{t('doneHelp')}</p>
           <Button type="button" onClick={() => router.replace('/assets')}>{t('openLibrary')}</Button>
         </div>
       )
@@ -220,7 +220,7 @@ export default function SetupPage() {
     <AuthCard title={t(`steps.${step}`)} wide={step === 'integrations' || step === 'invite'}>
       <ol className="mb-6 flex gap-1.5" aria-label={t('progress', { current: index + 1, total: STEPS.length })}>
         {STEPS.map((s, i) => (
-          <li key={s} className={`h-1.5 flex-1 rounded-full ${i <= index ? 'bg-[#D4A574] dark:bg-[#F6DAA9]' : 'bg-slate-200 dark:bg-slate-700'}`} aria-current={i === index ? 'step' : undefined} />
+          <li key={s} className={`h-1.5 flex-1 rounded-full ${i <= index ? 'bg-accent' : 'bg-sunken'}`} aria-current={i === index ? 'step' : undefined} />
         ))}
       </ol>
       {index <= STEPS.indexOf('retention') ? (
