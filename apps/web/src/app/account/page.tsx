@@ -4,9 +4,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
-import { Button, FormError, SelectField, TextField } from '@/components/forms/fields'
+import { FormError, SelectField, TextField } from '@/components/forms/fields'
 import ChangePasswordForm from '@/components/settings/ChangePasswordForm'
 import SettingsPage, { Panel } from '@/components/settings/SettingsPage'
+import { Button } from '@/components/ui/Button'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { useAuth } from '@/hooks/useAuth'
 import { LOCALE_COOKIE, localeNames, locales } from '@/i18n/config'
@@ -76,7 +77,7 @@ function AccountPageContent() {
                   <option key={l} value={l}>{localeNames[l]}</option>
                 ))}
               </SelectField>
-              <p className="text-xs text-subtle">{t('role', { role: t(`roles.${user.role}`) })}</p>
+              <p className="text-sm text-muted">{t('role', { role: t(`roles.${user.role}`) })}</p>
               <Button type="submit" loading={saving}>{t('save')}</Button>
             </form>
           </Panel>

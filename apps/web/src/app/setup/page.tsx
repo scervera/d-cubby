@@ -6,9 +6,10 @@ import { useTranslations } from 'next-intl'
 import { CheckIcon } from '@heroicons/react/24/outline'
 
 import AuthCard from '@/components/auth/AuthCard'
-import { Button, FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, SelectField, TextField } from '@/components/forms/fields'
+import { FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, SelectField, TextField, labelClass, hintClass } from '@/components/forms/fields'
 import IntegrationStatusList from '@/components/settings/IntegrationStatusList'
 import InviteUsersForm from '@/components/settings/InviteUsersForm'
+import { Button } from '@/components/ui/Button'
 import PageSpinner from '@/components/ui/PageSpinner'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { useAuth } from '@/hooks/useAuth'
@@ -135,7 +136,7 @@ export default function SetupPage() {
       body = (
         <>
           <p className="text-sm text-muted">{t('tokenHelp')}</p>
-          <TextField label={t('tokenLabel')} name="setup_token" autoComplete="off" autoFocus required value={setupToken} onChange={(e) => setSetupToken(e.target.value)} className="font-mono" />
+          <TextField label={t('tokenLabel')} name="setup_token" autoComplete="off" autoFocus required value={setupToken} onChange={(e) => setSetupToken(e.target.value)} mono />
           <SelectField label={t('language')} name="language" value={locale} onChange={(e) => chooseLanguage(e.target.value as Locale)}>
             {locales.map((l) => (
               <option key={l} value={l}>{localeNames[l]}</option>
@@ -155,9 +156,9 @@ export default function SetupPage() {
             ))}
           </SelectField>
           <div>
-            <label htmlFor="logo" className="mb-1 block text-sm font-medium text-fg">{t('logo')}</label>
-            <input id="logo" type="file" accept={LOGO_TYPES.join(',')} onChange={(e) => onLogo(e.target.files?.[0] ?? null)} className="block w-full text-sm text-muted file:mr-3 file:rounded-control file:border-0 file:bg-raised file:px-3 file:py-2 file:text-sm file:font-medium" />
-            <p className="mt-1 text-xs text-subtle">{t('logoHint')}</p>
+            <label htmlFor="logo" className={labelClass}>{t('logo')}</label>
+            <input id="logo" type="file" accept={LOGO_TYPES.join(',')} onChange={(e) => onLogo(e.target.files?.[0] ?? null)} className="block w-full text-sm text-muted file:mr-3 file:h-9 file:cursor-pointer file:rounded-control file:border file:border-line-strong file:bg-surface file:px-3.5 file:text-sm file:font-medium file:text-fg hover:file:bg-hover" />
+            <p className={hintClass}>{t('logoHint')}</p>
           </div>
           <div className="flex justify-between">{back('token')}<Button type="submit">{t('next')}</Button></div>
         </>
@@ -208,7 +209,7 @@ export default function SetupPage() {
     case 'done':
       body = (
         <div className="space-y-4 text-center">
-          <CheckIcon className="mx-auto h-12 w-12 rounded-full bg-success-subtle p-2 text-success-text" />
+          <CheckIcon className="mx-auto h-10 w-10 rounded-full bg-success-subtle p-2 text-success-text" aria-hidden />
           <p className="text-sm text-muted">{t('doneHelp')}</p>
           <Button type="button" onClick={() => router.replace('/assets')}>{t('openLibrary')}</Button>
         </div>

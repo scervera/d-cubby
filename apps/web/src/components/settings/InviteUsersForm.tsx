@@ -4,7 +4,8 @@ import { useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 import { ClipboardDocumentIcon } from '@heroicons/react/24/outline'
 
-import { Button, FormError, SelectField, TextField } from '@/components/forms/fields'
+import { FormError, SelectField, TextField } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
 import { useAuth, type Role, type User } from '@/hooks/useAuth'
 import { api, apiErrorMessage } from '@/lib/api'
 import { API_ENDPOINTS } from '@/lib/config'
@@ -75,7 +76,7 @@ export default function InviteUsersForm({ smtpEnabled, onInvited }: { smtpEnable
       {invited.length > 0 && (
         <ul className="space-y-2">
           {invited.map(({ user: u, invitation_sent, temporary_password }) => (
-            <li key={u.id} className="rounded-control border border-line bg-surface p-3 text-sm">
+            <li key={u.id} className="rounded-card border p-3 text-sm">
               <div className="font-medium text-fg">
                 {u.name} · {u.email} · {t(`roles.${u.role}`)}
               </div>
@@ -85,10 +86,10 @@ export default function InviteUsersForm({ smtpEnabled, onInvited }: { smtpEnable
                 temporary_password && (
                   <div className="mt-1 flex flex-wrap items-center gap-2">
                     <span className="text-muted">{t('temporaryPassword')}</span>
-                    <code className="rounded bg-sunken px-2 py-0.5 font-mono">{temporary_password}</code>
-                    <button type="button" onClick={() => copy(temporary_password)} className="inline-flex items-center gap-1 text-xs font-medium text-fg hover:underline">
-                      <ClipboardDocumentIcon className="h-4 w-4" /> {t('copy')}
-                    </button>
+                    <code className="rounded-thumb bg-sunken px-2 py-0.5 font-mono text-fg">{temporary_password}</code>
+                    <Button variant="secondary" size="sm" onClick={() => copy(temporary_password)}>
+                      <ClipboardDocumentIcon className="h-4 w-4" aria-hidden /> {t('copy')}
+                    </Button>
                     <span className="w-full text-xs text-warning-text">{t('temporaryPasswordOnce')}</span>
                   </div>
                 )

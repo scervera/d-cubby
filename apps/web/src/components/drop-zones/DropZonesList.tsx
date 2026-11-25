@@ -3,14 +3,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { FolderOpen } from 'lucide-react'
-import { PlusIcon } from '@heroicons/react/24/outline'
+import { FolderOpenIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import { useAuth } from '@/hooks/useAuth'
 import { canWrite } from '@/lib/auth/permissions'
 import { dropZoneErrors, dropZonesApi, uploadToDropZone, type DropZone, type DropZoneInput } from '@/lib/dropZonesApi'
 import { toast } from '@/lib/toast'
+import { Button } from '@/components/ui/Button'
+import { LoadingBlock } from '@/components/ui/Spinner'
+import { EmptyState, PageHeader } from '@/components/ui/Panel'
 import DropZoneFolder from './DropZoneFolder'
 import DropZoneModal from './DropZoneModal'
 
@@ -105,55 +107,42 @@ export default function DropZonesList() {
     setTimeout(() => setUpload({ uploading: false, progress: 0, totalFiles: 0 }), 800)
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-accent" />
-        <span className="ml-2 text-muted">{t('loadingList')}</span>
-      </div>
-    )
-  }
+  if (loading) return <LoadingBlock label={t('loadingList')} />
 
   if (error) {
     return (
-      <div className="rounded-control border border-danger bg-danger-subtle p-4">
-        <p className="text-danger-text">{error}</p>
-        <button type="button" onClick={fetchDropZones} className="mt-2 text-sm text-danger-text hover:underline">
+      <div className="space-y-3 rounded-card bg-danger-subtle p-4">
+        <p className="text-sm text-danger-text">{error}</p>
+        <Button variant="secondary" size="sm" onClick={fetchDropZones}>
           {t('tryAgain')}
-        </button>
+        </Button>
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      <div className="rounded-card border bg-surface rounded-card border border-line p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-            <p className="mt-1 text-muted">{t('subtitle')}</p>
-          </div>
-          {writer && (
-            <button
-              type="button"
-              onClick={() => setShowCreateModal(true)}
-              className="flex w-full items-center justify-center rounded-control bg-accent px-4 py-2 text-sm text-on-accent transition-colors hover:bg-accent-hover sm:w-auto sm:text-base"
-            >
-              <PlusIcon className="mr-2 h-4 w-4" />
+      <PageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        actions={
+          writer && (
+            <Button onClick={() => setShowCreateModal(true)}>
+              <PlusIcon className="h-4 w-4" aria-hidden />
               {t('createButton')}
-            </button>
-          )}
-        </div>
-      </div>
+            </Button>
+          )
+        }
+      />
 
       {dropZones.length === 0 ? (
-        <div className="py-12 text-center">
-          <FolderOpen className="mx-auto mb-4 h-16 w-16 text-subtle" />
-          <h3 className="mb-2 text-lg font-medium text-fg">{t('emptyTitle')}</h3>
-          <p className="text-muted">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
-        </div>
+        <EmptyState
+          icon={<FolderOpenIcon aria-hidden />}
+          title={t('emptyTitle')}
+          description={writer ? t('emptyBody') : t('emptyBodyReadOnly')}
+        />
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {dropZones.map((dropZone) => (
             <DropZoneFolder
               key={dropZone.id}

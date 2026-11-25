@@ -8,7 +8,11 @@ import GroupFormModal from '@/components/groups/GroupFormModal'
 import GroupMembersModal from '@/components/groups/GroupMembersModal'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import SharedLayout from '@/components/shared/SharedLayout'
+import Badge from '@/components/ui/Badge'
+import { Button, IconButton } from '@/components/ui/Button'
+import { EmptyState, PageHeader } from '@/components/ui/Panel'
 import PageSpinner from '@/components/ui/PageSpinner'
+import { LoadingBlock } from '@/components/ui/Spinner'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { apiErrorMessage } from '@/lib/api'
 import { isAdmin } from '@/lib/auth/permissions'
@@ -81,80 +85,70 @@ export default function GroupsPage() {
 
   return (
     <SharedLayout currentPage="groups">
-      <div className="mb-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="mt-1 text-muted">{admin ? t('subtitle') : t('subtitleReadOnly')}</p>
-        </div>
-        {admin && (
-          <button
-            type="button"
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center justify-center space-x-2 rounded-control bg-accent px-4 py-2 font-medium text-on-accent hover:bg-accent-hover"
-          >
-            <PlusIcon className="h-5 w-5" />
-            <span>{t('createButton')}</span>
-          </button>
-        )}
-      </div>
+      <PageHeader
+        title={t('title')}
+        description={admin ? t('subtitle') : t('subtitleReadOnly')}
+        actions={
+          admin && (
+            <Button onClick={() => setShowCreateForm(true)}>
+              <PlusIcon className="h-4 w-4" aria-hidden />
+              {t('createButton')}
+            </Button>
+          )
+        }
+      />
 
       {loading ? (
-        <div className="flex min-h-[300px] items-center justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-accent" />
-        </div>
+        <LoadingBlock />
       ) : groups.length === 0 ? (
-        <div className="py-12 text-center">
-          <UserGroupIcon className="mx-auto h-12 w-12 text-subtle" />
-          <h3 className="mt-2 text-sm font-medium text-fg">{t('emptyTitle')}</h3>
-          <p className="mt-1 text-sm text-subtle">{admin ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
-        </div>
+        <EmptyState icon={<UserGroupIcon />} title={t('emptyTitle')} description={admin ? t('emptyBody') : t('emptyBodyReadOnly')} />
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {groups.map((group) => (
-            <div key={group.id} className="rounded-card border bg-surface rounded-card border border-line p-6">
-              <div className="mb-4 flex items-start justify-between">
+            <li key={group.id} className="flex flex-col rounded-card border bg-surface p-4">
+              <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
-                  <h3 className="mb-1 truncate text-lg font-semibold text-fg">{group.name}</h3>
-                  {group.description && <p className="text-sm text-muted">{group.description}</p>}
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate text-sm font-semibold text-fg">{group.name}</h3>
+                    <Badge tone={group.active ? 'success' : 'neutral'}>
+                      {group.active ? t('form.activeLabel') : t('form.inactiveLabel')}
+                    </Badge>
+                  </div>
+                  {group.description && <p className="mt-1 text-sm text-muted">{group.description}</p>}
                 </div>
                 {admin && (
-                  <div className="flex space-x-1">
-                    <button
-                      type="button"
+                  <div className="-mr-1 -mt-1 flex shrink-0">
+                    <IconButton
+                      size="sm"
                       onClick={() => setEditingGroup(group)}
-                      className="p-1 text-subtle hover:text-accent-text"
                       title={t('tooltips.editGroup')}
                       aria-label={t('tooltips.editGroup')}
                     >
-                      <PencilIcon className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
+                      <PencilIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
+                    <IconButton
+                      size="sm"
+                      variant="danger-ghost"
                       onClick={() => setDeletingGroup(group)}
-                      className="p-1 text-subtle hover:text-danger-text"
                       title={t('tooltips.deleteGroup')}
                       aria-label={t('tooltips.deleteGroup')}
                     >
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
+                      <TrashIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center justify-between border-t border-line pt-4">
-                <span className="text-sm text-muted">{t('memberCount', { count: group.member_count })}</span>
-                <button
-                  type="button"
-                  onClick={() => setManagingGroup(group)}
-                  className="flex items-center text-sm font-medium text-accent-text hover:text-accent-text"
-                >
-                  <UserPlusIcon className="mr-1 h-4 w-4" />
+              <div className="mt-4 flex items-center justify-between gap-2 border-t pt-3">
+                <span className="text-meta">{t('memberCount', { count: group.member_count })}</span>
+                <Button variant="secondary" size="sm" onClick={() => setManagingGroup(group)}>
+                  <UserPlusIcon className="h-4 w-4" aria-hidden />
                   {admin ? t('manageMembers') : t('viewMembers')}
-                </button>
+                </Button>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {(showCreateForm || editingGroup) && (

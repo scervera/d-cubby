@@ -3,8 +3,9 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
-import { Button, FormError, SelectField, TextField } from '@/components/forms/fields'
+import { FormError, SelectField, TextField } from '@/components/forms/fields'
 import SettingsPage, { Panel } from '@/components/settings/SettingsPage'
+import { Button, buttonClass } from '@/components/ui/Button'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { localeNames, locales } from '@/i18n/config'
 import { api, apiErrorMessage } from '@/lib/api'
@@ -111,11 +112,11 @@ function OrganizationSettingsPageContent() {
             <div className="flex flex-wrap items-center gap-4">
               {org.logo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={org.logo_url} alt={t('currentLogo')} className="h-16 w-16 rounded-control border border-line object-contain p-1" />
+                <img src={org.logo_url} alt={t('currentLogo')} className="h-16 w-16 rounded-control border bg-sunken object-contain p-1" />
               ) : (
                 <span className="text-sm text-subtle">{t('noLogo')}</span>
               )}
-              <label className={`inline-flex cursor-pointer items-center rounded-control border border-line bg-raised px-4 py-2 text-sm font-semibold text-fg ${logoBusy ? 'pointer-events-none opacity-60' : ''}`}>
+              <label className={buttonClass({ variant: 'secondary', className: `cursor-pointer ${logoBusy ? 'pointer-events-none opacity-60' : ''}` })}>
                 {t('uploadLogo')}
                 <input type="file" accept={LOGO_TYPES.join(',')} className="sr-only" onChange={(e) => uploadLogo(e.target.files?.[0])} />
               </label>
@@ -123,7 +124,7 @@ function OrganizationSettingsPageContent() {
                 <Button variant="secondary" onClick={removeLogo} disabled={logoBusy}>{t('removeLogo')}</Button>
               )}
             </div>
-            <p className="mt-2 text-xs text-subtle">{t('logoHint')}</p>
+            <p className="mt-3 text-xs text-subtle">{t('logoHint')}</p>
           </Panel>
         </>
       )}

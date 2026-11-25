@@ -17,7 +17,6 @@
     "@heroicons/react": "^2.2.0",
     "axios": "^1.21.1",
     "exif-js": "^2.3.0",
-    "lucide-react": "^0.542.0",
     "next": "15.5.29",
     "next-intl": "^4.16.1",
     "react": "19.1.0",

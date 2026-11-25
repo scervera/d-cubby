@@ -5,7 +5,8 @@ import { useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
 import AuthCard from '@/components/auth/AuthCard'
-import { Button, FormError, TextField } from '@/components/forms/fields'
+import { FormError, TextField } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
 import { api, apiErrorMessage } from '@/lib/api'
 import { API_ENDPOINTS } from '@/lib/config'
 
@@ -44,7 +45,7 @@ export default function ForgotPasswordPage() {
         </form>
       )}
       <p className="mt-4 text-center text-sm">
-        <Link href="/login" className="font-medium text-fg hover:underline">
+        <Link href="/login" className="font-medium text-fg underline-offset-2 hover:underline">
           {t('backToSignIn')}
         </Link>
       </p>

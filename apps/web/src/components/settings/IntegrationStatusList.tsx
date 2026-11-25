@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { CheckCircleIcon, ExclamationTriangleIcon, MinusCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
-import { Button } from '@/components/forms/fields'
+import Badge from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { LoadingBlock } from '@/components/ui/Spinner'
 import { api, apiErrorMessage } from '@/lib/api'
 import { API_ENDPOINTS } from '@/lib/config'
 
@@ -68,13 +70,13 @@ export default function IntegrationStatusList() {
   }
 
   if (error) return <p className="text-sm text-danger-text">{error}</p>
-  if (!status) return <p className="text-sm text-subtle">{t('loading')}</p>
+  if (!status) return <LoadingBlock label={t('loading')} />
 
   const optional = (name: IntegrationName) => name !== 'storage'
 
   return (
-    <div className="space-y-3">
-      <ul className="space-y-3">
+    <div className="space-y-4">
+      <ul className="divide-y divide-line">
         {ORDER.map((name) => {
           const item = status[name]
           const result = results[name]
@@ -84,66 +86,53 @@ export default function IntegrationStatusList() {
             .map((key) => [key, item[key]] as const)
             .filter(([, value]) => value !== null && value !== undefined && value !== '')
           return (
-            <li key={name} className="rounded-card border border-line bg-surface p-4">
-              <div className="flex flex-wrap items-start gap-3">
-                {item.configured ? (
-                  <CheckCircleIcon className="h-6 w-6 shrink-0 text-success-text" aria-hidden />
-                ) : optional(name) ? (
-                  <MinusCircleIcon className="h-6 w-6 shrink-0 text-subtle" aria-hidden />
-                ) : (
-                  <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-warning-text" aria-hidden />
-                )}
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-semibold text-fg">{t(`${name}.title`)}</h3>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        item.configured
-                          ? 'bg-success-subtle text-success-text'
-                          : 'bg-sunken text-muted'
-                      }`}
-                    >
-                      {item.configured ? t('configured') : optional(name) ? t('notConfiguredOptional') : t('notConfigured')}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-sm text-muted">{t(`${name}.description`)}</p>
-                  {details.length > 0 && (
-                    <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
-                      {details.map(([key, value]) => (
-                        <div key={key} className="contents">
-                          <dt className="text-subtle">{t(`fields.${key}`)}</dt>
-                          <dd className="break-all font-mono text-fg">{String(value)}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  )}
-                  {result && (
-                    <p
-                      role="status"
-                      className={`mt-2 flex items-start gap-1.5 text-sm ${result.ok ? 'text-success-text' : 'text-danger-text'}`}
-                    >
-                      {result.ok ? <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0" /> : <XCircleIcon className="mt-0.5 h-4 w-4 shrink-0" />}
-                      <span className="break-words">{result.message}</span>
-                    </p>
-                  )}
+            <li key={name} className="flex flex-wrap items-start gap-x-4 gap-y-2 py-4 first:pt-0 last:pb-0">
+              <div className="min-w-0 flex-1 basis-64">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-sm font-semibold text-fg">{t(`${name}.title`)}</h3>
+                  <Badge tone={item.configured ? 'success' : optional(name) ? 'neutral' : 'warning'}>
+                    {item.configured ? t('configured') : optional(name) ? t('notConfiguredOptional') : t('notConfigured')}
+                  </Badge>
                 </div>
-                <Button
-                  variant="secondary"
-                  onClick={() => runCheck(name)}
-                  loading={testing === name}
-                  disabled={!item.configured || (testing !== null && testing !== name)}
-                  title={item.configured ? undefined : t('notConfiguredHint')}
-                >
-                  {name === 'smtp' ? t('sendTestEmail') : t('test')}
-                </Button>
+                <p className="mt-1 text-sm text-muted">{t(`${name}.description`)}</p>
+                {details.length > 0 && (
+                  <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
+                    {details.map(([key, value]) => (
+                      <div key={key} className="contents">
+                        <dt className="text-subtle">{t(`fields.${key}`)}</dt>
+                        <dd className="break-all font-mono text-muted">{String(value)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {result && (
+                  <p role="status" className={`mt-2 flex items-start gap-1.5 text-sm ${result.ok ? 'text-muted' : 'text-danger-text'}`}>
+                    {result.ok ? (
+                      <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-success-text" aria-hidden />
+                    ) : (
+                      <XCircleIcon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                    )}
+                    <span className="break-words">{result.message}</span>
+                  </p>
+                )}
               </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => runCheck(name)}
+                loading={testing === name}
+                disabled={!item.configured || (testing !== null && testing !== name)}
+                title={item.configured ? undefined : t('notConfiguredHint')}
+              >
+                {name === 'smtp' ? t('sendTestEmail') : t('test')}
+              </Button>
             </li>
           )
         })}
       </ul>
       <p className="text-xs text-subtle">
-        {t.rich('reconfigureHint', { code: (chunks) => <code className="rounded bg-sunken px-1">{chunks}</code> })}
-        {version && <span className="ml-1">· {t('version', { version })}</span>}
+        {t.rich('reconfigureHint', { code: (chunks) => <code className="rounded-thumb bg-sunken px-1 font-mono">{chunks}</code> })}
+        {version && <span className="ml-1 font-mono">· {t('version', { version })}</span>}
       </p>
     </div>
   )

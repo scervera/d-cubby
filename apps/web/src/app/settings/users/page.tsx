@@ -3,10 +3,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-import { Button } from '@/components/forms/fields'
+import { inputClassSm } from '@/components/forms/fields'
 import InviteUsersForm from '@/components/settings/InviteUsersForm'
 import SettingsPage, { Panel } from '@/components/settings/SettingsPage'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
+import Badge from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { LoadingBlock } from '@/components/ui/Spinner'
+import { TABLE } from '@/components/ui/table'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { useAuth, type Role } from '@/hooks/useAuth'
 import { api, apiErrorMessage } from '@/lib/api'
@@ -90,41 +94,41 @@ function UsersSettingsPageContent() {
         <InviteUsersForm smtpEnabled={!!config?.smtp_enabled} onInvited={() => load()} />
       </Panel>
 
-      <Panel title={t('people', { count: users.length })}>
+      <Panel title={t('people', { count: users.length })} padded={false}>
         {loading ? (
-          <p className="text-sm text-subtle">{t('loading')}</p>
+          <LoadingBlock label={t('loading')} />
         ) : (
-          <div className="-mx-2 overflow-x-auto">
-            <table className="w-full min-w-[40rem] text-sm">
-              <thead>
-                <tr className="text-left text-xs uppercase tracking-wide text-subtle">
-                  <th className="px-2 py-1 font-medium">{t('name')}</th>
-                  <th className="px-2 py-1 font-medium">{t('role')}</th>
-                  <th className="px-2 py-1 font-medium">{t('status')}</th>
-                  <th className="px-2 py-1 font-medium">{t('lastSignIn')}</th>
-                  <th className="px-2 py-1" />
+          <div className="overflow-x-auto">
+            <table className={`${TABLE.table} min-w-[40rem]`}>
+              <thead className={TABLE.head}>
+                <tr>
+                  <th className={TABLE.th}>{t('name')}</th>
+                  <th className={TABLE.th}>{t('role')}</th>
+                  <th className={TABLE.th}>{t('status')}</th>
+                  <th className={TABLE.th}>{t('lastSignIn')}</th>
+                  <th className={TABLE.th} />
                 </tr>
               </thead>
-              <tbody>
+              <tbody className={TABLE.body}>
                 {users.map((u) => {
                   const manageable = !!me && canManage(me, u)
                   const roles = me?.permissions.assignable_roles ?? []
                   return (
-                    <tr key={u.id} className="border-t border-line align-middle">
-                      <td className="px-2 py-2">
-                        <div className="font-medium text-fg">
-                          {u.name} {u.id === me?.id && <span className="text-xs text-subtle">({t('you')})</span>}
+                    <tr key={u.id} className={TABLE.row}>
+                      <td className={TABLE.td}>
+                        <div className="font-medium">
+                          {u.name} {u.id === me?.id && <span className="text-xs font-normal text-subtle">({t('you')})</span>}
                         </div>
-                        <div className="text-xs text-subtle">{u.email}</div>
+                        <div className="text-meta">{u.email}</div>
                       </td>
-                      <td className="px-2 py-2">
+                      <td className={TABLE.td}>
                         {manageable ? (
                           <select
                             aria-label={t('roleFor', { name: u.name })}
                             value={u.role}
                             disabled={busyId === u.id}
                             onChange={(e) => update(u, { role: e.target.value as Role })}
-                            className="rounded-control border border-line bg-surface px-2 py-1 text-sm"
+                            className={`${inputClassSm} w-auto min-w-24`}
                           >
                             {(roles.includes(u.role) ? roles : [u.role, ...roles]).map((r) => (
                               <option key={r} value={r}>{t(`roles.${r}`)}</option>
@@ -134,25 +138,28 @@ function UsersSettingsPageContent() {
                           t(`roles.${u.role}`)
                         )}
                       </td>
-                      <td className="px-2 py-2">
+                      <td className={TABLE.td}>
                         {u.disabled ? (
-                          <span className="rounded-full bg-sunken px-2 py-0.5 text-xs">{t('disabled')}</span>
+                          <Badge>{t('disabled')}</Badge>
                         ) : u.password_change_required ? (
-                          <span className="rounded-full bg-warning-subtle px-2 py-0.5 text-xs text-warning-text">{t('pendingPassword')}</span>
+                          <Badge tone="warning">{t('pendingPassword')}</Badge>
                         ) : (
-                          <span className="rounded-full bg-success-subtle px-2 py-0.5 text-xs text-success-text">{t('active')}</span>
+                          <Badge tone="success">{t('active')}</Badge>
                         )}
                       </td>
-                      <td className="px-2 py-2 text-xs text-subtle">
-                        {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : t('never')}
-                      </td>
-                      <td className="px-2 py-2">
+                      <td className={TABLE.tdMeta}>{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : t('never')}</td>
+                      <td className={TABLE.td}>
                         {manageable && (
                           <div className="flex justify-end gap-2">
-                            <Button variant="secondary" className="!px-2 !py-1 text-xs" disabled={busyId === u.id} onClick={() => setResetTarget(u)}>
+                            <Button variant="secondary" size="sm" disabled={busyId === u.id} onClick={() => setResetTarget(u)}>
                               {t('resetPassword')}
                             </Button>
-                            <Button variant={u.disabled ? 'secondary' : 'danger'} className="!px-2 !py-1 text-xs" loading={busyId === u.id} onClick={() => update(u, { disabled: !u.disabled })}>
+                            <Button
+                              variant={u.disabled ? 'secondary' : 'danger-ghost'}
+                              size="sm"
+                              loading={busyId === u.id}
+                              onClick={() => update(u, { disabled: !u.disabled })}
+                            >
                               {u.disabled ? t('enable') : t('disable')}
                             </Button>
                           </div>
