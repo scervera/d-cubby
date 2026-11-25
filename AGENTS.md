@@ -50,6 +50,8 @@ Open http://localhost:4080 only. Next.js proxies `/api` and `/rails/active_stora
 |------|---------|
 | Dev / build | `npm run dev` / `npm run build` |
 | Lint / typecheck | `npm run lint` / `npx tsc --noEmit` |
+| Design-token check / unit tests | `npm run lint:tokens` / `npm test` |
+| Screenshots of every screen (needs `bin/dev`) | `npm run shots` (see `DOCUMENTATION/03-DEVELOPMENT/design-system.md`) |
 
 ## API (host-owned, `apps/api/config/routes.rb`)
 
@@ -73,6 +75,8 @@ Everything else under `/api/v1` is the dam gem. Roles: `owner` > `admin` > `edit
 - **API client uses the relative base URL `/api/v1`.** No `NEXT_PUBLIC_*` build args; one web image must work on any domain.
 - **Jobs** run on Solid Queue. Recurring jobs go in `apps/api/config/recurring.yml`.
 - **DAM changes belong in the `dam` gem**, not here. Pin the gem by tag.
+- **UI styling follows the design system** (`DOCUMENTATION/03-DEVELOPMENT/design-system.md`): no colour values or `dark:` variants in components; use the tokens and the shared components in `apps/web/src/components/ui`.
+- **Do not run `npm run build` in `apps/web` while `bin/dev` is running**; both write to `.next`.
 - **Docs**: `DOCUMENTATION/**/*.md` (kebab-case); index in `DOCUMENTATION/00-OVERVIEW/index.md`.
 
 ## Do not touch

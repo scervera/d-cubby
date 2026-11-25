@@ -11,11 +11,21 @@ and AssetDetailModal; shared API client and permissions).
   smart folders, tags, drop zones, groups and watched folders pages, and the matching
   message namespaces.
 
-## Keeping them in sync
+## The look has diverged
 
-The backend is shared through the `dam` gem (both apps pin it by tag). The UI is a copy, so:
+D-cubby's UI was redesigned after the port (see [design-system.md](design-system.md)). The
+ported screens kept their behaviour, but their markup and styling no longer match Iglesium's:
+they use D-cubby's design tokens and shared components (`Modal`, `Button`, `Menu`, `Badge`, …)
+instead of Iglesium's glass classes and per-screen dialogs. `globals.css` is no longer a copy
+of Iglesium's.
+
+## Porting fixes from Iglesium
+
+The backend is shared through the `dam` gem (both apps pin it by tag). The UI is not shared, so:
 
 1. When an Iglesium DAM screen gets a fix or feature, check whether it applies here:
-   `git -C <iglesium> log b91eb1b4..master -- apps/web/src/components/dashboard apps/web/src/components/drop-zones apps/web/src/components/smart-folders apps/web/messages`
-2. Port it by hand (paths and imports differ), then update the commit above.
-3. If the copies keep drifting, extract the shared screens into an `@scervera/dam-ui` package.
+   `git -C <iglesium> log b91eb1b4..master -- apps/web/src/components/dashboard apps/web/src/components/drop-zones apps/web/src/components/smart-folders apps/web/src/components/recycle-bin apps/web/src/components/shared apps/web/messages`
+2. Port the **logic** by hand: state, API calls, validation, message keys. Do not copy
+   Iglesium's class names or dialog markup; write the markup with D-cubby's components and
+   run `npm run lint:tokens`.
+3. Update the commit above.
