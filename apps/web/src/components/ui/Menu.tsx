@@ -33,7 +33,7 @@ export function Menu({
       </MenuButton>
       <MenuItems
         anchor={{ to: align === 'end' ? 'bottom end' : 'bottom start', gap: 4 }}
-        className="z-dropdown min-w-44 rounded-card border bg-raised p-1 shadow-overlay focus:outline-none"
+        className="z-dropdown min-w-44 rounded-card border bg-raised p-1 shadow-overlay outline-none"
         onClick={(event) => event.stopPropagation()}
       >
         {children}
