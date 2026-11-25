@@ -37,7 +37,7 @@ const firstTile = (page: Page) => page.locator('.asset-thumbnail').first()
 
 const openAsset = async (page: Page) => {
   await firstTile(page).dblclick()
-  await page.getByRole('dialog').first().waitFor()
+  await page.locator('[id^="headlessui-dialog-panel"]').first().waitFor()
 }
 
 const SCREENS: Screen[] = [
@@ -94,7 +94,7 @@ const SCREENS: Screen[] = [
     prepare: async (page) => {
       await openAsset(page)
       await page.getByRole('dialog').getByRole('button', { name: /delete/i }).first().click()
-      await page.getByRole('alertdialog').waitFor()
+      await page.locator('[role="alertdialog"] [id^="headlessui-dialog-panel"]').waitFor()
     },
   },
   {

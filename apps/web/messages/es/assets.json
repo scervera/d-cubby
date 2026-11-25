@@ -44,6 +44,7 @@
   },
   "upload": {
     "modalTitle": "Subir archivos",
+    "removeFile": "Quitar archivo",
     "dropFilesHere": "Suelta los archivos aquí",
     "clickToUpload": "Haz clic para subir archivos",
     "dragAndDropHint": "Arrastra y suelta archivos aquí, o haz clic para seleccionar",

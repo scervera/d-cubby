@@ -64,14 +64,16 @@ export default function FaceOverlay({
               <button
                 key={face.id}
                 type="button"
-                className="absolute rounded-control border-2 transition-all hover:border-accent"
+                className={`absolute rounded-thumb outline-1 transition-colors ${
+                  isSelected
+                    ? 'border-2 border-accent outline-scrim'
+                    : 'border border-on-scrim outline-scrim hover:border-2 hover:border-accent'
+                }`}
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
                   width: `${w}%`,
                   height: `${h}%`,
-                  borderColor: isSelected ? 'rgb(99 102 241)' : 'rgba(255,255,255,0.6)',
-                  backgroundColor: isSelected ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
                   pointerEvents: disabled ? 'none' : 'auto'
                 }}
                 onClick={(e) => {
@@ -90,7 +92,7 @@ export default function FaceOverlay({
       </div>
       {hoveredFace && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed z-modal pointer-events-none px-2 py-1 rounded-control text-xs font-medium text-on-accent bg-scrim border border-line whitespace-nowrap"
+          className="fixed z-modal pointer-events-none px-2 py-1 rounded-control text-xs font-medium text-on-scrim bg-scrim whitespace-nowrap"
           style={{
             left: tooltipPos.x + CURSOR_OFFSET,
             top: tooltipPos.y + CURSOR_OFFSET

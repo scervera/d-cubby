@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint:tokens": "node scripts/check-design-tokens.mjs --report",
+    "lint:tokens": "node scripts/check-design-tokens.mjs",
     "shots": "playwright test"
   },
   "dependencies": {

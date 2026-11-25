@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
-import { createPortal } from 'react-dom'
+import React, { useState, useRef } from 'react'
 import { XMarkIcon, CloudArrowUpIcon, DocumentIcon, PhotoIcon, VideoCameraIcon, MusicalNoteIcon } from '@heroicons/react/24/outline'
 import { toast } from '@/lib/toast'
 import { useTranslations } from 'next-intl'
@@ -12,6 +11,8 @@ import { formatDamMaxFileSizeLabel, isDamFileTooLarge } from '@/lib/damUploadLim
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { apiErrorMessage } from '@/lib/api'
 import TagAutocompleteInput from '@/components/shared/TagAutocompleteInput'
+import Modal from '@/components/ui/Modal'
+import { Button, IconButton } from '@/components/ui/Button'
 
 interface FileUploadProps {
   onUploadSuccess: () => void
@@ -34,45 +35,11 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
   const [uploadProgress, setUploadProgress] = useState<number[]>([])
   const [dragOver, setDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const modalRef = useRef<HTMLDivElement>(null)
-  const [modalMaxHeight, setModalMaxHeight] = useState<string>('90vh')
   const { extractExifData, extracting } = useExifExtraction()
   const { config } = useAppConfig()
   const maxSizeGB = config?.max_file_size_gb ?? null
   const maxSizeLabel = formatDamMaxFileSizeLabel(maxSizeGB)
   
-  // Safari fix: Track mount state for portal rendering
-  // This prevents SSR hydration mismatches and ensures document.body is available
-  const [isMounted, setIsMounted] = useState(false)
-  
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  // Safari fix: Calculate actual viewport height on mount
-  useEffect(() => {
-    const updateHeight = () => {
-      if (typeof window !== 'undefined') {
-        const vh = window.innerHeight * 0.9
-        setModalMaxHeight(`${vh}px`)
-      }
-    }
-    updateHeight()
-    window.addEventListener('resize', updateHeight)
-    return () => window.removeEventListener('resize', updateHeight)
-  }, [])
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [onClose])
-
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files || [])
     // Safari bug fix: Try to capture original filename from input value before processing
@@ -431,11 +398,11 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
 
   const getFileIcon = (file: File) => {
     if (file.type.startsWith('image/')) {
-      return <PhotoIcon className="h-8 w-8 text-accent-text" />
+      return <PhotoIcon className="h-8 w-8 text-subtle" />
     } else if (file.type.startsWith('video/')) {
-      return <VideoCameraIcon className="h-8 w-8 text-accent-text" />
+      return <VideoCameraIcon className="h-8 w-8 text-subtle" />
     } else if (file.type.startsWith('audio/')) {
-      return <MusicalNoteIcon className="h-8 w-8 text-success-text" />
+      return <MusicalNoteIcon className="h-8 w-8 text-subtle" />
     } else {
       return <DocumentIcon className="h-8 w-8 text-subtle" />
     }
@@ -449,165 +416,101 @@ export default function FileUpload({ onUploadSuccess, onUploadComplete, onClose 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  // Safari fix: Render modal via createPortal to bypass Safari's fixed positioning bug
-  // When body has `background-attachment: fixed`, Safari creates a new containing block
-  // that breaks `position: fixed` elements. Rendering via portal to document.body bypasses this.
-  // See: DOCUMENTATION/03-DEVELOPMENT/safari-modal-portal-fix.md
-  
-  const modalContent = (
-    <div 
-      className="fixed inset-x-0 bottom-0 top-[120px] bg-sunken bg-opacity-50 flex items-center justify-center p-4"
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose()
-        }
-      }}
-      style={{ zIndex: 10000 }}
-    >
-      <div 
-        ref={modalRef}
-        className="bg-surface rounded-control max-w-2xl w-full flex flex-col" 
-        style={{ maxHeight: modalMaxHeight, height: 'auto', overflow: 'hidden', position: 'relative' }}
-      >
-        <div className="flex items-center justify-between p-6 border-b border-line flex-shrink-0">
-          <h2 className="text-xl font-semibold text-fg">{tAssets('upload.modalTitle')}</h2>
-          <button
-            onClick={onClose}
-            className="text-subtle hover:text-muted"
-          >
-            <XMarkIcon className="h-6 w-6" />
-          </button>
-        </div>
-
-        <div className="p-6 overflow-y-auto flex-1 min-h-0" style={{ minHeight: 0 }}>
-          <div className="mb-6">
-            <TagAutocompleteInput
-              tags={uploadTags}
-              onTagsChange={setUploadTags}
-              label={tAssets('upload.applyTagsLabel')}
-              hint={tAssets('upload.applyTagsHint')}
-              placeholder={tAssets('upload.tagPlaceholder')}
-              addButtonLabel={tAssets('upload.addTag')}
-            />
-          </div>
-
-          {/* Upload Area */}
-          <div
-            className={`border-2 border-dashed rounded-control p-8 text-center transition-colors cursor-pointer ${
-              dragOver
-                ? 'border-accent bg-accent-subtle'
-                : 'border-line hover:border-line-strong'
-            }`}
-            onClick={() => fileInputRef.current?.click()}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            <CloudArrowUpIcon className={`h-12 w-12 mx-auto mb-4 ${dragOver ? 'text-accent-text' : 'text-subtle'}`} />
-            <p className={`text-lg font-medium mb-2 ${dragOver ? 'text-accent-text' : 'text-fg'}`}>
-              {dragOver ? tAssets('upload.dropFilesHere') : tAssets('upload.clickToUpload')}
-            </p>
-            <p className="text-sm text-subtle mb-4">
-              {tAssets('upload.dragAndDropHint')}
-            </p>
-            <p className="text-xs text-subtle">
-              {maxSizeLabel ? tAssets('upload.supportsHint', { maxSize: maxSizeLabel }) : tAssets('upload.supportsHintNoLimit')}
-            </p>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            className="hidden"
-            // Safari bug fix: Use wildcard types (image/*) instead of specific MIME types (image/jpeg, image/png)
-            // Safari 17+ triggers a conversion pipeline when it sees strict MIME types, converting files to HEIC
-            // and renaming them to tempImage*.heic. Using wildcards prevents this conversion entirely.
-            // See: https://bugs.webkit.org/show_bug.cgi?id=123456 and SAFARI_BUG_REPORT.md
-            accept="image/*,video/*,audio/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"
-            onChange={handleFileSelect}
-          />
-
-          {/* File List */}
-          {files.length > 0 && (
-            <div className="mt-6">
-              <h4 className="text-sm font-medium text-fg mb-3">
-                {tAssets('upload.selectedFiles', { count: files.length })}
-              </h4>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {files.map((file, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-sunken rounded-control"
-                  >
-                    <div className="flex items-center space-x-3">
-                      {file.preview ? (
-                        // eslint-disable-next-line @next/next/no-img-element -- local blob preview
-                        <img
-                          src={file.preview}
-                          alt={file.name}
-                          className="h-12 w-12 object-cover rounded"
-                        />
-                      ) : (
-                        getFileIcon(file)
-                      )}
-                      <div>
-                        <p className="text-sm font-medium text-fg truncate max-w-xs">
-                          {(file as FileWithPreview).originalFilename || file.name}
-                        </p>
-                        <p className="text-xs text-subtle">
-                          {formatFileSize(file.size)}
-                        </p>
-                        {/* Progress Bar */}
-                        {uploading && uploadProgress[index] !== undefined && (
-                          <div className="w-full bg-sunken rounded-full h-1.5 mt-1">
-                            <div
-                              className="bg-accent h-1.5 rounded-full"
-                              style={{ width: `${uploadProgress[index]}%` }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => removeFile(index)}
-                      className="text-danger-text hover:text-danger-text"
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Action Buttons - Moved outside scrollable area for Safari compatibility */}
-        <div className="flex justify-end space-x-3 p-6 border-t border-line flex-shrink-0 bg-surface rounded-b-control">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-muted bg-surface border border-line rounded-control hover:bg-hover relative z-10"
-          >
+  return (
+    <Modal
+      title={tAssets('upload.modalTitle')}
+      onClose={onClose}
+      size="lg"
+      dismissable={!uploading}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose} disabled={uploading}>
             {tCommon('cancel')}
-          </button>
-          <button
-            onClick={handleUpload}
-            disabled={files.length === 0 || uploading || extracting}
-            className="px-4 py-2 text-sm font-medium text-on-accent bg-accent border border-transparent rounded-control hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          </Button>
+          <Button onClick={handleUpload} disabled={files.length === 0 || extracting} loading={uploading}>
             {uploading
               ? tAssets('upload.uploading')
               : extracting
                 ? tAssets('upload.processing')
                 : tAssets('upload.uploadButton', { count: files.length })}
-          </button>
-        </div>
+          </Button>
+        </>
+      }
+    >
+      <div className="mb-5">
+        <TagAutocompleteInput
+          tags={uploadTags}
+          onTagsChange={setUploadTags}
+          label={tAssets('upload.applyTagsLabel')}
+          hint={tAssets('upload.applyTagsHint')}
+          placeholder={tAssets('upload.tagPlaceholder')}
+          addButtonLabel={tAssets('upload.addTag')}
+        />
       </div>
-    </div>
+
+      {/* Upload Area */}
+      <div
+        className={`cursor-pointer rounded-card border-2 border-dashed p-8 text-center transition-colors ${
+          dragOver ? 'border-accent bg-accent-subtle' : 'border-line-strong bg-sunken hover:bg-hover'
+        }`}
+        onClick={() => fileInputRef.current?.click()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <CloudArrowUpIcon className={`mx-auto mb-3 h-10 w-10 ${dragOver ? 'text-accent-text' : 'text-subtle'}`} aria-hidden />
+        <p className={`mb-1 text-sm font-medium ${dragOver ? 'text-accent-text' : 'text-fg'}`}>
+          {dragOver ? tAssets('upload.dropFilesHere') : tAssets('upload.clickToUpload')}
+        </p>
+        <p className="mb-2 text-sm text-muted">{tAssets('upload.dragAndDropHint')}</p>
+        <p className="text-xs text-subtle">
+          {maxSizeLabel ? tAssets('upload.supportsHint', { maxSize: maxSizeLabel }) : tAssets('upload.supportsHintNoLimit')}
+        </p>
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        className="hidden"
+        // Safari bug fix: Use wildcard types (image/*) instead of specific MIME types (image/jpeg, image/png)
+        // Safari 17+ triggers a conversion pipeline when it sees strict MIME types, converting files to HEIC
+        // and renaming them to tempImage*.heic. Using wildcards prevents this conversion entirely.
+        // See: https://bugs.webkit.org/show_bug.cgi?id=123456 and SAFARI_BUG_REPORT.md
+        accept="image/*,video/*,audio/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"
+        onChange={handleFileSelect}
+      />
+
+      {/* File List */}
+      {files.length > 0 && (
+        <div className="mt-5">
+          <h3 className="mb-2 text-sm font-semibold text-fg">{tAssets('upload.selectedFiles', { count: files.length })}</h3>
+          <ul className="max-h-56 space-y-2 overflow-y-auto">
+            {files.map((file, index) => (
+              <li key={index} className="flex items-center gap-3 rounded-control bg-sunken p-2.5">
+                {file.preview ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- local blob preview
+                  <img src={file.preview} alt={file.name} className="h-12 w-12 shrink-0 rounded-thumb object-cover" />
+                ) : (
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center">{getFileIcon(file)}</span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm text-fg">{(file as FileWithPreview).originalFilename || file.name}</p>
+                  <p className="text-meta">{formatFileSize(file.size)}</p>
+                  {uploading && uploadProgress[index] !== undefined && (
+                    <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-line">
+                      <div className="h-full rounded-full bg-accent" style={{ width: `${uploadProgress[index]}%` }} />
+                    </div>
+                  )}
+                </div>
+                <IconButton aria-label={tCommon('remove')} size="sm" onClick={() => removeFile(index)} disabled={uploading}>
+                  <XMarkIcon className="h-4 w-4" aria-hidden />
+                </IconButton>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Modal>
   )
-  
-  // Don't render until mounted (prevents SSR hydration issues)
-  if (!isMounted) return null
-  
-  return createPortal(modalContent, document.body)
 }

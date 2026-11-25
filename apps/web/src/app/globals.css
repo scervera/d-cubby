@@ -6,6 +6,9 @@
  * changes with the theme, components never need a dark: variant.
  */
 @theme inline {
+  /* Drop Tailwind's palette: only the tokens below exist, so bg-blue-500 and friends do not compile. */
+  --color-*: initial;
+
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-raised: var(--raised);
@@ -50,9 +53,6 @@
 
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
-/* TEMPORARY (removed at the end of the redesign): components still use dark: variants. */
-@custom-variant dark (.dark &);
 
 /* Stacking order. Dialogs are portaled, so document order sorts them among themselves. */
 @utility z-header {
@@ -292,28 +292,4 @@
 
 .app-toast__dismiss:hover {
   color: var(--fg);
-}
-
-/*
- * TEMPORARY (removed at the end of the redesign): flat stand-ins for the old glass
- * classes and variables, so screens that have not been restyled yet still render.
- */
-:root,
-.dark {
-  --foreground: var(--fg);
-  --surface-elevated: var(--surface);
-  --glass-border-subtle: var(--line);
-}
-
-@theme inline {
-  --font-heading: var(--font-sans);
-}
-
-.glass-panel,
-.glass-surface,
-.glass-panel-soft,
-.glass-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
 }
