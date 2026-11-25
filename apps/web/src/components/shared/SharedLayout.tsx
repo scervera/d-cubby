@@ -16,8 +16,8 @@ interface SharedLayoutProps {
 }
 
 /**
- * App shell for signed-in pages: fixed header, sidebar (drawer on mobile, opened from the
- * header button or a swipe from the left edge) and content.
+ * App shell for signed-in pages: fixed header, sidebar (fixed on desktop; a drawer on
+ * mobile, opened from the header button or a swipe from the left edge) and content.
  */
 export default function SharedLayout({
   children,
@@ -78,40 +78,27 @@ export default function SharedLayout({
   return (
     <>
       <AppHeader />
-      <div className="relative z-10 max-w-full px-2 pb-16 pt-20 sm:px-4 lg:px-10">
-        <div className="flex max-w-full gap-3 sm:gap-4 lg:gap-6">
-          {sidebarOpen && (
-            <div
-              className="fixed inset-0 top-16 z-drawer bg-backdrop lg:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
+      {sidebarOpen && <div className="fixed inset-0 top-14 z-drawer bg-backdrop lg:hidden" onClick={() => setSidebarOpen(false)} />}
 
-          <aside
-            id="sidebar"
-            className={`fixed bottom-0 left-0 top-16 z-drawer w-72 transform transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:z-auto lg:w-64 lg:flex-shrink-0 lg:translate-x-0 lg:self-start ${
-              sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-            }`}
-          >
-            <div className="h-full lg:h-auto">
-              <div className="h-full min-h-0 overflow-y-auto rounded-r-card border-r border-line bg-surface p-3 sm:p-4 lg:max-h-[calc(100vh-6rem)] lg:rounded-card lg:border lg:bg-transparent lg:rounded-card lg:border lg:bg-surface">
-                <Suspense fallback={null}>
-                  <SharedSidebar
-                    currentPage={currentPage}
-                    selectedCategory={selectedCategory}
-                    onCategoryChange={onCategoryChange}
-                    showAssetCategories={showAssetCategories}
-                  />
-                </Suspense>
-              </div>
-            </div>
-          </aside>
+      <aside
+        id="sidebar"
+        className={`fixed top-14 bottom-0 left-0 z-drawer w-64 overflow-y-auto border-r bg-surface p-3 transition-transform duration-200 ease-out lg:z-auto lg:w-60 lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <Suspense fallback={null}>
+          <SharedSidebar
+            currentPage={currentPage}
+            selectedCategory={selectedCategory}
+            onCategoryChange={onCategoryChange}
+            showAssetCategories={showAssetCategories}
+          />
+        </Suspense>
+      </aside>
 
-          <main className="min-w-0 max-w-full flex-1">
-            <div className="max-w-full space-y-4 sm:space-y-6">{children}</div>
-          </main>
-        </div>
-      </div>
+      <main className="min-w-0 px-4 pt-20 pb-16 sm:px-6 lg:pr-8 lg:pl-[17rem]">
+        <div className="mx-auto max-w-[1600px] space-y-5">{children}</div>
+      </main>
     </>
   )
 }

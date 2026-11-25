@@ -11,28 +11,24 @@ export default function AuthCard({ title, subtitle, children, wide }: { title: s
   const org = config?.organization
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
-      <div className="fixed right-4 top-4">
+      <div className="fixed top-3 right-3">
         <ThemeToggle />
       </div>
-      <div className={`rounded-card border bg-surface w-full ${wide ? 'max-w-2xl' : 'max-w-md'} rounded-card p-6 sm:p-8`}>
-        <div className="mb-6 flex items-center gap-3">
+      <div className={`w-full ${wide ? 'max-w-2xl' : 'max-w-sm'}`}>
+        <div className="mb-6 flex items-center gap-2.5">
           {org?.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={org.logo_url} alt="" className="h-11 w-11 rounded-control object-contain" />
+            <img src={org.logo_url} alt="" className="h-7 w-7 rounded-thumb object-contain" />
           ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-control bg-accent font-bold text-accent-text">
-              D³
-            </span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-thumb bg-fg text-xs font-semibold text-canvas">D³</span>
           )}
-          <div className="min-w-0">
-            <p className="truncate text-xs font-semibold uppercase tracking-[0.2em] text-subtle">
-              {org?.name ?? 'D-cubby'}
-            </p>
-            <h1 className="text-xl font-semibold text-fg">{title}</h1>
-          </div>
+          <p className="truncate text-sm font-semibold text-fg">{org?.name ?? 'D-cubby'}</p>
         </div>
-        {subtitle && <div className="mb-5 text-sm text-muted">{subtitle}</div>}
-        {children}
+        <div className="rounded-dialog border bg-surface p-6 sm:p-7">
+          <h1 className="text-xl font-semibold tracking-tight text-fg">{title}</h1>
+          {subtitle && <div className="mt-1.5 text-sm text-muted">{subtitle}</div>}
+          <div className="mt-6">{children}</div>
+        </div>
       </div>
     </div>
   )
