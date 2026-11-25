@@ -34,7 +34,9 @@
   "pagination": {
     "showingTotal": "Affichage de {total, plural, one {# élément} other {# éléments}}",
     "showingRange": "Affichage de {start} à {end} sur {total, plural, one {# résultat} other {# résultats}}",
-    "perPage": "{count} par page"
+    "perPage": "{count} par page",
+    "previous": "Page précédente",
+    "next": "Page suivante"
   },
   "settings": {
     "title": "Paramètres",

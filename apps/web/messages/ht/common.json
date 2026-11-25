@@ -34,7 +34,9 @@
   "pagination": {
     "showingTotal": "Ap montre {total, plural, one {# atik} other {# atik}}",
     "showingRange": "Ap montre {start} rive {end} sou {total, plural, one {# rezilta} other {# rezilta}}",
-    "perPage": "{count} pa paj"
+    "perPage": "{count} pa paj",
+    "previous": "Paj anvan",
+    "next": "Paj apre"
   },
   "settings": {
     "title": "Paramèt",

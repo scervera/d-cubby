@@ -41,9 +41,11 @@ export default function AppHeader() {
 
         <div className="ml-auto flex items-center gap-1">
           {user && (
-            <ButtonLink href="/account" variant="ghost" className="hidden max-w-[16rem] sm:inline-flex">
-              <span className="truncate">{user.name}</span>
-            </ButtonLink>
+            <div className="hidden sm:block">
+              <ButtonLink href="/account" variant="ghost" className="max-w-[16rem]">
+                <span className="truncate">{user.name}</span>
+              </ButtonLink>
+            </div>
           )}
           <ThemeToggle />
         </div>

@@ -2,6 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+
+import { inputClass } from '@/components/forms/fields';
+import { IconButton } from '@/components/ui/Button';
+import SegmentedControl from '@/components/ui/SegmentedControl';
 import { 
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -30,6 +34,8 @@ export interface AssetFiltersProps {
   initialCategory?: string;
   /** When set, file-type category is fixed and the category chip row is hidden (e.g. image-only pickers). */
   lockCategoryTo?: 'image' | 'video' | 'audio' | 'document';
+  /** Extra controls at the end of the bar (e.g. thumbnail size). */
+  trailing?: React.ReactNode;
 }
 
 export interface AssetFiltersState {
@@ -44,9 +50,11 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
   className = '',
   initialSearch,
   initialCategory,
-  lockCategoryTo
+  lockCategoryTo,
+  trailing
 }) => {
   const t = useTranslations('assets');
+  const tCommon = useTranslations('common');
   const [filters, setFilters] = useState<AssetFiltersState>({
     search: initialSearch ?? '',
     category: lockCategoryTo ?? initialCategory ?? 'all',
@@ -225,164 +233,96 @@ const AssetFilters: React.FC<AssetFiltersProps> = ({
     }
   };
 
-    return (
-      <div className={`rounded-card ${className}`}>
-      <div className="p-3 sm:p-4">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <div className="flex-1 min-w-0">
-              <h2 className="text-base sm:text-lg font-semibold text-fg truncate">
-              {getContextLabel()}
-            </h2>
-              <p className="hidden sm:block text-xs sm:text-sm text-subtle">
-              {t('filters.subtitle')}
-            </p>
-          </div>
-          
-          <div className="flex items-center space-x-1 sm:space-x-2 ml-2">
-            {/* View Mode Toggle */}
-              <div className="flex items-center rounded-control border border-line bg-surface p-1">
-              <button
-                onClick={() => handleFilterChange('viewMode', 'grid')}
-                  className={`p-1.5 sm:p-2 rounded-control transition-colors ${
-                  filters.viewMode === 'grid'
-                      ? 'border border-line bg-surface text-fg'
-                      : 'text-subtle hover:text-fg'
-                }`}
-                title={t('filters.gridView')}
-              >
-                <GridIcon className="h-3 w-3 sm:h-4 sm:w-4" />
-              </button>
-              <button
-                onClick={() => handleFilterChange('viewMode', 'list')}
-                  className={`p-1.5 sm:p-2 rounded-control transition-colors ${
-                  filters.viewMode === 'list'
-                      ? 'border border-line bg-surface text-fg'
-                      : 'text-subtle hover:text-fg'
-                }`}
-                title={t('filters.listView')}
-              >
-                <ListBulletIcon className="h-3 w-3 sm:h-4 sm:w-4" />
-              </button>
-            </div>
+  const categories = [
+    { value: 'all', label: t('filters.categories.allFiles'), labelShort: t('filters.categories.allFilesShort'), icon: Squares2X2Icon },
+    { value: 'image', label: t('filters.categories.images'), labelShort: t('filters.categories.imagesShort'), icon: PhotoIcon },
+    { value: 'video', label: t('filters.categories.videos'), labelShort: t('filters.categories.videosShort'), icon: VideoCameraIcon },
+    { value: 'audio', label: t('filters.categories.audio'), labelShort: t('filters.categories.audioShort'), icon: MusicalNoteIcon },
+    { value: 'document', label: t('filters.categories.documents'), labelShort: t('filters.categories.documentsShort'), icon: DocumentIcon },
+  ];
 
-            {/* Filters Toggle (hidden when file type is locked — panel would be empty) */}
-            {!lockCategoryTo && (
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-                className={`p-1.5 sm:p-2 rounded-control border transition-colors ${
-                showFilters
-                    ? 'border-line bg-accent text-accent-text'
-                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-fg'
-              }`}
-              title={t('filters.toggleFilters')}
-            >
-              <FunnelIcon className="h-3 w-3 sm:h-4 sm:w-4" />
-            </button>
-            )}
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative mb-3 sm:mb-4 scroll-mt-20">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-4 w-4 sm:h-5 sm:w-5 text-subtle" />
-          </div>
+  return (
+    <div className={className} role="search" aria-label={getContextLabel()}>
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative min-w-0 flex-1 basis-56 scroll-mt-20">
+          <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-subtle" aria-hidden />
           <input
-            type="text"
+            type="search"
             placeholder={t('filters.searchPlaceholder')}
+            aria-label={t('filters.searchPlaceholder')}
             value={searchInputValue}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            onFocus={(e) => {
-              // Prevent scroll on focus to avoid layout shifts
-              // Only scroll if input is actually cut off by keyboard
-              if (window.innerWidth < 768) {
-                const rect = e.target.getBoundingClientRect();
-                const viewportHeight = window.visualViewport?.height || window.innerHeight;
-                const isCutOff = rect.bottom > viewportHeight * 0.8;
-                if (isCutOff) {
-                  // Use visualViewport if available (accounts for keyboard)
-                  if (window.visualViewport) {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
-                    }, 150)
-                  }
-                }
-              }
-            }}
             onBlur={() => {
               // Sync searchInputValue with filters.search on blur to keep them in sync
               if (searchInputValue !== filters.search) {
                 setSearchInputValue(filters.search)
               }
             }}
-              className="block w-full rounded-control border border-line bg-surface pl-9 pr-9 py-3.5 text-sm text-fg placeholder:text-subtle"
+            className={`${inputClass} h-9 py-0 pr-8 pl-8 [&::-webkit-search-cancel-button]:hidden`}
           />
           {searchInputValue && (
             <button
+              type="button"
               onClick={clearSearch}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-subtle transition-colors hover:text-muted"
+              aria-label={tCommon('close')}
+              className="absolute top-1/2 right-1.5 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-thumb text-subtle hover:bg-hover hover:text-fg"
             >
-              <XMarkIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <XMarkIcon className="h-4 w-4" aria-hidden />
             </button>
           )}
         </div>
 
-        {/* Filters Panel */}
-        {showFilters && !lockCategoryTo && (
-            <div 
-              className="space-y-3 rounded-card border border-line bg-surface p-4"
-              onMouseDown={(e) => e.stopPropagation()} // Prevent mouse events from bubbling
-              onClick={(e) => e.stopPropagation()} // Prevent clicks inside panel from closing it
-            >
-            {/* Category Filters */}
-            {!lockCategoryTo && (
-            <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-subtle">
-                {t('filters.fileTypeLabel')}
-              </label>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {[
-                  { value: 'all', label: t('filters.categories.allFiles'), labelShort: t('filters.categories.allFilesShort'), icon: Squares2X2Icon },
-                  { value: 'image', label: t('filters.categories.images'), labelShort: t('filters.categories.imagesShort'), icon: PhotoIcon },
-                  { value: 'video', label: t('filters.categories.videos'), labelShort: t('filters.categories.videosShort'), icon: VideoCameraIcon },
-                  { value: 'audio', label: t('filters.categories.audio'), labelShort: t('filters.categories.audioShort'), icon: MusicalNoteIcon },
-                  { value: 'document', label: t('filters.categories.documents'), labelShort: t('filters.categories.documentsShort'), icon: DocumentIcon },
-                ].map((category) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <button
-                      key={category.value}
-                      type="button" // Explicitly set button type to prevent form submission
-                      onMouseDown={(e) => {
-                        e.stopPropagation(); // Prevent mouse events from bubbling
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent event bubbling that might close the panel
-                        e.preventDefault(); // Prevent any default behavior
-                        // Ensure panel stays open and trigger filter change
-                        setShowFilters(true);
-                        handleFilterChange('category', category.value);
-                      }}
-                        className={`inline-flex items-center gap-2 rounded-control border px-3 py-2 text-xs font-medium transition-all ${
-                        filters.category === category.value
-                            ? 'border-line bg-surface text-accent-text'
-                            : 'border-line bg-surface text-muted hover:border-line-strong hover:bg-hover hover:text-fg'
-                      }`}
-                    >
-                        <IconComponent className="h-4 w-4" />
-                        <span className="hidden sm:inline">{category.label}</span>
-                        <span className="sm:hidden">{category.labelShort}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-            )}
-
-          </div>
+        {/* Hidden when the file type is locked: the panel would be empty. */}
+        {!lockCategoryTo && (
+          <IconButton
+            variant={showFilters || filters.category !== 'all' ? 'secondary' : 'ghost'}
+            aria-label={t('filters.toggleFilters')}
+            aria-expanded={showFilters}
+            title={t('filters.toggleFilters')}
+            onClick={() => setShowFilters(!showFilters)}
+            className={filters.category !== 'all' ? 'text-accent-text' : ''}
+          >
+            <FunnelIcon className="h-4 w-4" aria-hidden />
+          </IconButton>
         )}
+
+        <SegmentedControl
+          label={t('filters.gridView')}
+          value={filters.viewMode}
+          onChange={(mode) => handleFilterChange('viewMode', mode)}
+          segments={[
+            { value: 'grid', icon: <GridIcon aria-hidden />, title: t('filters.gridView') },
+            { value: 'list', icon: <ListBulletIcon aria-hidden />, title: t('filters.listView') },
+          ]}
+        />
+
+        {trailing}
       </div>
+
+      {showFilters && !lockCategoryTo && (
+        <div className="mt-3 flex flex-wrap items-center gap-1.5" role="group" aria-label={t('filters.fileTypeLabel')}>
+          <span className="mr-1 text-xs text-subtle">{t('filters.fileTypeLabel')}</span>
+          {categories.map((category) => {
+            const IconComponent = category.icon;
+            const active = filters.category === category.value;
+            return (
+              <button
+                key={category.value}
+                type="button"
+                aria-pressed={active}
+                onClick={() => handleFilterChange('category', category.value)}
+                className={`inline-flex h-8 items-center gap-1.5 rounded-control px-2.5 text-xs font-medium transition-colors duration-100 ${
+                  active ? 'bg-accent-subtle text-accent-text' : 'text-muted hover:bg-hover hover:text-fg'
+                }`}
+              >
+                <IconComponent className="h-4 w-4" aria-hidden />
+                <span className="hidden sm:inline">{category.label}</span>
+                <span className="sm:hidden">{category.labelShort}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

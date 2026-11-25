@@ -2,18 +2,15 @@
 
 import { useCallback, useEffect, useState, type MouseEvent } from 'react'
 import { useTranslations } from 'next-intl'
-import {
-  ArrowDownTrayIcon,
-  CheckCircleIcon,
-  EllipsisVerticalIcon,
-  EyeIcon,
-  PhotoIcon,
-  PlayIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon, EllipsisHorizontalIcon, EyeIcon, PhotoIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { CheckIcon, PlayIcon } from '@heroicons/react/20/solid'
 
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import AudioThumbnail from '@/components/ui/AudioThumbnail'
+import Badge from '@/components/ui/Badge'
+import { Button, buttonClass } from '@/components/ui/Button'
+import { Menu, MenuItem } from '@/components/ui/Menu'
+import { EmptyState } from '@/components/ui/Panel'
 import { sizeConfig } from '@/components/ui/ThumbnailSizeSelector'
 import { useThumbnailSize } from '@/contexts/ThumbnailSizeContext'
 import type { User } from '@/hooks/useAuth'
@@ -26,7 +23,7 @@ import type { Asset } from '@/lib/dam/types'
 import toast from '@/lib/toast'
 
 import AssetDetailModal from './AssetDetailModal'
-import { fileTypeLabel, formatDate, formatFileSize, getAssetTags, getFileIcon, getFileTypeColor, isAudio, isVideo, tagName } from './assetUtils'
+import { fileTypeLabel, formatDate, formatFileSize, getAssetTags, getFileIcon, isAudio, isVideo, tagName } from './assetUtils'
 
 /** Fired by the Dashboard's "Bulk delete" button. */
 export const TOGGLE_BULK_DELETE_EVENT = 'toggleBulkDelete'
@@ -67,7 +64,6 @@ export default function AssetGrid({
   const size = sizeConfig[thumbnailSize || 'medium']
 
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null)
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [bulkDeleteMode, setBulkDeleteMode] = useState(false)
   const [bulkSelection, setBulkSelection] = useState<Set<string>>(new Set())
@@ -95,16 +91,6 @@ export default function AssetGrid({
     return () => window.removeEventListener(TOGGLE_BULK_DELETE_EVENT, toggle)
   }, [])
 
-  // Close the card menu on any outside click.
-  useEffect(() => {
-    if (!openMenuId) return
-    const close = (e: globalThis.MouseEvent) => {
-      if (!(e.target as HTMLElement).closest('[data-asset-menu]')) setOpenMenuId(null)
-    }
-    document.addEventListener('click', close)
-    return () => document.removeEventListener('click', close)
-  }, [openMenuId])
-
   const isSelected = (asset: Asset) => {
     if (!selectedAssetIds) return false
     const id = String(asset.id)
@@ -127,7 +113,6 @@ export default function AssetGrid({
     setDeletingId(asset.id)
     try {
       await api.delete(API_ENDPOINTS.ASSETS.DELETE(asset.id))
-      setOpenMenuId(null)
       onAssetsChange?.()
       return true
     } catch (error) {
@@ -141,7 +126,6 @@ export default function AssetGrid({
   /** Asks for confirmation, then moves the asset to the recycle bin. */
   const requestDelete = (asset: Asset) =>
     new Promise<boolean>((resolve) => {
-      setOpenMenuId(null)
       setPendingDelete({ kind: 'single', asset, resolve })
     })
 
@@ -244,315 +228,215 @@ export default function AssetGrid({
 
   if (safeAssets.length === 0) {
     return (
-      <div className="flex justify-center px-2 py-4 sm:px-4 sm:py-10">
-        <div className="rounded-card border bg-surface w-full max-w-md rounded-card border border-line p-4 text-center sm:p-8">
-          <PhotoIcon className="mx-auto h-8 w-8 text-accent-text sm:h-12 sm:w-12" />
-          <h3 className="mt-3 text-sm font-semibold text-fg sm:mt-4 sm:text-base">{tAssets('grid.emptyTitle')}</h3>
-          <p className="mt-2 text-xs text-muted sm:text-sm">
-            {categoryLabel ? tAssets('grid.emptyCategoryHint', { category: categoryLabel }) : tAssets('grid.emptyAllHint')}
-          </p>
-        </div>
+      <EmptyState
+        icon={<PhotoIcon aria-hidden />}
+        title={tAssets('grid.emptyTitle')}
+        description={categoryLabel ? tAssets('grid.emptyCategoryHint', { category: categoryLabel }) : tAssets('grid.emptyAllHint')}
+      />
+    )
+  }
+
+  // Controls drawn over a thumbnail sit on a neutral scrim so they read on any image.
+  const overlayChip = 'flex h-7 w-7 items-center justify-center rounded-control bg-scrim text-on-scrim'
+
+  const renderMenu = (asset: Asset, buttonClassName: string) => (
+    <Menu
+      label={tAssets('grid.actionsMenu', { name: asset.attributes.name })}
+      button={<EllipsisHorizontalIcon className="h-4 w-4" aria-hidden />}
+      buttonClassName={buttonClassName}
+    >
+      <MenuItem icon={<EyeIcon aria-hidden />} onClick={() => setSelectedAsset(asset)}>
+        {tAssets('details.actions.view')}
+      </MenuItem>
+      <MenuItem icon={<ArrowDownTrayIcon aria-hidden />} onClick={() => handleDownload(asset)}>
+        {tAssets('details.actions.download')}
+      </MenuItem>
+      {deletable(asset) && (
+        <MenuItem icon={<TrashIcon aria-hidden />} danger disabled={deletingId === asset.id} onClick={() => requestDelete(asset)}>
+          {deletingId === asset.id ? tAssets('grid.bulk.deleting') : tAssets('details.actions.delete')}
+        </MenuItem>
+      )}
+    </Menu>
+  )
+
+  /** Marked in bulk-delete mode or, in picker mode, when chosen. */
+  const isMarked = (asset: Asset) => (bulkDeleteMode ? bulkSelection.has(asset.id) : selectionMode && isSelected(asset))
+
+  const renderMark = (asset: Asset) => {
+    if (bulkDeleteMode && deletable(asset)) {
+      return (
+        <span className="absolute top-1.5 left-1.5 flex h-6 w-6 items-center justify-center rounded-control bg-scrim">
+          <input
+            type="checkbox"
+            checked={bulkSelection.has(asset.id)}
+            onChange={() => toggleBulkSelection(asset.id)}
+            onClick={(e) => e.stopPropagation()}
+            aria-label={asset.attributes.name}
+            className="h-4 w-4"
+          />
+        </span>
+      )
+    }
+    if (selectionMode && isSelected(asset)) {
+      return (
+        <span className="absolute top-1.5 left-1.5 flex h-6 w-6 items-center justify-center rounded-control bg-accent text-on-accent">
+          <CheckIcon className="h-4 w-4" aria-hidden />
+        </span>
+      )
+    }
+    return null
+  }
+
+  // The outline is offset so the accent never sits directly on the image.
+  const markClass = (asset: Asset) => (isMarked(asset) ? 'outline-2 outline-offset-2 outline-accent' : '')
+
+  const renderTags = (asset: Asset) => {
+    const tags = getAssetTags(asset)
+    if (tags.length === 0) return null
+    return (
+      <div className="mt-1.5 flex flex-wrap gap-1">
+        {tags.slice(0, 3).map((tag) => (
+          <Badge key={String(tag.id)}>{tagName(tag) || tAssets('details.tags.unknownTag')}</Badge>
+        ))}
+        {tags.length > 3 && <Badge>+{tags.length - 3}</Badge>}
       </div>
     )
   }
 
-  const renderMenu = (asset: Asset, compact: boolean) => (
-    <div className={`absolute z-50 ${compact ? 'right-1 top-1' : 'right-2 top-2'}`} data-asset-menu>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setOpenMenuId(openMenuId === asset.id ? null : asset.id)
-        }}
-        onDoubleClick={(e) => e.stopPropagation()}
-        aria-label={tAssets('grid.actionsMenu', { name: asset.attributes.name })}
-        aria-expanded={openMenuId === asset.id}
-        className="rounded-full border border-line bg-surface p-1 transition-all duration-200 hover:border-line-strong hover:bg-hover"
-      >
-        <EllipsisVerticalIcon className={`${compact ? 'h-4 w-4' : size.fileIconSize} text-muted`} />
-      </button>
-      {openMenuId === asset.id && (
-        <div
-          className="absolute right-0 top-8 z-dropdown min-w-[140px] rounded-control border border-line bg-surface py-1"
-          onClick={(e) => e.stopPropagation()}
-          onDoubleClick={(e) => e.stopPropagation()}
-        >
-          <button
-            onClick={() => {
-              setSelectedAsset(asset)
-              setOpenMenuId(null)
-            }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-muted transition-colors hover:bg-hover hover:text-fg"
-          >
-            <EyeIcon className="h-4 w-4" />
-            {tAssets('details.actions.view')}
-          </button>
-          <button
-            onClick={() => {
-              handleDownload(asset)
-              setOpenMenuId(null)
-            }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-accent-text transition-colors hover:bg-accent-subtle"
-          >
-            <ArrowDownTrayIcon className="h-4 w-4" />
-            {tAssets('details.actions.download')}
-          </button>
-          {deletable(asset) && (
-            <button
-              onClick={() => requestDelete(asset)}
-              disabled={deletingId === asset.id}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-danger-text transition-colors hover:bg-danger-subtle disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <TrashIcon className="h-4 w-4" />
-              {deletingId === asset.id ? tAssets('grid.bulk.deleting') : tAssets('details.actions.delete')}
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  )
-
-  const renderBulkCheckbox = (asset: Asset, compact: boolean) => (
-    <div className={`pointer-events-none absolute z-50 ${compact ? 'left-1 top-1' : 'left-2 top-2'}`}>
-      <div className="rounded-full border border-line bg-surface p-1">
-        <input
-          type="checkbox"
-          checked={bulkSelection.has(asset.id)}
-          onChange={() => toggleBulkSelection(asset.id)}
-          onClick={(e) => e.stopPropagation()}
-          aria-label={asset.attributes.name}
-          className={`${compact || thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} pointer-events-auto rounded border-line text-accent-text`}
+  const renderThumbnailContent = (asset: Asset, audioSize: 'small' | 'medium' | 'large' | 'xlarge', iconSize: string, fit: string) => {
+    const Icon = getFileIcon(asset.attributes.file_type)
+    if (isAudio(asset)) return <AudioThumbnail className="absolute inset-0" size={audioSize} />
+    if (asset.attributes.thumbnail_url && !failedThumbnailIds.has(asset.id)) {
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={asset.attributes.thumbnail_url}
+          alt={asset.attributes.name}
+          className={`pointer-events-none ${fit}`}
+          onError={() => handleThumbnailError(asset.id)}
         />
-      </div>
-    </div>
-  )
-
-  const renderSelectedBadge = (asset: Asset, compact: boolean) =>
-    selectionMode && isSelected(asset) ? (
-      <div className="absolute left-2 top-2 z-20 rounded-full bg-success p-1">
-        <CheckCircleIcon className={`${compact ? 'h-4 w-4' : 'h-5 w-5'} text-on-accent`} />
-      </div>
-    ) : null
-
-  const renderTags = (asset: Asset, tagClass: string) => {
-    const tags = getAssetTags(asset)
-    if (tags.length === 0) return null
+      )
+    }
     return (
-      <div className="mt-2 flex flex-wrap gap-1">
-        {tags.slice(0, 3).map((tag) => (
-          <span
-            key={String(tag.id)}
-            className={`inline-flex max-w-full items-center truncate rounded-full bg-accent-subtle px-2 py-0.5 font-medium text-accent-text ${tagClass}`}
-          >
-            {tagName(tag) || tAssets('details.tags.unknownTag')}
-          </span>
-        ))}
-        {tags.length > 3 && (
-          <span className={`inline-flex items-center rounded-full bg-surface px-1.5 py-0.5 font-medium text-muted ${tagClass}`}>
-            +{tags.length - 3}
-          </span>
-        )}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
+        <Icon className={`pointer-events-none text-subtle ${iconSize}`} />
+        {iconSize !== 'h-5 w-5' && <span className="text-meta">{fileTypeLabel(asset.attributes.file_type)}</span>}
       </div>
     )
   }
 
   const thumbnailTitle = isTouchDevice ? tAssets('grid.tooltips.tapToViewDetails') : tAssets('grid.tooltips.doubleClickToViewDetails')
+  const metaLine = (asset: Asset) => `${fileTypeLabel(asset.attributes.file_type)} · ${formatFileSize(asset.attributes.file_size)}`
 
   return (
-    <div className="p-2 sm:p-4 lg:p-6">
+    <div>
       {!category.startsWith('smart_folder_') && (
-        <div className="mb-6">
-          {categoryLabel && <h2 className="text-2xl font-bold text-fg">{categoryLabel}</h2>}
-          <p className="mt-1 text-subtle">{tAssets('grid.assetCount', { count: safeAssets.length })}</p>
-        </div>
+        <p className="text-meta mb-3">
+          {categoryLabel && <span className="font-sans text-muted">{categoryLabel} · </span>}
+          {tAssets('grid.assetCount', { count: safeAssets.length })}
+        </p>
       )}
 
       {!selectionMode && bulkDeleteMode && (
-        <div className="mb-5 rounded-card border border-danger bg-danger-subtle p-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-              <span className="text-sm font-semibold text-danger-text">{tAssets('grid.bulk.selected', { count: bulkSelection.size })}</span>
-              <div className="flex gap-3 text-xs font-semibold text-danger-text">
-                <button
-                  onClick={() => setBulkSelection(new Set(safeAssets.filter(deletable).map((a) => a.id)))}
-                  className="transition-colors hover:text-danger-text"
-                >
-                  {tAssets('grid.bulk.selectAll')}
-                </button>
-                <button onClick={() => setBulkSelection(new Set())} className="transition-colors hover:text-danger-text">
-                  {tAssets('grid.bulk.clearSelection')}
-                </button>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setBulkDeleteMode(false)
-                  setBulkSelection(new Set())
-                }}
-                className="rounded-control border border-danger px-3 py-1.5 text-sm font-medium text-danger-text transition-colors hover:border-danger hover:text-danger-text"
-              >
-                {tCommon('cancel')}
-              </button>
-              <button
-                onClick={() => setPendingDelete({ kind: 'bulk' })}
-                disabled={bulkSelection.size === 0 || bulkDeleting}
-                className="rounded-control bg-danger px-4 py-2 text-sm font-semibold text-on-accent transition-transform disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {bulkDeleting ? tAssets('grid.bulk.deleting') : tAssets('grid.bulk.deleteCount', { count: bulkSelection.size })}
-              </button>
-            </div>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-card bg-danger-subtle py-2 pr-2 pl-4">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="text-sm font-medium text-danger-text">{tAssets('grid.bulk.selected', { count: bulkSelection.size })}</span>
+            <Button variant="ghost" size="sm" onClick={() => setBulkSelection(new Set(safeAssets.filter(deletable).map((a) => a.id)))}>
+              {tAssets('grid.bulk.selectAll')}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => setBulkSelection(new Set())}>
+              {tAssets('grid.bulk.clearSelection')}
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                setBulkDeleteMode(false)
+                setBulkSelection(new Set())
+              }}
+            >
+              {tCommon('cancel')}
+            </Button>
+            <Button variant="danger" size="sm" onClick={() => setPendingDelete({ kind: 'bulk' })} disabled={bulkSelection.size === 0 || bulkDeleting}>
+              {bulkDeleting ? tAssets('grid.bulk.deleting') : tAssets('grid.bulk.deleteCount', { count: bulkSelection.size })}
+            </Button>
           </div>
         </div>
       )}
 
       {viewMode === 'list' ? (
-        <div className="space-y-2 overflow-x-hidden">
-          {safeAssets.map((asset) => {
-            const Icon = getFileIcon(asset.attributes.file_type)
-            const iconColor = getFileTypeColor(asset.attributes.file_type)
-            return (
+        <ul className="divide-y divide-line border-y">
+          {safeAssets.map((asset) => (
+            <li key={asset.id} className="flex items-center gap-3 py-2 hover:bg-hover sm:px-2">
               <div
-                key={asset.id}
-                className={`rounded-card border bg-surface group relative flex items-center gap-2 overflow-hidden border border-line p-2 sm:gap-4 sm:p-3 ${
-                  bulkDeleteMode ? 'ring-1 ring-danger' : ''
-                }`}
+                className={`asset-thumbnail h-12 w-12 shrink-0 rounded-thumb bg-sunken ${markClass(asset)} ${bulkDeleteMode ? 'cursor-default' : 'cursor-pointer'}`}
+                onClick={(e) => onThumbnailClick(e, asset)}
+                onDoubleClick={(e) => onThumbnailDoubleClick(e, asset)}
+                title={thumbnailTitle}
               >
-                {renderSelectedBadge(asset, true)}
-                <div
-                  className={`asset-thumbnail h-16 w-16 flex-shrink-0 transition-all duration-300 sm:h-20 sm:w-20 ${bulkDeleteMode ? 'cursor-default' : 'cursor-pointer'}`}
-                  onClick={(e) => onThumbnailClick(e, asset)}
-                  onDoubleClick={(e) => onThumbnailDoubleClick(e, asset)}
-                  style={{ touchAction: 'manipulation' }}
-                  title={thumbnailTitle}
-                >
-                  <div className="asset-thumbnail-inner">
-                    {isAudio(asset) ? (
-                      <AudioThumbnail className="absolute inset-0" size="small" />
-                    ) : asset.attributes.thumbnail_url && !failedThumbnailIds.has(asset.id) ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={asset.attributes.thumbnail_url}
-                        alt={asset.attributes.name}
-                        className="pointer-events-none block h-full w-full object-cover"
-                        onError={() => handleThumbnailError(asset.id)}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon className="pointer-events-none h-6 w-6 text-subtle" />
-                      </div>
-                    )}
-                  </div>
-                  {isVideo(asset) && (
-                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div className="rounded-full bg-scrim p-1">
-                        <PlayIcon className="h-4 w-4 text-on-accent" />
-                      </div>
-                    </div>
-                  )}
-                  {bulkDeleteMode && deletable(asset) && renderBulkCheckbox(asset, true)}
-                  {showMenu && !bulkDeleteMode && renderMenu(asset, true)}
-                </div>
-
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <h3 className="truncate text-sm font-medium text-fg sm:text-base" title={asset.attributes.name}>
-                    {asset.attributes.name}
-                  </h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-subtle sm:gap-4 sm:text-sm">
-                    <span className="flex items-center gap-1 whitespace-nowrap">
-                      <Icon className={`h-3 w-3 sm:h-4 sm:w-4 ${iconColor}`} />
-                      {fileTypeLabel(asset.attributes.file_type)}
-                    </span>
-                    <span className="whitespace-nowrap">{formatFileSize(asset.attributes.file_size)}</span>
-                    <span className="whitespace-nowrap">{formatDate(asset.attributes.created_at)}</span>
-                  </div>
-                  {renderTags(asset, 'text-xs')}
-                </div>
+                <div className="asset-thumbnail-inner">{renderThumbnailContent(asset, 'small', 'h-5 w-5', '')}</div>
+                {isVideo(asset) && (
+                  <span className="pointer-events-none absolute right-0.5 bottom-0.5 flex h-4 w-4 items-center justify-center rounded-thumb bg-scrim text-on-scrim">
+                    <PlayIcon className="h-3 w-3" aria-hidden />
+                  </span>
+                )}
+                {renderMark(asset)}
               </div>
-            )
-          })}
-        </div>
+
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-medium text-fg" title={asset.attributes.name}>
+                  {asset.attributes.name}
+                </h3>
+                <p className="text-meta truncate">
+                  {metaLine(asset)} · {formatDate(asset.attributes.created_at)}
+                </p>
+              </div>
+
+              <div className="hidden max-w-[40%] shrink-0 md:block">{renderTags(asset)}</div>
+
+              {showMenu && !bulkDeleteMode && renderMenu(asset, buttonClass({ variant: 'ghost', icon: true }))}
+            </li>
+          ))}
+        </ul>
       ) : (
         <div className={`grid ${size.gridCols} ${size.gridGap}`}>
           {safeAssets.map((asset) => {
-            const Icon = getFileIcon(asset.attributes.file_type)
-            const iconColor = getFileTypeColor(asset.attributes.file_type)
             const audioSize = thumbnailSize === 'full' ? 'xlarge' : thumbnailSize || 'medium'
             return (
-              <div
-                key={asset.id}
-                className={`rounded-card border bg-surface group relative overflow-hidden border border-line ${
-                  bulkDeleteMode ? 'ring-1 ring-danger' : ''
-                }`}
-              >
-                {renderSelectedBadge(asset, false)}
+              <div key={asset.id} className="group min-w-0">
                 <div
-                  className={`asset-thumbnail ${size.thumbnailSize} transition-all duration-300 ${bulkDeleteMode ? 'cursor-default' : 'cursor-pointer'}`}
+                  className={`asset-thumbnail ${size.aspect} w-full rounded-thumb bg-sunken ${markClass(asset)} ${bulkDeleteMode ? 'cursor-default' : 'cursor-pointer'}`}
                   onClick={(e) => onThumbnailClick(e, asset)}
                   onDoubleClick={(e) => onThumbnailDoubleClick(e, asset)}
-                  style={{ touchAction: 'manipulation' }}
                   title={thumbnailTitle}
                 >
                   <div className="asset-thumbnail-inner">
-                    {isAudio(asset) ? (
-                      <AudioThumbnail className="absolute inset-0" size={audioSize} />
-                    ) : asset.attributes.thumbnail_url && !failedThumbnailIds.has(asset.id) ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={asset.attributes.thumbnail_url}
-                        alt={asset.attributes.name}
-                        className={`pointer-events-none block h-full w-full ${thumbnailSize === 'full' ? 'object-contain' : 'object-cover'}`}
-                        onError={() => handleThumbnailError(asset.id)}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon className={`${size.iconSize} ${iconColor} pointer-events-none`} />
-                      </div>
-                    )}
+                    {renderThumbnailContent(asset, audioSize, size.iconSize, thumbnailSize === 'full' ? '!object-contain' : '')}
                   </div>
 
                   {isVideo(asset) && (
-                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div className={`rounded-full bg-scrim ${thumbnailSize === 'small' ? 'p-1' : thumbnailSize === 'medium' ? 'p-2' : 'p-3'}`}>
-                        <PlayIcon className={`${thumbnailSize === 'small' ? 'h-4 w-4' : thumbnailSize === 'medium' ? 'h-6 w-6' : 'h-8 w-8'} text-on-accent`} />
-                      </div>
-                    </div>
+                    <span className="pointer-events-none absolute bottom-1.5 left-1.5 flex h-6 w-6 items-center justify-center rounded-control bg-scrim text-on-scrim">
+                      <PlayIcon className="h-3.5 w-3.5" aria-hidden />
+                    </span>
                   )}
 
-                  {!bulkDeleteMode && !selectionMode && (
-                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div
-                        className={`rounded-full bg-surface opacity-0 transition-opacity duration-200 group-hover:opacity-100 ${
-                          thumbnailSize === 'small' ? 'p-1' : 'p-2'
-                        }`}
-                      >
-                        <EyeIcon className={`${thumbnailSize === 'small' ? 'h-3 w-3' : 'h-4 w-4'} text-muted`} />
-                      </div>
+                  {renderMark(asset)}
+                  {showMenu && !bulkDeleteMode && (
+                    // Shown on hover and keyboard focus; always shown where there is no hover (touch).
+                    <div className="absolute top-1.5 right-1.5 opacity-0 transition-opacity duration-100 group-focus-within:opacity-100 group-hover:opacity-100 has-[[data-open]]:opacity-100 [@media(hover:none)]:opacity-100">
+                      {renderMenu(asset, overlayChip)}
                     </div>
                   )}
-
-                  {bulkDeleteMode && deletable(asset) && renderBulkCheckbox(asset, false)}
-                  {showMenu && !bulkDeleteMode && renderMenu(asset, false)}
                 </div>
 
-                <div className={size.padding}>
-                  <h3 className={`truncate font-medium text-fg ${size.titleSize}`} title={asset.attributes.name}>
+                <div className="mt-1.5 min-w-0">
+                  <h3 className={`truncate text-fg ${size.detail === 'name' ? 'text-xs' : 'text-sm'}`} title={asset.attributes.name}>
                     {asset.attributes.name}
                   </h3>
-                  {!size.showMinimal && (
-                    <>
-                      <div className={`mt-2 flex items-center justify-between ${size.infoSize} text-subtle`}>
-                        <span className="flex items-center">
-                          <Icon className={`${size.fileIconSize} ${iconColor} mr-1`} />
-                          {fileTypeLabel(asset.attributes.file_type)}
-                        </span>
-                        <span>{formatFileSize(asset.attributes.file_size)}</span>
-                      </div>
-                      <p className="mt-1 text-xs text-subtle">{formatDate(asset.attributes.created_at)}</p>
-                      {renderTags(asset, size.tagSize)}
-                    </>
-                  )}
+                  {size.detail !== 'name' && <p className="text-meta truncate">{metaLine(asset)}</p>}
+                  {size.detail === 'full' && renderTags(asset)}
                 </div>
               </div>
             )

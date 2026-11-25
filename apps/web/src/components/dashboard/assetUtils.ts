@@ -19,15 +19,6 @@ export function getFileIcon(fileType: string | null | undefined): ComponentType<
   return DocumentIcon
 }
 
-export function getFileTypeColor(fileType: string | null | undefined): string {
-  if (!fileType) return 'text-muted'
-  if (fileType.startsWith('image/')) return 'text-accent-text'
-  if (fileType.startsWith('video/')) return 'text-accent-text'
-  if (fileType.startsWith('audio/')) return 'text-success-text'
-  if (fileType.includes('pdf') || fileType.includes('document')) return 'text-danger-text'
-  return 'text-muted'
-}
-
 /** "JPEG", "MP4", ... from a MIME type. */
 export function fileTypeLabel(fileType: string | null | undefined, fallback = 'FILE'): string {
   return fileType?.split('/')[1]?.toUpperCase() || fallback

@@ -41,7 +41,6 @@ import {
   fullResolutionUrl,
   getAssetTags,
   getFileIcon,
-  getFileTypeColor,
   isAudio,
   isImage,
   isVideo,
@@ -657,7 +656,7 @@ export default function AssetDetailModal({
                   ) : (
                     (() => {
                       const Icon = getFileIcon(attrs.file_type)
-                      return <Icon className={`h-24 w-24 ${getFileTypeColor(attrs.file_type)}`} />
+                      return <Icon className="h-16 w-16 text-subtle" />
                     })()
                   )}
                 </div>

@@ -48,7 +48,7 @@ export function PageHeader({
 }) {
   return (
     <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 basis-56">
         <h1 className="truncate text-xl font-semibold tracking-tight text-fg">{title}</h1>
         {description && <p className="mt-1 text-sm text-muted">{description}</p>}
         {children}

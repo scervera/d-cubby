@@ -1,119 +1,67 @@
 'use client'
 
-import { useThumbnailSize, ThumbnailSize } from '@/contexts/ThumbnailSizeContext'
 import { useTranslations } from 'next-intl'
-import { 
-  Squares2X2Icon, 
-  Squares2X2Icon as MediumIcon, 
-  Squares2X2Icon as LargeIcon,
-  Squares2X2Icon as FullIcon
-} from '@heroicons/react/24/outline'
 
-const sizeConfig = {
+import { useThumbnailSize, type ThumbnailSize } from '@/contexts/ThumbnailSizeContext'
+
+import SegmentedControl from './SegmentedControl'
+
+/**
+ * Grid density per thumbnail size. `detail` is how much is written under a tile: the name,
+ * the name and one line of metadata, or everything including tags.
+ */
+export const sizeConfig: Record<
+  ThumbnailSize,
+  { gridCols: string; gridGap: string; aspect: string; iconSize: string; detail: 'name' | 'meta' | 'full' }
+> = {
   small: {
-    icon: Squares2X2Icon,
-    labelKey: 'thumbnailSize.small',
-    descriptionKey: 'thumbnailSize.smallDesc',
-    // Mobile should default to 3-across; increase density at key breakpoints where "small" still felt too large.
-    gridCols: 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 [@media(min-width:1920px)]:grid-cols-12',
-    thumbnailSize: 'w-full aspect-[1.15]', // Fixed 1.15:1 aspect ratio
-    gridGap: 'gap-3 sm:gap-4', // Responsive gap that adjusts instead of thumbnail width
-    textSize: 'text-xs',
-    titleSize: 'text-xs',
-    infoSize: 'text-xs',
-    tagSize: 'text-xs',
-    padding: 'p-1',
-    iconSize: 'h-8 w-8',
-    fileIconSize: 'h-3 w-3',
-    showMinimal: true // Only show thumbnail and filename
+    gridCols:
+      'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 [@media(min-width:1920px)]:grid-cols-12',
+    gridGap: 'gap-x-2 gap-y-3',
+    aspect: 'aspect-square',
+    iconSize: 'h-6 w-6',
+    detail: 'name',
   },
   medium: {
-    icon: MediumIcon,
-    labelKey: 'thumbnailSize.medium',
-    descriptionKey: 'thumbnailSize.mediumDesc',
-    gridCols: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 [@media(min-width:1920px)]:grid-cols-10',
-    thumbnailSize: 'w-full aspect-[1.15]', // Fixed 1.15:1 aspect ratio
-    gridGap: 'gap-4 sm:gap-6',
-    textSize: 'text-sm',
-    titleSize: 'text-sm',
-    infoSize: 'text-xs',
-    tagSize: 'text-xs',
-    padding: 'p-2',
-    iconSize: 'h-12 w-12',
-    fileIconSize: 'h-4 w-4',
-    showMinimal: true
+    gridCols: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 [@media(min-width:1920px)]:grid-cols-8',
+    gridGap: 'gap-x-3 gap-y-4',
+    aspect: 'aspect-square',
+    iconSize: 'h-8 w-8',
+    detail: 'meta',
   },
   large: {
-    icon: LargeIcon,
-    labelKey: 'thumbnailSize.large',
-    descriptionKey: 'thumbnailSize.largeDesc',
-    // Same column breakpoints as `full` (6 across at ≥1920px) for larger tiles; thumbnails still use cover crop vs full's contain (AssetGrid).
     gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [@media(min-width:1920px)]:grid-cols-6',
-    thumbnailSize: 'w-full aspect-[1.15]', // Fixed 1.15:1 aspect ratio
-    gridGap: 'gap-4 sm:gap-6 lg:gap-8',
-    textSize: 'text-base',
-    titleSize: 'text-base',
-    infoSize: 'text-sm',
-    tagSize: 'text-sm',
-    padding: 'p-3',
-    iconSize: 'h-16 w-16',
-    fileIconSize: 'h-4 w-4',
-    showMinimal: false
+    gridGap: 'gap-x-4 gap-y-5',
+    aspect: 'aspect-[4/3]',
+    iconSize: 'h-10 w-10',
+    detail: 'full',
   },
+  // Same grid as large, but the whole image is shown (contain) instead of cropped (cover).
   full: {
-    icon: FullIcon,
-    labelKey: 'thumbnailSize.full',
-    descriptionKey: 'thumbnailSize.fullDesc',
     gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 [@media(min-width:1920px)]:grid-cols-6',
-    thumbnailSize: 'w-full aspect-[1.15]', // Fixed 1.15:1 aspect ratio
-    gridGap: 'gap-4 sm:gap-6 lg:gap-8',
-    textSize: 'text-base',
-    titleSize: 'text-base',
-    infoSize: 'text-sm',
-    tagSize: 'text-sm',
-    padding: 'p-3',
-    iconSize: 'h-16 w-16',
-    fileIconSize: 'h-4 w-4',
-    showMinimal: false
-  }
+    gridGap: 'gap-x-4 gap-y-5',
+    aspect: 'aspect-[4/3]',
+    iconSize: 'h-10 w-10',
+    detail: 'full',
+  },
 }
+
+const SIZES: ThumbnailSize[] = ['small', 'medium', 'large', 'full']
 
 export default function ThumbnailSizeSelector() {
   const { thumbnailSize, setThumbnailSize } = useThumbnailSize()
   const t = useTranslations('assets')
 
   return (
-    <div className="flex items-center space-x-2">
-      <span className="text-sm text-muted font-medium">
-        {t('thumbnailSize.label')}
-      </span>
-      <div className="flex items-center space-x-1 bg-sunken rounded-control p-1">
-        {Object.entries(sizeConfig).map(([size, config]) => {
-          const Icon = config.icon
-          const isActive = thumbnailSize === size
-          const label = t(config.labelKey)
-          const description = t(config.descriptionKey)
-          
-          return (
-            <button
-              key={size}
-              onClick={() => setThumbnailSize(size as ThumbnailSize)}
-              className={`flex items-center space-x-1 px-3 py-1.5 rounded-control text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-surface text-fg'
-                  : 'text-muted hover:text-fg hover:bg-hover'
-              }`}
-              title={`${label} - ${description}`}
-            >
-              <Icon className="h-4 w-4" />
-              <span className="hidden sm:inline">{label}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
+    <SegmentedControl
+      label={t('thumbnailSize.label')}
+      value={thumbnailSize}
+      onChange={setThumbnailSize}
+      segments={SIZES.map((size) => ({
+        value: size,
+        label: t(`thumbnailSize.${size}`),
+        title: `${t(`thumbnailSize.${size}`)} - ${t(`thumbnailSize.${size}Desc`)}`,
+      }))}
+    />
   )
 }
-
-// Export the size configuration for use in other components
-export { sizeConfig }
