@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-import ModalShell from '@/components/groups/ModalShell'
+import Modal from '@/components/ui/Modal'
 import { watchedFoldersApi, watchedFolderErrors, type FolderScan, type WatchedFolder } from '@/lib/watchedFoldersApi'
 
 const statusClass: Record<FolderScan['status'], string> = {
@@ -43,9 +43,9 @@ export default function ScanHistoryModal({ folder, onClose }: { folder: WatchedF
   }
 
   return (
-    <ModalShell title={`${t('history.title')} — ${folder.name}`} onClose={onClose} wide>
-      <div className="p-6">
-        <div className="max-h-96 overflow-y-auto rounded-control bg-sunken p-4 font-mono text-sm text-success-text">
+    <Modal title={`${t('history.title')} — ${folder.name}`} onClose={onClose} size="lg">
+      <div>
+        <div className="max-h-96 overflow-y-auto rounded-control bg-sunken p-4 font-mono text-xs leading-5 text-fg">
           {error ? (
             <p className="text-danger-text">{error}</p>
           ) : scans === null ? (
@@ -59,11 +59,11 @@ export default function ScanHistoryModal({ folder, onClose }: { folder: WatchedF
             scans.map((scan) => (
               <div key={scan.id} className="mb-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-subtle">{new Date(scan.started_at).toLocaleString()}</span>
-                  <span className={statusClass[scan.status] ?? 'text-on-accent'}>[{t(`history.status.${scan.status}`)}]</span>
-                  <span className="text-subtle">{summary(scan)}</span>
+                  <span className="text-subtle">{new Date(scan.started_at).toLocaleString()}</span>
+                  <span className={statusClass[scan.status] ?? 'text-muted'}>[{t(`history.status.${scan.status}`)}]</span>
+                  <span className="text-fg">{summary(scan)}</span>
                 </div>
-                <div className="ml-4 text-xs text-subtle">
+                <div className="ml-4 text-muted">
                   {t('history.counts', {
                     found: scan.files_found,
                     processed: scan.files_processed,
@@ -80,6 +80,6 @@ export default function ScanHistoryModal({ folder, onClose }: { folder: WatchedF
           )}
         </div>
       </div>
-    </ModalShell>
+    </Modal>
   )
 }

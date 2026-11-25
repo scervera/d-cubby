@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-import ModalShell from '@/components/groups/ModalShell'
+import Modal from '@/components/ui/Modal'
 import {
   watchedFoldersApi,
   watchedFolderErrors,
@@ -32,9 +32,9 @@ export default function NotificationsModal({ folder, onClose }: { folder: Watche
   }, [folder.id, t])
 
   return (
-    <ModalShell title={`${t('notifications.title')} — ${folder.name}`} onClose={onClose} wide>
-      <div className="p-6">
-        <div className="max-h-96 overflow-y-auto rounded-control bg-sunken p-4 font-mono text-sm">
+    <Modal title={`${t('notifications.title')} — ${folder.name}`} onClose={onClose} size="lg">
+      <div>
+        <div className="max-h-96 overflow-y-auto rounded-control bg-sunken p-4 font-mono text-xs leading-5 text-fg">
           {error ? (
             <p className="text-danger-text">{error}</p>
           ) : notifications === null ? (
@@ -50,19 +50,19 @@ export default function NotificationsModal({ folder, onClose }: { folder: Watche
               return (
                 <div key={n.id} className={`mb-3 ${unread ? '' : 'opacity-60'}`}>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs text-subtle">{new Date(n.created_at).toLocaleString()}</span>
-                    <span className={typeClass[n.type] ?? 'text-on-accent'}>[{n.type.toUpperCase()}]</span>
-                    <span className="text-subtle">{n.title}</span>
+                    <span className="text-subtle">{new Date(n.created_at).toLocaleString()}</span>
+                    <span className={typeClass[n.type] ?? 'text-muted'}>[{n.type.toUpperCase()}]</span>
+                    <span className="text-fg">{n.title}</span>
                     {unread && <span className="text-xs text-warning-text">{t('notifications.unread')}</span>}
                   </div>
-                  <div className="ml-4 text-xs text-subtle">{n.message}</div>
-                  {n.file_path && <div className="ml-4 mt-1 break-all text-xs text-accent-text">{n.file_path}</div>}
+                  <div className="ml-4 text-muted">{n.message}</div>
+                  {n.file_path && <div className="ml-4 mt-1 break-all text-muted">{n.file_path}</div>}
                 </div>
               )
             })
           )}
         </div>
       </div>
-    </ModalShell>
+    </Modal>
   )
 }

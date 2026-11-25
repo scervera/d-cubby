@@ -57,7 +57,7 @@ export default function AppHeader() {
             </Link>
           )}
           <div className="hidden lg:block">
-            <ThemeToggle variant="toolbar" />
+            <ThemeToggle />
           </div>
         </div>
       </div>

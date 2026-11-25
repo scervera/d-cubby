@@ -1,9 +1,25 @@
 'use client'
 
-import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
+import {
+  forwardRef,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react'
 
-const inputClass =
-  'block w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle disabled:opacity-60'
+export { Button } from '@/components/ui/Button'
+
+/** Every text input, select and textarea. Controls get the stronger border so their edge is visible. */
+export const inputClass =
+  'block w-full rounded-control border border-line-strong bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle disabled:cursor-not-allowed disabled:opacity-60'
+
+/** Compact variant for dense toolbars and number fields. */
+export const inputClassSm =
+  'block w-full rounded-control border border-line-strong bg-surface px-2 py-1 text-xs text-fg placeholder:text-subtle disabled:cursor-not-allowed disabled:opacity-60'
+
+export const labelClass = 'mb-1 block text-sm font-medium text-fg'
+export const hintClass = 'mt-1 text-xs text-subtle'
 
 interface FieldProps {
   label: string
@@ -11,17 +27,47 @@ interface FieldProps {
   error?: string | null
 }
 
-export const TextField = forwardRef<HTMLInputElement, FieldProps & InputHTMLAttributes<HTMLInputElement>>(
-  function TextField({ label, hint, error, id, className, ...props }, ref) {
+export const TextField = forwardRef<
+  HTMLInputElement,
+  FieldProps & InputHTMLAttributes<HTMLInputElement> & { /** Monospace, for paths and identifiers. */ mono?: boolean }
+>(
+  function TextField({ label, hint, error, id, className, mono, ...props }, ref) {
     const inputId = id ?? props.name
     return (
       <div className={className}>
-        <label htmlFor={inputId} className="mb-1 block text-sm font-medium text-fg">
+        <label htmlFor={inputId} className={labelClass}>
           {label}
         </label>
         <input
           ref={ref}
           id={inputId}
+          className={mono ? `${inputClass} font-mono` : inputClass}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={hint || error ? `${inputId}-help` : undefined}
+          {...props}
+        />
+        {(error || hint) && (
+          <p id={`${inputId}-help`} className={`mt-1 text-xs ${error ? 'text-danger-text' : 'text-subtle'}`}>
+            {error || hint}
+          </p>
+        )}
+      </div>
+    )
+  },
+)
+
+export const TextAreaField = forwardRef<HTMLTextAreaElement, FieldProps & TextareaHTMLAttributes<HTMLTextAreaElement>>(
+  function TextAreaField({ label, hint, error, id, className, rows = 3, ...props }, ref) {
+    const inputId = id ?? props.name
+    return (
+      <div className={className}>
+        <label htmlFor={inputId} className={labelClass}>
+          {label}
+        </label>
+        <textarea
+          ref={ref}
+          id={inputId}
+          rows={rows}
           className={inputClass}
           aria-invalid={error ? true : undefined}
           aria-describedby={hint || error ? `${inputId}-help` : undefined}
@@ -37,6 +83,25 @@ export const TextField = forwardRef<HTMLInputElement, FieldProps & InputHTMLAttr
   },
 )
 
+/** A checkbox or radio with its label. */
+export function CheckField({
+  label,
+  hint,
+  className = '',
+  type = 'checkbox',
+  ...props
+}: { label: ReactNode; hint?: ReactNode } & InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <label className={`flex items-start gap-2 text-sm text-fg ${props.disabled ? 'opacity-60' : 'cursor-pointer'} ${className}`}>
+      <input type={type} className="mt-0.5 h-4 w-4 shrink-0" {...props} />
+      <span className="min-w-0">
+        {label}
+        {hint && <span className="block text-xs text-subtle">{hint}</span>}
+      </span>
+    </label>
+  )
+}
+
 export function SelectField({
   label,
   hint,
@@ -48,50 +113,21 @@ export function SelectField({
   const selectId = id ?? props.name
   return (
     <div className={className}>
-      <label htmlFor={selectId} className="mb-1 block text-sm font-medium text-fg">
+      <label htmlFor={selectId} className={labelClass}>
         {label}
       </label>
       <select id={selectId} className={inputClass} {...props}>
         {children}
       </select>
-      {hint && <p className="mt-1 text-xs text-subtle">{hint}</p>}
+      {hint && <p className={hintClass}>{hint}</p>}
     </div>
-  )
-}
-
-export function Button({
-  variant = 'primary',
-  loading,
-  children,
-  className = '',
-  disabled,
-  type = 'button',
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'danger'; loading?: boolean }) {
-  const styles = {
-    primary:
-      'bg-accent text-on-accent hover:bg-accent-hover',
-    secondary:
-      'border border-line bg-raised text-fg hover:bg-hover',
-    danger: 'bg-danger text-on-accent hover:bg-danger-hover',
-  }[variant]
-  return (
-    <button
-      type={type}
-      className={`inline-flex items-center justify-center gap-2 rounded-control px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${styles} ${className}`}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {loading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden />}
-      {children}
-    </button>
   )
 }
 
 export function FormError({ message }: { message?: string | null }) {
   if (!message) return null
   return (
-    <div role="alert" className="rounded-control border border-danger bg-danger-subtle px-3 py-2 text-sm text-danger-text">
+    <div role="alert" className="rounded-control bg-danger-subtle px-3 py-2 text-sm text-danger-text">
       {message}
     </div>
   )

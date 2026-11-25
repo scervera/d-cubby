@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useId, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+
+import { FormError, inputClass, labelClass } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
 
 export interface ConfirmDialogProps {
   open: boolean
@@ -25,8 +27,8 @@ export interface ConfirmDialogProps {
 }
 
 /**
- * Standard destructive / confirmation modal (glass panel, backdrop dismiss).
- * Used for delete and other irreversible actions across the app.
+ * Confirmation for delete and other irreversible actions. It cannot be dismissed while
+ * the action is running.
  */
 export default function ConfirmDialog({
   open,
@@ -43,60 +45,40 @@ export default function ConfirmDialog({
 }: ConfirmDialogProps) {
   const inputId = useId()
   const [typedValue, setTypedValue] = useState('')
-  const [mounted, setMounted] = useState(false)
-  const requiresTypedAck = Boolean(confirmText?.trim())
   const phrase = confirmText?.trim() ?? ''
-  const acknowledgementMatches =
-    !requiresTypedAck || typedValue.trim().toLowerCase() === phrase.toLowerCase()
+  const requiresTypedAck = phrase !== ''
+  const acknowledgementMatches = !requiresTypedAck || typedValue.trim().toLowerCase() === phrase.toLowerCase()
   const canConfirm = !loading && acknowledgementMatches
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    if (!open) setTypedValue('')
+  }, [open])
 
-  useEffect(() => {
-    if (!open) {
-      setTypedValue('')
-      return
-    }
+  if (!open) return null
 
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !loading) onCancel()
-    }
-
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [open, onCancel, loading])
-
-  if (!open || !mounted) return null
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-modal flex items-center justify-center bg-backdrop p-4"
-      onClick={(event) => {
-        if (event.target === event.currentTarget && !loading) onCancel()
-      }}
-      role="presentation"
+  return (
+    <Modal
+      title={title}
+      onClose={onCancel}
+      size="sm"
+      role="alertdialog"
+      dismissable={!loading}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onCancel} disabled={loading}>
+            {cancelLabel}
+          </Button>
+          <Button variant="danger" onClick={onConfirm} disabled={!canConfirm} loading={loading}>
+            {confirmLabel}
+          </Button>
+        </>
+      }
     >
-      <div
-        className="rounded-card border bg-surface mx-auto w-full max-w-md border border-line px-6 py-6"
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-body"
-      >
-        <div className="mb-3 flex items-center gap-2">
-          <ExclamationTriangleIcon className="h-5 w-5 shrink-0 text-warning-text" aria-hidden />
-          <h3 id="confirm-dialog-title" className="text-lg font-semibold text-fg">
-            {title}
-          </h3>
-        </div>
-        <p id="confirm-dialog-body" className="text-sm text-muted whitespace-pre-line">
-          {body}
-        </p>
-        {requiresTypedAck ? (
-          <div className="mt-4 space-y-2">
-            <label htmlFor={inputId} className="block text-sm font-medium text-muted">
+      <div className="space-y-4">
+        <p className="text-sm whitespace-pre-line text-muted">{body}</p>
+        {requiresTypedAck && (
+          <div>
+            <label htmlFor={inputId} className={labelClass}>
               {confirmPrompt || `Type ${phrase} to confirm`}
             </label>
             <input
@@ -109,7 +91,7 @@ export default function ConfirmDialog({
               onChange={(event) => setTypedValue(event.target.value)}
               disabled={loading}
               placeholder={phrase}
-              className="w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle disabled:opacity-50"
+              className={inputClass}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' && canConfirm) {
                   event.preventDefault()
@@ -118,35 +100,9 @@ export default function ConfirmDialog({
               }}
             />
           </div>
-        ) : null}
-        {error ? (
-          <p
-            className="mt-3 rounded-control border border-danger bg-danger-subtle px-3 py-2 text-sm text-danger-text"
-            role="alert"
-          >
-            {error}
-          </p>
-        ) : null}
-        <div className="mt-5 flex items-center justify-end gap-2">
-          <button
-            type="button"
-            onClick={onCancel}
-            disabled={loading}
-            className="rounded-control border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:border-line-strong hover:bg-hover disabled:opacity-50"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            disabled={!canConfirm}
-            className="inline-flex items-center gap-2 rounded-control bg-danger px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-danger-hover disabled:opacity-50"
-          >
-            {confirmLabel}
-          </button>
-        </div>
+        )}
+        <FormError message={error} />
       </div>
-    </div>,
-    document.body
+    </Modal>
   )
 }

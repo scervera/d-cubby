@@ -12,7 +12,7 @@ export default function AuthCard({ title, subtitle, children, wide }: { title: s
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
       <div className="fixed right-4 top-4">
-        <ThemeToggle variant="toolbar" />
+        <ThemeToggle />
       </div>
       <div className={`rounded-card border bg-surface w-full ${wide ? 'max-w-2xl' : 'max-w-md'} rounded-card p-6 sm:p-8`}>
         <div className="mb-6 flex items-center gap-3">
