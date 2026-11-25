@@ -2,10 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 import AssetFilters, { type AssetFiltersState, type FilterContext } from '@/components/shared/AssetFilters'
 import Pagination from '@/components/shared/Pagination'
 import SharedLayout from '@/components/shared/SharedLayout'
+import { Button } from '@/components/ui/Button'
+import { EmptyState, PageHeader } from '@/components/ui/Panel'
+import { LoadingBlock } from '@/components/ui/Spinner'
 import ThumbnailSizeSelector from '@/components/ui/ThumbnailSizeSelector'
 import { ThumbnailSizeProvider } from '@/contexts/ThumbnailSizeContext'
 import { useAuth } from '@/hooks/useAuth'
@@ -50,7 +54,6 @@ function initialPageSize(): number {
 /** The asset library: filters, grid/list, pagination, upload and smart folder views. */
 export default function Dashboard({ initial = {} }: { initial?: DashboardInitialState }) {
   const { user } = useAuth()
-  const tDashboard = useTranslations('dashboard')
   const tAssets = useTranslations('assets')
 
   // What is listed: all assets (optionally one file category) or one smart folder.
@@ -217,23 +220,30 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
   return (
     <ThumbnailSizeProvider>
       <SharedLayout currentPage="assets" selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange}>
-        <div className="glass-panel-soft border border-white/30 px-3 py-3 sm:px-5 sm:py-4 dark:border-white/10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div className="min-w-0 flex-1">
-              <h1 className="truncate text-xl font-semibold text-slate-900 drop-shadow-sm sm:text-2xl dark:text-[#E3E1CE]">{title}</h1>
-              {subtitle && (
-                <p className="mt-2 max-w-xl text-xs text-slate-400 sm:text-sm dark:text-slate-400">
-                  {subtitle.count}
-                  {subtitle.tags && <span className="ml-2 hidden sm:inline">• {subtitle.tags}</span>}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 md:ml-4">
-              <StatChip label={tDashboard('stats.assets')} value={stats?.total_assets ?? totalItems} />
-              <StatChip label={tDashboard('stats.storageUsed')} value={stats ? formatFileSize(stats.storage_bytes) : '—'} />
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          title={title}
+          description={subtitle ? [subtitle.count, subtitle.tags].filter(Boolean).join(' · ') : undefined}
+          actions={
+            mayWrite && (
+              <>
+                <Button variant="danger-ghost" onClick={() => window.dispatchEvent(new Event(TOGGLE_BULK_DELETE_EVENT))}>
+                  {tAssets('bulkDelete')}
+                </Button>
+                <Button onClick={() => setShowUpload(true)}>
+                  <ArrowUpTrayIcon className="h-4 w-4" aria-hidden />
+                  {tAssets('uploadFiles')}
+                </Button>
+              </>
+            )
+          }
+        >
+          {!subtitle && (
+            <p className="text-meta mt-1">
+              {tAssets('grid.assetCount', { count: stats?.total_assets ?? totalItems })}
+              {stats && ` · ${formatFileSize(stats.storage_bytes)}`}
+            </p>
+          )}
+        </PageHeader>
 
         <AssetFilters
           key={filtersKey}
@@ -241,58 +251,21 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
           onFiltersChange={handleFiltersChange}
           initialSearch={search || undefined}
           initialCategory={fileCategory}
-          className="glass-panel-soft mt-6 border border-white/25"
+          trailing={viewMode === 'grid' ? <ThumbnailSizeSelector /> : undefined}
         />
 
-        {(viewMode === 'grid' || mayWrite) && (
-          <div className="glass-panel-soft mt-6 border border-white/25 px-4 py-4 dark:border-white/10">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              {viewMode === 'grid' && (
-                <div className="flex items-center gap-3">
-                  <ThumbnailSizeSelector />
-                </div>
-              )}
-              {mayWrite && (
-                <div className={`flex w-full gap-2 ${viewMode === 'grid' ? 'flex-col sm:w-auto sm:flex-row' : 'flex-row'}`}>
-                  <button
-                    onClick={() => setShowUpload(true)}
-                    className={`rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 ${
-                      viewMode === 'list' ? 'flex-[3]' : 'w-full sm:w-auto'
-                    }`}
-                  >
-                    {tAssets('uploadFiles')}
-                  </button>
-                  <button
-                    onClick={() => window.dispatchEvent(new Event(TOGGLE_BULK_DELETE_EVENT))}
-                    className={`rounded-xl border border-red-200/60 bg-red-500/80 px-4 py-2 text-sm font-semibold text-white shadow-md backdrop-blur hover:border-red-200 hover:bg-red-500 ${
-                      viewMode === 'list' ? 'flex-1' : 'w-full sm:w-auto'
-                    }`}
-                  >
-                    {tAssets('bulkDelete')}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
         {loading && assets.length === 0 ? (
-          <div className="flex min-h-[40vh] items-center justify-center" role="status" aria-live="polite">
-            <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-[#D4A574] dark:border-[#F6DAA9]" />
-          </div>
+          <LoadingBlock />
         ) : error && assets.length === 0 ? (
-          <div className="flex min-h-[40vh] items-center justify-center">
-            <div className="glass-panel-soft max-w-md rounded-3xl border border-white/30 p-8 text-center dark:border-white/10">
-              <div className="mb-4 text-lg font-semibold text-rose-500 dark:text-rose-400">{tAssets('errorLoadingAssets')}</div>
-              <div className="mb-6 text-sm text-slate-600 dark:text-slate-300">{error}</div>
-              <button
-                onClick={handleAssetsChange}
-                className="inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-5 py-2 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5"
-              >
+          <EmptyState
+            title={tAssets('errorLoadingAssets')}
+            description={error}
+            action={
+              <Button variant="secondary" onClick={handleAssetsChange}>
                 {tAssets('tryAgain')}
-              </button>
-            </div>
-          </div>
+              </Button>
+            }
+          />
         ) : (
           <AssetGrid assets={assets} category={selectedCategory} viewMode={viewMode} user={user} onAssetsChange={handleAssetsChange} />
         )}
@@ -316,14 +289,5 @@ export default function Dashboard({ initial = {} }: { initial?: DashboardInitial
         )}
       </SharedLayout>
     </ThumbnailSizeProvider>
-  )
-}
-
-function StatChip({ label, value }: { label: string; value: number | string }) {
-  return (
-    <div className="rounded-xl border border-[var(--glass-border-subtle)] bg-[var(--surface-elevated)] px-3 py-2 text-xs font-semibold text-[var(--foreground)]">
-      <div className="text-[var(--foreground)]/65">{label}</div>
-      <div className="text-sm text-[var(--foreground)]">{typeof value === 'number' ? value.toLocaleString() : value}</div>
-    </div>
   )
 }

@@ -6,7 +6,8 @@ import { useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
 import AuthCard from '@/components/auth/AuthCard'
-import { Button, FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, TextField } from '@/components/forms/fields'
+import { FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, TextField } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { useAuth } from '@/hooks/useAuth'
 import { api, apiErrorMessage } from '@/lib/api'
@@ -45,7 +46,7 @@ export default function SetPasswordPage({ endpoint, title, subtitle }: { endpoin
       <AuthCard title={title}>
         <FormError message={t('linkMissingToken')} />
         <p className="mt-4 text-center text-sm">
-          <Link href="/login" className="font-medium hover:underline">{t('backToSignIn')}</Link>
+          <Link href="/login" className="font-medium text-fg underline-offset-2 hover:underline">{t('backToSignIn')}</Link>
         </p>
       </AuthCard>
     )

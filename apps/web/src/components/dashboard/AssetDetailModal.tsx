@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
 import {
   ArrowDownTrayIcon,
@@ -15,10 +14,13 @@ import {
   TrashIcon,
   UserCircleIcon,
   VideoCameraIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
 
+import { CheckField, inputClass } from '@/components/forms/fields'
 import AudioThumbnail from '@/components/ui/AudioThumbnail'
+import Badge from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import type { User } from '@/hooks/useAuth'
 import { api, apiErrorMessage } from '@/lib/api'
@@ -41,7 +43,6 @@ import {
   fullResolutionUrl,
   getAssetTags,
   getFileIcon,
-  getFileTypeColor,
   isAudio,
   isImage,
   isVideo,
@@ -68,8 +69,10 @@ interface FacePerson {
   face_count?: number
 }
 
-const BUTTON_OVERLAY =
-  'flex items-center gap-2 rounded-lg border border-white/40 bg-white/80 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:border-white/20 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-700'
+const OVERLAY_CHIP =
+  'flex items-center gap-1.5 rounded-control bg-scrim px-2.5 py-1.5 text-xs font-medium text-on-scrim transition-opacity hover:opacity-80'
+const OVERLAY_CHIP_ACTIVE =
+  'flex items-center gap-1.5 rounded-control bg-on-scrim px-2.5 py-1.5 text-xs font-medium text-scrim transition-opacity hover:opacity-80'
 
 /** Asset details: preview, metadata, tags, EXIF, lineage and actions. */
 export default function AssetDetailModal({
@@ -220,25 +223,19 @@ export default function AssetDetailModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newTagName, asset, isAddingTag, tagInputFocused])
 
-  // Keyboard: Esc closes the full-screen viewer, F opens it.
+  // Keyboard: F opens the full-screen viewer. Escape is handled by the dialogs.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement
-      if (e.key === 'Escape') {
-        if (fullScreenUrl) setFullScreenUrl(null)
-        else if (!showImageEditor && !showPosterFrameSelector) onClose()
-      } else if ((e.key === 'f' || e.key === 'F') && !typing && !fullScreenUrl && (isImage(asset) || isVideo(asset))) {
+      const target = e.target as HTMLElement | null
+      const typing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || !!target?.isContentEditable
+      if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey && !typing && !fullScreenUrl && (isImage(asset) || isVideo(asset))) {
         const url = fullResolutionUrl(asset)
         if (url) setFullScreenUrl(url)
       }
     }
     document.addEventListener('keydown', onKeyDown)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = ''
-    }
-  }, [asset, fullScreenUrl, showImageEditor, showPosterFrameSelector, onClose])
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [asset, fullScreenUrl])
 
   /** Show a newer copy of an asset; keeps the uploader when a response omits it. */
   const applyAssetResponse = (payload: unknown) => {
@@ -477,533 +474,475 @@ export default function AssetDetailModal({
   const exif = attrs.exif_data
   const imageSrc = attrs.preview_url || attrs.thumbnail_url || attrs.file_url
 
+  const sectionTitle = 'flex items-center gap-1.5 text-sm font-semibold text-fg'
+  const metaLabel = 'text-xs text-subtle'
+  const metaValue = 'break-all font-mono text-sm tabular-nums text-fg'
+  const showPreviewTools = isImage(asset) || isVideo(asset)
+
+  const footer = (
+    <>
+      {isVideo(asset) && mayEditAsset && (
+        <Button variant="secondary" onClick={() => setShowPosterFrameSelector(true)} title={tAssets('details.actions.setPosterFrameTooltip')}>
+          <VideoCameraIcon className="h-4 w-4" aria-hidden />
+          {tAssets('details.actions.setPosterFrame')}
+        </Button>
+      )}
+      {isImage(asset) && mayTag && (
+        <Button variant="secondary" onClick={() => setShowImageEditor(true)} title={tAssets('details.actions.editImageTooltip')}>
+          <ScissorsIcon className="h-4 w-4" aria-hidden />
+          {tAssets('details.actions.editImage')}
+        </Button>
+      )}
+      {isImage(asset) && mayTag && aiTaggingEnabled && (
+        <Button variant="secondary" onClick={handleAutoTag} disabled={autoTagging} title={tAssets('details.actions.autoTagTooltip')}>
+          <SparklesIcon className="h-4 w-4" aria-hidden />
+          {autoTagging ? tAssets('details.actions.autoTagging') : tAssets('details.actions.autoTag')}
+        </Button>
+      )}
+      <Button variant="secondary" onClick={() => onDownload(asset)} title={tAssets('details.actions.downloadTooltip')}>
+        <ArrowDownTrayIcon className="h-4 w-4" aria-hidden />
+        {tAssets('details.actions.download')}
+      </Button>
+      {mayEditAsset && (
+        <Button
+          variant="danger-ghost"
+          onClick={handleDelete}
+          disabled={deletingAssetId === asset.id}
+          title={tAssets('details.actions.deleteTooltip')}
+        >
+          <TrashIcon className="h-4 w-4" aria-hidden />
+          {deletingAssetId === asset.id ? tAssets('grid.bulk.deleting') : tAssets('details.actions.deleteAsset')}
+        </Button>
+      )}
+    </>
+  )
+
   return (
     <>
-      {createPortal(
-        <div className="fixed inset-0 z-[1000] overflow-y-auto bg-slate-900/60 backdrop-blur" role="dialog" aria-modal="true" aria-label={attrs.name}>
-          <div className="flex min-h-screen items-center justify-center p-4">
-            <div className="glass-panel my-4 w-full max-w-4xl border border-white/25 px-6 py-6 dark:border-white/10">
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="min-w-0 flex-1 break-words text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{attrs.name}</h3>
-                <button
-                  onClick={onClose}
-                  className="rounded-xl border border-white/40 bg-white/30 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-white/70 hover:bg-white/50 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-white/30"
-                >
-                  {tAssets('details.done')}
-                </button>
-              </div>
-
-              <div className="mt-4 space-y-4">
-                {/* Preview */}
-                <div
-                  className={`relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/20 ${
-                    isImage(asset) ? 'p-0' : 'bg-white/20 p-4 backdrop-blur-sm dark:bg-slate-800/40'
-                  } ${isImage(asset) || isVideo(asset) ? 'min-h-[400px]' : 'aspect-video'}`}
-                >
-                  <div className="absolute right-4 top-4 z-10 flex flex-wrap items-center justify-end gap-2">
-                    {(isImage(asset) || isVideo(asset)) && (
-                      <button onClick={openFullScreen} className={BUTTON_OVERLAY} title={tAssets('viewer.fullScreenHint')}>
-                        <EyeIcon className="h-4 w-4" />
-                        <span>{tAssets('viewer.fullScreen')}</span>
-                      </button>
-                    )}
-                    {isImage(asset) && (
-                      <button
-                        onClick={toggleBackground}
-                        className={BUTTON_OVERLAY}
-                        title={tAssets('viewer.backgroundToggle', {
-                          color: imageBackgroundColor === 'white' ? tAssets('viewer.colors.white') : tAssets('viewer.colors.black'),
-                        })}
-                      >
-                        <Squares2X2Icon className="h-4 w-4" />
-                        <span>{imageBackgroundColor === 'white' ? tAssets('viewer.colors.white') : tAssets('viewer.colors.black')}</span>
-                      </button>
-                    )}
-                    {isImage(asset) && faceDetectionEnabled && (
-                      <>
-                        <button
-                          onClick={() => setShowFaces(!showFaces)}
-                          className={
-                            showFaces
-                              ? 'flex items-center gap-2 rounded-lg border border-indigo-400 bg-indigo-500/80 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm transition-colors dark:bg-indigo-600/80'
-                              : BUTTON_OVERLAY
-                          }
-                          title={tAssets('faces.show')}
-                        >
-                          <UserCircleIcon className="h-4 w-4" />
-                          <span>{tAssets('faces.show')}</span>
-                        </button>
-                        {showFaces && mayTag && (
-                          <button onClick={handleDetectFaces} disabled={detectingFaces} className={`${BUTTON_OVERLAY} disabled:opacity-50`} title={tAssets('faces.detectHint')}>
-                            <SparklesIcon className="h-4 w-4" />
-                            <span>{detectingFaces ? tAssets('faces.detecting') : tAssets('faces.detect')}</span>
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-
-                  {isVideo(asset) ? (
-                    <div
-                      className="w-full cursor-pointer"
-                      onDoubleClick={(e) => {
-                        e.preventDefault()
-                        openFullScreen()
-                      }}
-                      title={tAssets('grid.tooltips.doubleClickToViewFullSize')}
-                    >
-                      <video
-                        ref={mainVideoRef}
-                        controls
-                        className="h-auto w-full object-contain"
-                        poster={attrs.poster_frame_url || attrs.thumbnail_url}
-                        key={`video-${asset.id}-${attrs.poster_frame_url || attrs.thumbnail_url || ''}`}
-                        preload="metadata"
-                        src={withStreamToken(attrs.file_url || attrs.download_url)}
-                        onClick={(e) => e.stopPropagation()}
-                        onDoubleClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                        }}
-                        onError={(e) => {
-                          // Fall back to the stream endpoint (range requests, token auth).
-                          const video = e.currentTarget
-                          const stream = withStreamToken(attrs.download_url)
-                          if (stream && !video.dataset.fallback) {
-                            video.dataset.fallback = 'true'
-                            video.src = stream
-                            video.load()
-                          }
-                        }}
-                      >
-                        {tAssets('viewer.videoNotSupported')}
-                      </video>
-                    </div>
-                  ) : isAudio(asset) ? (
-                    <div className="flex h-full w-full flex-col items-center justify-center p-8">
-                      <div className="mb-6 h-48 w-48 overflow-hidden rounded-2xl shadow-lg">
-                        <AudioThumbnail size="xlarge" />
-                      </div>
-                      <div className="w-full max-w-md rounded-xl border border-white/25 bg-white/30 p-4 shadow-inner backdrop-blur dark:border-white/10 dark:bg-slate-800/60">
-                        <audio controls className="w-full" preload="metadata">
-                          <source src={withStreamToken(attrs.file_url || attrs.download_url)} type={attrs.file_type} />
-                          {tAssets('viewer.audioNotSupported')}
-                        </audio>
-                      </div>
-                      <div className="mt-4 text-center">
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{attrs.name}</p>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                          {fileTypeLabel(attrs.file_type, 'AUDIO')} • {formatFileSize(attrs.file_size)}
-                        </p>
-                      </div>
-                    </div>
-                  ) : isImage(asset) && imageSrc ? (
-                    <div
-                      className="relative flex h-full w-full items-center justify-center p-4"
-                      style={{ backgroundColor: imageBackgroundColor === 'white' ? '#ffffff' : '#000000' }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        key={`${asset.id}-${imageSrc}`}
-                        src={imageSrc}
-                        alt={attrs.name}
-                        className="block max-h-full max-w-full cursor-pointer object-contain"
-                        onMouseDown={(e) => {
-                          // Manual double-click detection (the native event is unreliable over overlays).
-                          imageClickCountRef.current += 1
-                          if (imageClickTimeoutRef.current) clearTimeout(imageClickTimeoutRef.current)
-                          if (imageClickCountRef.current === 2) {
-                            e.preventDefault()
-                            imageClickCountRef.current = 0
-                            openFullScreen()
-                          } else {
-                            imageClickTimeoutRef.current = setTimeout(() => {
-                              imageClickCountRef.current = 0
-                            }, 300)
-                          }
-                        }}
-                        title={tAssets('grid.tooltips.doubleClickToViewFullSize')}
-                      />
-                      {showFaces && (
-                        <FaceOverlay
-                          faces={faceDetections}
-                          selectedFaceId={selectedFaceId}
-                          onFaceClick={(face) => {
-                            if (!mayTag) return
-                            setSelectedFaceId(face.id)
-                            setPopoverFace(face)
-                          }}
-                        />
-                      )}
-                      {popoverFace && (
-                        <div className="absolute left-1/2 top-1/2 z-[1001] -translate-x-1/2 -translate-y-1/2">
-                          <FaceNamePopover
-                            face={popoverFace}
-                            suggestedMatches={popoverFace.suggested_matches ?? []}
-                            existingPeople={facePeople}
-                            onSave={handleFaceIdentify}
-                            onCreateAndSave={handleFaceCreateAndSave}
-                            onClose={() => {
-                              setPopoverFace(null)
-                              setSelectedFaceId(null)
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ) : attrs.thumbnail_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={attrs.thumbnail_url} alt={attrs.name} className="h-auto w-full object-contain" />
-                  ) : (
-                    (() => {
-                      const Icon = getFileIcon(attrs.file_type)
-                      return <Icon className={`h-24 w-24 ${getFileTypeColor(attrs.file_type)}`} />
-                    })()
-                  )}
-                </div>
-
-                {/* Metadata */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.fileType')}</span>
-                    <p className="break-all text-slate-900 dark:text-[#E3E1CE]">{attrs.file_type}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.fileSize')}</span>
-                    <p className="text-slate-900 dark:text-[#E3E1CE]">{formatFileSize(attrs.file_size)}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.created')}</span>
-                    <p className="text-slate-900 dark:text-[#E3E1CE]">{formatDate(attrs.created_at)}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-slate-600 dark:text-slate-300">{tAssets('details.assetId')}</span>
-                    <p className="font-mono text-xs text-slate-900 dark:text-[#E3E1CE]">{asset.id}</p>
-                  </div>
-                  {resolution && (
-                    <div className="col-span-2">
-                      <span className="font-medium text-slate-600 dark:text-slate-300">{resolution.label}</span>
-                      <p className="text-slate-900 dark:text-[#E3E1CE]">{resolution.value}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Tags */}
-                <div>
-                  <div className="mb-3 flex items-center justify-between">
-                    <h4 className="flex items-center text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">
-                      <TagIcon className="mr-2 h-4 w-4" />
-                      {tAssets('details.tags.title')}
-                    </h4>
-                    {mayTag && (
-                      <button
-                        onClick={() => setIsAddingTag(true)}
-                        className="flex items-center text-xs font-semibold text-indigo-500 transition-colors hover:text-indigo-300 dark:text-indigo-300 dark:hover:text-indigo-200"
-                      >
-                        <PlusIcon className="mr-1 h-3 w-3" />
-                        {tAssets('details.tags.addTag')}
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="mb-3 flex flex-wrap gap-2">
-                    {assetTags.map((tag) => (
-                      <span
-                        key={String(tag.id)}
-                        className="inline-flex items-center gap-2 rounded-full bg-indigo-100/70 px-3 py-1 text-xs font-medium text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200"
-                      >
-                        {tagName(tag) || tAssets('details.tags.unknownTag')}
-                        {mayTag && (
-                          <button
-                            onClick={() => removeTag(tag)}
-                            aria-label={tAssets('details.tags.removeTagLabel', { name: tagName(tag) })}
-                            className="ml-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-indigo-300/70 text-indigo-400 transition-colors hover:border-indigo-500 hover:text-indigo-600 dark:border-indigo-500/30 dark:text-indigo-200 dark:hover:border-indigo-300 dark:hover:text-indigo-100"
-                          >
-                            <XMarkIcon className="h-3 w-3" />
-                          </button>
-                        )}
-                      </span>
-                    ))}
-                    {assetTags.length === 0 && (
-                      <span className="text-sm italic text-slate-500 dark:text-slate-400">{tAssets('details.tags.noneAssigned')}</span>
-                    )}
-                  </div>
-
-                  {mayTag && isAddingTag && (
-                    <div className="relative flex items-center gap-2">
-                      <div className="relative flex-1">
-                        <input
-                          type="text"
-                          ref={tagInputRef}
-                          value={newTagName}
-                          onChange={(e) => setNewTagName(e.target.value)}
-                          onFocus={() => setTagInputFocused(true)}
-                          onBlur={() =>
-                            setTimeout(() => {
-                              setTagInputFocused(false)
-                              setShowTagSuggestions(false)
-                            }, 200)
-                          }
-                          placeholder={tAssets('details.tags.enterTagName')}
-                          className="w-full rounded-xl border border-white/30 bg-white/70 px-3 py-1.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-100"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault()
-                              handleAddTag()
-                            } else if (e.key === 'Escape') {
-                              e.stopPropagation()
-                              setShowTagSuggestions(false)
-                              setIsAddingTag(false)
-                              setNewTagName('')
-                            } else if (e.key === 'ArrowDown' && showTagSuggestions && tagSuggestions.length > 0) {
-                              e.preventDefault()
-                              ;(document.querySelector('.tag-suggestion-item') as HTMLElement | null)?.focus()
-                            }
-                          }}
-                          autoFocus
-                        />
-                        {showTagSuggestions && tagSuggestions.length > 0 && (
-                          <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
-                            {tagSuggestions.map((tag) => (
-                              <button
-                                key={tag.id}
-                                type="button"
-                                className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-gray-900 hover:bg-indigo-50 focus:bg-indigo-50 focus:outline-none dark:text-white dark:hover:bg-indigo-900/20 dark:focus:bg-indigo-900/20"
-                                onClick={() => handleTagSuggestionClick(tag.name)}
-                                onMouseDown={(e) => e.preventDefault()}
-                              >
-                                <span className="font-medium">{tag.name}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <button
-                        onClick={handleAddTag}
-                        disabled={!newTagName.trim() || addingTag}
-                        className="flex items-center rounded-xl bg-indigo-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        {addingTag ? tAssets('details.tags.adding') : tAssets('details.tags.add')}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsAddingTag(false)
-                          setNewTagName('')
-                        }}
-                        className="rounded-xl px-3 py-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100"
-                      >
-                        {tCommon('cancel')}
-                      </button>
-                    </div>
-                  )}
-
-                  {mayTag && availableTags.length > 0 && (
-                    <div className="mt-3 rounded-2xl border border-white/20 bg-white/15 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-                      <div className="mb-2 flex items-center justify-between">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-                          {tAssets('details.tags.availableTags')}
-                        </p>
-                        {selectedTagsToAdd.length > 0 && (
-                          <button
-                            onClick={handleAddSelectedTags}
-                            className="rounded-lg bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-600"
-                          >
-                            {tAssets('details.tags.addSelected', { count: selectedTagsToAdd.length })}
-                          </button>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {availableTags
-                          .filter((tag) => !assetTags.some((assetTag) => String(assetTag.id) === String(tag.id)))
-                          .slice(0, 10)
-                          .map((tag) => {
-                            const id = String(tag.id)
-                            const checked = selectedTagsToAdd.includes(id)
-                            return (
-                              <label
-                                key={id}
-                                className={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
-                                  checked
-                                    ? 'border-indigo-200 bg-indigo-100/70 text-indigo-600 shadow-sm dark:border-indigo-400/30 dark:bg-indigo-500/20 dark:text-indigo-200'
-                                    : 'border-white/30 bg-white/20 text-slate-600 hover:border-white/60 hover:bg-white/30 dark:border-white/10 dark:bg-slate-700/40 dark:text-slate-300 dark:hover:border-white/30'
-                                }`}
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={checked}
-                                  onChange={() =>
-                                    setSelectedTagsToAdd((prev) => (checked ? prev.filter((x) => x !== id) : [...prev, id]))
-                                  }
-                                  className="mr-1 h-3 w-3 rounded border-slate-300 text-indigo-500 focus:ring-indigo-400"
-                                />
-                                {tagName(tag) || tAssets('details.tags.unknownTag')}
-                              </label>
-                            )
-                          })}
-                      </div>
-                      <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">{tAssets('details.tags.multiSelectHint')}</div>
-                    </div>
-                  )}
-                </div>
-
-                {/* EXIF */}
-                {isImage(asset) && exif && (
-                  <div>
-                    <h4 className="mb-2 text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('details.exif.exifInformation')}</h4>
-                    <div className="space-y-2 rounded-2xl border border-white/25 bg-white/25 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-                      {(exif.camera_make || exif.camera_model) && (
-                        <ExifRow label={tAssets('details.exif.camera')} value={[exif.camera_make, exif.camera_model].filter(Boolean).join(' ')} />
-                      )}
-                      {exif.lens_model && <ExifRow label={tAssets('details.exif.lens')} value={exif.lens_model} />}
-                      <div className="grid grid-cols-2 gap-2">
-                        {exif.aperture ? <ExifRow label={tAssets('details.exif.aperture')} value={`f/${exif.aperture}`} /> : null}
-                        {exif.shutter_speed ? (
-                          <ExifRow label={tAssets('details.exif.shutter')} value={`1/${Math.round(1 / exif.shutter_speed)}s`} />
-                        ) : null}
-                        {exif.iso ? <ExifRow label={tAssets('details.exif.iso')} value={String(exif.iso)} /> : null}
-                        {exif.focal_length ? <ExifRow label={tAssets('details.exif.focalLength')} value={`${exif.focal_length}mm`} /> : null}
-                      </div>
-                      {exif.date_taken && <ExifRow label={tAssets('details.exif.dateTaken')} value={new Date(exif.date_taken).toLocaleString()} />}
-                      {exif.gps_latitude && exif.gps_longitude ? (
-                        <ExifRow label={tAssets('details.exif.location')} value={`${exif.gps_latitude.toFixed(6)}, ${exif.gps_longitude.toFixed(6)}`} />
-                      ) : null}
-                      {exif.software && <ExifRow label={tAssets('details.exif.software')} value={exif.software} />}
-                    </div>
-                  </div>
-                )}
-
-                {/* Lineage (versions) */}
-                {isImage(asset) && (
-                  <div>
-                    <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('lineage.title')}</h4>
-                      {lineage && (
-                        <span className="text-xs text-slate-500 dark:text-slate-300">{tAssets('lineage.summary', { count: lineage.relatives.length })}</span>
-                      )}
-                    </div>
-                    <div className="rounded-2xl border border-white/25 bg-white/25 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-                      {loadingLineage ? (
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{tAssets('lineage.loading')}</p>
-                      ) : lineage && lineage.relatives.length > 0 ? (
-                        <div className="space-y-2">
-                          {lineage.relatives.map((relative) => (
-                            <button
-                              key={relative.id}
-                              onClick={() => handleOpenRelatedAsset(String(relative.id))}
-                              disabled={loadingRelatedAssetId === String(relative.id)}
-                              className="flex w-full items-center gap-3 rounded-xl border border-white/20 bg-white/30 px-3 py-2 text-left transition-colors hover:bg-white/50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-slate-900/40 dark:hover:bg-slate-900/60"
-                            >
-                              {relative.thumbnail_url ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img src={relative.thumbnail_url} alt={relative.name} className="h-10 w-10 rounded-lg object-cover" />
-                              ) : (
-                                <PhotoIcon className="h-8 w-8 text-slate-400" />
-                              )}
-                              <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{relative.name}</p>
-                                <p className="text-xs text-slate-500 dark:text-slate-300">
-                                  {tAssets(`lineage.relations.${relative.relation}`)} · {formatDate(relative.created_at)}
-                                </p>
-                              </div>
-                              <span className="text-xs text-indigo-500 dark:text-indigo-300">
-                                {loadingRelatedAssetId === String(relative.id) ? tAssets('lineage.opening') : tAssets('lineage.open')}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-slate-600 dark:text-slate-300">{tAssets('lineage.none')}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex flex-wrap justify-end gap-3">
-                  {isVideo(asset) && mayEditAsset && (
-                    <button
-                      onClick={() => setShowPosterFrameSelector(true)}
-                      className="flex items-center gap-2 rounded-xl border border-purple-200/60 px-4 py-2 text-sm font-medium text-purple-600 transition-colors hover:border-purple-300 hover:bg-purple-50/70 dark:border-purple-500/30 dark:text-purple-300 dark:hover:border-purple-400 dark:hover:bg-purple-500/20"
-                      title={tAssets('details.actions.setPosterFrameTooltip')}
-                    >
-                      <VideoCameraIcon className="h-5 w-5" />
-                      <span>{tAssets('details.actions.setPosterFrame')}</span>
-                    </button>
-                  )}
-                  {isImage(asset) && mayTag && (
-                    <button
-                      onClick={() => setShowImageEditor(true)}
-                      className="flex items-center gap-2 rounded-xl border border-amber-200/60 px-4 py-2 text-sm font-medium text-amber-600 transition-colors hover:border-amber-300 hover:bg-amber-50/70 dark:border-amber-500/30 dark:text-amber-300 dark:hover:border-amber-400 dark:hover:bg-amber-500/20"
-                      title={tAssets('details.actions.editImageTooltip')}
-                    >
-                      <ScissorsIcon className="h-5 w-5" />
-                      <span>{tAssets('details.actions.editImage')}</span>
-                    </button>
-                  )}
-                  {isImage(asset) && mayTag && aiTaggingEnabled && (
-                    <button
-                      onClick={handleAutoTag}
-                      disabled={autoTagging}
-                      className="flex items-center gap-2 rounded-xl border border-emerald-200/60 px-4 py-2 text-sm font-medium text-emerald-600 transition-colors hover:border-emerald-300 hover:bg-emerald-50/70 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-500/30 dark:text-emerald-300 dark:hover:border-emerald-400 dark:hover:bg-emerald-500/20"
-                      title={tAssets('details.actions.autoTagTooltip')}
-                    >
-                      <SparklesIcon className="h-5 w-5" />
-                      <span>{autoTagging ? tAssets('details.actions.autoTagging') : tAssets('details.actions.autoTag')}</span>
-                    </button>
-                  )}
-                  <button
-                    onClick={() => onDownload(asset)}
-                    className="flex items-center gap-2 rounded-xl border border-indigo-200/60 px-4 py-2 text-sm font-medium text-indigo-500 transition-colors hover:border-indigo-300 hover:bg-indigo-50/70 dark:border-indigo-500/30 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/20"
-                    title={tAssets('details.actions.downloadTooltip')}
-                  >
-                    <ArrowDownTrayIcon className="h-5 w-5" />
-                    <span>{tAssets('details.actions.download')}</span>
-                  </button>
-                  {mayEditAsset && (
-                    <button
-                      onClick={handleDelete}
-                      disabled={deletingAssetId === asset.id}
-                      className="flex items-center gap-2 rounded-xl border border-rose-200/60 px-4 py-2 text-sm font-medium text-rose-500 transition-colors hover:border-rose-300 hover:bg-rose-50/70 disabled:cursor-not-allowed disabled:opacity-50 dark:border-rose-500/30 dark:text-rose-300 dark:hover:border-rose-400 dark:hover:bg-rose-500/20"
-                      title={tAssets('details.actions.deleteTooltip')}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                      <span>{deletingAssetId === asset.id ? tAssets('grid.bulk.deleting') : tAssets('details.actions.deleteAsset')}</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )}
-
-      {fullScreenUrl &&
-        createPortal(
+      <Modal title={attrs.name} onClose={onClose} size="xl" footer={footer}>
+        <div className="space-y-6">
+          {/* Preview */}
           <div
-            className="fixed inset-0 flex items-center justify-center bg-slate-950/90 backdrop-blur"
-            style={{ zIndex: 1200 }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setFullScreenUrl(null)
-            }}
+            className={`relative flex items-center justify-center overflow-hidden rounded-card border bg-sunken ${
+              isImage(asset) ? 'p-0' : 'p-4'
+            } ${showPreviewTools ? 'min-h-[320px]' : 'aspect-video'}`}
           >
-            <div className="relative flex max-h-[95vh] max-w-[95vw] items-center justify-center" onClick={(e) => e.stopPropagation()}>
-              {isVideo(asset) ? (
-                <video controls autoPlay preload="metadata" className="max-h-[95vh] max-w-full object-contain">
-                  <source src={withStreamToken(fullScreenUrl)} type={attrs.file_type} />
-                  {tAssets('viewer.videoNotSupported')}
-                </video>
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={fullScreenUrl} alt={tAssets('viewer.fullSizePreviewAlt')} className="max-h-[95vh] max-w-full object-contain" />
+            <div className="absolute top-3 right-3 z-10 flex flex-wrap items-center justify-end gap-2">
+              {showPreviewTools && (
+                <button type="button" onClick={openFullScreen} className={OVERLAY_CHIP} title={tAssets('viewer.fullScreenHint')}>
+                  <EyeIcon className="h-4 w-4" aria-hidden />
+                  <span>{tAssets('viewer.fullScreen')}</span>
+                </button>
+              )}
+              {isImage(asset) && (
+                <button
+                  type="button"
+                  onClick={toggleBackground}
+                  className={OVERLAY_CHIP}
+                  title={tAssets('viewer.backgroundToggle', {
+                    color: imageBackgroundColor === 'white' ? tAssets('viewer.colors.white') : tAssets('viewer.colors.black'),
+                  })}
+                >
+                  <Squares2X2Icon className="h-4 w-4" aria-hidden />
+                  <span>{imageBackgroundColor === 'white' ? tAssets('viewer.colors.white') : tAssets('viewer.colors.black')}</span>
+                </button>
+              )}
+              {isImage(asset) && faceDetectionEnabled && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setShowFaces(!showFaces)}
+                    aria-pressed={showFaces}
+                    className={showFaces ? OVERLAY_CHIP_ACTIVE : OVERLAY_CHIP}
+                    title={tAssets('faces.show')}
+                  >
+                    <UserCircleIcon className="h-4 w-4" aria-hidden />
+                    <span>{tAssets('faces.show')}</span>
+                  </button>
+                  {showFaces && mayTag && (
+                    <button
+                      type="button"
+                      onClick={handleDetectFaces}
+                      disabled={detectingFaces}
+                      className={`${OVERLAY_CHIP} disabled:opacity-50`}
+                      title={tAssets('faces.detectHint')}
+                    >
+                      <SparklesIcon className="h-4 w-4" aria-hidden />
+                      <span>{detectingFaces ? tAssets('faces.detecting') : tAssets('faces.detect')}</span>
+                    </button>
+                  )}
+                </>
               )}
             </div>
-            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/30 bg-white/20 px-4 py-2 text-sm text-white backdrop-blur">
+
+            {isVideo(asset) ? (
+              <div
+                className="w-full cursor-pointer"
+                onDoubleClick={(e) => {
+                  e.preventDefault()
+                  openFullScreen()
+                }}
+                title={tAssets('grid.tooltips.doubleClickToViewFullSize')}
+              >
+                <video
+                  ref={mainVideoRef}
+                  controls
+                  className="h-auto max-h-[60vh] w-full object-contain"
+                  poster={attrs.poster_frame_url || attrs.thumbnail_url}
+                  key={`video-${asset.id}-${attrs.poster_frame_url || attrs.thumbnail_url || ''}`}
+                  preload="metadata"
+                  src={withStreamToken(attrs.file_url || attrs.download_url)}
+                  onClick={(e) => e.stopPropagation()}
+                  onDoubleClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }}
+                  onError={(e) => {
+                    // Fall back to the stream endpoint (range requests, token auth).
+                    const video = e.currentTarget
+                    const stream = withStreamToken(attrs.download_url)
+                    if (stream && !video.dataset.fallback) {
+                      video.dataset.fallback = 'true'
+                      video.src = stream
+                      video.load()
+                    }
+                  }}
+                >
+                  {tAssets('viewer.videoNotSupported')}
+                </video>
+              </div>
+            ) : isAudio(asset) ? (
+              <div className="flex h-full w-full flex-col items-center justify-center p-6">
+                <div className="mb-5 h-40 w-40 overflow-hidden rounded-card">
+                  <AudioThumbnail size="xlarge" />
+                </div>
+                <div className="w-full max-w-md rounded-card border bg-surface p-3">
+                  <audio controls className="w-full" preload="metadata">
+                    <source src={withStreamToken(attrs.file_url || attrs.download_url)} type={attrs.file_type} />
+                    {tAssets('viewer.audioNotSupported')}
+                  </audio>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm font-medium text-fg">{attrs.name}</p>
+                  <p className="mt-1 font-mono text-xs text-subtle">
+                    {fileTypeLabel(attrs.file_type, 'AUDIO')} • {formatFileSize(attrs.file_size)}
+                  </p>
+                </div>
+              </div>
+            ) : isImage(asset) && imageSrc ? (
+              <div
+                className="relative flex h-full w-full items-center justify-center p-4"
+                style={{ backgroundColor: imageBackgroundColor === 'white' ? '#ffffff' : '#000000' }} // palette-ok: content preview backdrop, not theme
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  key={`${asset.id}-${imageSrc}`}
+                  src={imageSrc}
+                  alt={attrs.name}
+                  className="block max-h-[60vh] max-w-full cursor-pointer object-contain"
+                  onMouseDown={(e) => {
+                    // Manual double-click detection (the native event is unreliable over overlays).
+                    imageClickCountRef.current += 1
+                    if (imageClickTimeoutRef.current) clearTimeout(imageClickTimeoutRef.current)
+                    if (imageClickCountRef.current === 2) {
+                      e.preventDefault()
+                      imageClickCountRef.current = 0
+                      openFullScreen()
+                    } else {
+                      imageClickTimeoutRef.current = setTimeout(() => {
+                        imageClickCountRef.current = 0
+                      }, 300)
+                    }
+                  }}
+                  title={tAssets('grid.tooltips.doubleClickToViewFullSize')}
+                />
+                {showFaces && (
+                  <FaceOverlay
+                    faces={faceDetections}
+                    selectedFaceId={selectedFaceId}
+                    onFaceClick={(face) => {
+                      if (!mayTag) return
+                      setSelectedFaceId(face.id)
+                      setPopoverFace(face)
+                    }}
+                  />
+                )}
+                {popoverFace && (
+                  <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+                    <FaceNamePopover
+                      face={popoverFace}
+                      suggestedMatches={popoverFace.suggested_matches ?? []}
+                      existingPeople={facePeople}
+                      onSave={handleFaceIdentify}
+                      onCreateAndSave={handleFaceCreateAndSave}
+                      onClose={() => {
+                        setPopoverFace(null)
+                        setSelectedFaceId(null)
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : attrs.thumbnail_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={attrs.thumbnail_url} alt={attrs.name} className="h-auto max-h-[60vh] w-full object-contain" />
+            ) : (
+              (() => {
+                const Icon = getFileIcon(attrs.file_type)
+                return <Icon className="h-16 w-16 text-subtle" aria-hidden />
+              })()
+            )}
+          </div>
+
+          {/* Metadata */}
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+            <div className="min-w-0">
+              <dt className={metaLabel}>{tAssets('details.fileType')}</dt>
+              <dd className={metaValue}>{attrs.file_type}</dd>
+            </div>
+            <div className="min-w-0">
+              <dt className={metaLabel}>{tAssets('details.fileSize')}</dt>
+              <dd className={metaValue}>{formatFileSize(attrs.file_size)}</dd>
+            </div>
+            <div className="min-w-0">
+              <dt className={metaLabel}>{tAssets('details.created')}</dt>
+              <dd className={metaValue}>{formatDate(attrs.created_at)}</dd>
+            </div>
+            <div className="min-w-0">
+              <dt className={metaLabel}>{tAssets('details.assetId')}</dt>
+              <dd className={metaValue}>{asset.id}</dd>
+            </div>
+            {resolution && (
+              <div className="col-span-2 min-w-0 sm:col-span-4">
+                <dt className={metaLabel}>{resolution.label}</dt>
+                <dd className={metaValue}>{resolution.value}</dd>
+              </div>
+            )}
+          </dl>
+
+          {/* Tags */}
+          <section>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <h4 className={sectionTitle}>
+                <TagIcon className="h-4 w-4 text-subtle" aria-hidden />
+                {tAssets('details.tags.title')}
+              </h4>
+              {mayTag && !isAddingTag && (
+                <Button variant="ghost" size="sm" onClick={() => setIsAddingTag(true)}>
+                  <PlusIcon className="h-4 w-4" aria-hidden />
+                  {tAssets('details.tags.addTag')}
+                </Button>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {assetTags.map((tag) => (
+                <Badge
+                  key={String(tag.id)}
+                  tone="accent"
+                  onRemove={mayTag ? () => removeTag(tag) : undefined}
+                  removeLabel={mayTag ? tAssets('details.tags.removeTagLabel', { name: tagName(tag) }) : undefined}
+                >
+                  {tagName(tag) || tAssets('details.tags.unknownTag')}
+                </Badge>
+              ))}
+              {assetTags.length === 0 && <span className="text-sm text-subtle">{tAssets('details.tags.noneAssigned')}</span>}
+            </div>
+
+            {mayTag && isAddingTag && (
+              <div className="relative mt-3 flex items-center gap-2">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    ref={tagInputRef}
+                    value={newTagName}
+                    onChange={(e) => setNewTagName(e.target.value)}
+                    onFocus={() => setTagInputFocused(true)}
+                    onBlur={() =>
+                      setTimeout(() => {
+                        setTagInputFocused(false)
+                        setShowTagSuggestions(false)
+                      }, 200)
+                    }
+                    placeholder={tAssets('details.tags.enterTagName')}
+                    aria-label={tAssets('details.tags.enterTagName')}
+                    className={inputClass}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleAddTag()
+                      } else if (e.key === 'Escape') {
+                        // Consumed here: must not reach the dialog, which would close.
+                        e.preventDefault()
+                        e.stopPropagation()
+                        e.nativeEvent.stopImmediatePropagation()
+                        setShowTagSuggestions(false)
+                        setIsAddingTag(false)
+                        setNewTagName('')
+                      } else if (e.key === 'ArrowDown' && showTagSuggestions && tagSuggestions.length > 0) {
+                        e.preventDefault()
+                        ;(document.querySelector('.tag-suggestion-item') as HTMLElement | null)?.focus()
+                      }
+                    }}
+                    autoFocus
+                  />
+                  {showTagSuggestions && tagSuggestions.length > 0 && (
+                    <div className="absolute z-dropdown mt-1 max-h-60 w-full overflow-y-auto rounded-card border bg-raised p-1 shadow-overlay">
+                      {tagSuggestions.map((tag) => (
+                        <button
+                          key={tag.id}
+                          type="button"
+                          className="tag-suggestion-item w-full rounded-thumb px-2 py-1.5 text-left text-sm text-fg hover:bg-hover focus:bg-hover"
+                          onClick={() => handleTagSuggestionClick(tag.name)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {tag.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <Button onClick={handleAddTag} disabled={!newTagName.trim()} loading={addingTag}>
+                  {addingTag ? tAssets('details.tags.adding') : tAssets('details.tags.add')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setIsAddingTag(false)
+                    setNewTagName('')
+                  }}
+                >
+                  {tCommon('cancel')}
+                </Button>
+              </div>
+            )}
+
+            {mayTag && availableTags.length > 0 && (
+              <div className="mt-3 rounded-card border bg-surface p-3">
+                <div className="mb-2 flex min-h-8 items-center justify-between gap-2">
+                  <p className="text-xs text-subtle">{tAssets('details.tags.availableTags')}</p>
+                  {selectedTagsToAdd.length > 0 && (
+                    <Button variant="secondary" size="sm" onClick={handleAddSelectedTags}>
+                      {tAssets('details.tags.addSelected', { count: selectedTagsToAdd.length })}
+                    </Button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-x-4 gap-y-2">
+                  {availableTags
+                    .filter((tag) => !assetTags.some((assetTag) => String(assetTag.id) === String(tag.id)))
+                    .slice(0, 10)
+                    .map((tag) => {
+                      const id = String(tag.id)
+                      const checked = selectedTagsToAdd.includes(id)
+                      return (
+                        <CheckField
+                          key={id}
+                          checked={checked}
+                          onChange={() => setSelectedTagsToAdd((prev) => (checked ? prev.filter((x) => x !== id) : [...prev, id]))}
+                          label={tagName(tag) || tAssets('details.tags.unknownTag')}
+                        />
+                      )
+                    })}
+                </div>
+                <p className="mt-2 text-xs text-subtle">{tAssets('details.tags.multiSelectHint')}</p>
+              </div>
+            )}
+          </section>
+
+          {/* EXIF */}
+          {isImage(asset) && exif && (
+            <section>
+              <h4 className={`${sectionTitle} mb-2`}>{tAssets('details.exif.exifInformation')}</h4>
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 rounded-card border bg-surface p-3 sm:grid-cols-4">
+                {(exif.camera_make || exif.camera_model) && (
+                  <ExifRow
+                    wide
+                    label={tAssets('details.exif.camera')}
+                    value={[exif.camera_make, exif.camera_model].filter(Boolean).join(' ')}
+                  />
+                )}
+                {exif.lens_model && <ExifRow wide label={tAssets('details.exif.lens')} value={exif.lens_model} />}
+                {exif.aperture ? <ExifRow label={tAssets('details.exif.aperture')} value={`f/${exif.aperture}`} /> : null}
+                {exif.shutter_speed ? (
+                  <ExifRow label={tAssets('details.exif.shutter')} value={`1/${Math.round(1 / exif.shutter_speed)}s`} />
+                ) : null}
+                {exif.iso ? <ExifRow label={tAssets('details.exif.iso')} value={String(exif.iso)} /> : null}
+                {exif.focal_length ? <ExifRow label={tAssets('details.exif.focalLength')} value={`${exif.focal_length}mm`} /> : null}
+                {exif.date_taken && <ExifRow wide label={tAssets('details.exif.dateTaken')} value={new Date(exif.date_taken).toLocaleString()} />}
+                {exif.gps_latitude && exif.gps_longitude ? (
+                  <ExifRow wide label={tAssets('details.exif.location')} value={`${exif.gps_latitude.toFixed(6)}, ${exif.gps_longitude.toFixed(6)}`} />
+                ) : null}
+                {exif.software && <ExifRow wide label={tAssets('details.exif.software')} value={exif.software} />}
+              </dl>
+            </section>
+          )}
+
+          {/* Lineage (versions) */}
+          {isImage(asset) && (
+            <section>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <h4 className="text-sm font-semibold text-fg">{tAssets('lineage.title')}</h4>
+                {lineage && <span className="font-mono text-xs text-subtle">{tAssets('lineage.summary', { count: lineage.relatives.length })}</span>}
+              </div>
+              {loadingLineage ? (
+                <p className="text-sm text-muted">{tAssets('lineage.loading')}</p>
+              ) : lineage && lineage.relatives.length > 0 ? (
+                <ul className="divide-y divide-line rounded-card border bg-surface">
+                  {lineage.relatives.map((relative) => (
+                    <li key={relative.id}>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenRelatedAsset(String(relative.id))}
+                        disabled={loadingRelatedAssetId === String(relative.id)}
+                        className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {relative.thumbnail_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={relative.thumbnail_url} alt={relative.name} className="h-10 w-10 rounded-thumb bg-sunken object-cover" />
+                        ) : (
+                          <span className="flex h-10 w-10 items-center justify-center rounded-thumb bg-sunken">
+                            <PhotoIcon className="h-5 w-5 text-subtle" aria-hidden />
+                          </span>
+                        )}
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-fg">{relative.name}</span>
+                          <span className="block font-mono text-xs text-subtle">
+                            {tAssets(`lineage.relations.${relative.relation}`)} · {formatDate(relative.created_at)}
+                          </span>
+                        </span>
+                        <span className="text-xs text-accent-text">
+                          {loadingRelatedAssetId === String(relative.id) ? tAssets('lineage.opening') : tAssets('lineage.open')}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-muted">{tAssets('lineage.none')}</p>
+              )}
+            </section>
+          )}
+        </div>
+      </Modal>
+
+      {fullScreenUrl && (
+        <Modal bare title={attrs.name} onClose={() => setFullScreenUrl(null)}>
+          <div className="flex h-full w-full items-center justify-center bg-sunken p-4" onClick={(e) => e.target === e.currentTarget && setFullScreenUrl(null)}>
+            {isVideo(asset) ? (
+              <video controls autoPlay preload="metadata" className="max-h-[88vh] max-w-full object-contain">
+                <source src={withStreamToken(fullScreenUrl)} type={attrs.file_type} />
+                {tAssets('viewer.videoNotSupported')}
+              </video>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={fullScreenUrl} alt={tAssets('viewer.fullSizePreviewAlt')} className="max-h-[88vh] max-w-full object-contain" />
+            )}
+            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-scrim px-4 py-2 text-sm text-on-scrim">
               {tAssets('viewer.closeHint')}
             </div>
-          </div>,
-          document.body,
-        )}
+          </div>
+        </Modal>
+      )}
 
       {showPosterFrameSelector && (
         <PosterFrameSelector asset={asset} onClose={() => setShowPosterFrameSelector(false)} onGenerated={handlePosterFrameGenerated} />
@@ -1022,11 +961,11 @@ export default function AssetDetailModal({
   )
 }
 
-function ExifRow({ label, value }: { label: string; value: string }) {
+function ExifRow({ label, value, wide }: { label: string; value: string; wide?: boolean }) {
   return (
-    <div>
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">{label}</span>
-      <p className="text-sm text-slate-700 dark:text-slate-200">{value}</p>
+    <div className={`min-w-0 ${wide ? 'col-span-2' : ''}`}>
+      <dt className="text-xs text-subtle">{label}</dt>
+      <dd className="break-words font-mono text-sm tabular-nums text-fg">{value}</dd>
     </div>
   )
 }

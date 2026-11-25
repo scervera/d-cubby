@@ -43,6 +43,7 @@
     "fullDesc": "Volle Höhe, zugeschnittene Breite"
   },
   "upload": {
+    "removeFile": "Datei entfernen",
     "modalTitle": "Dateien hochladen",
     "dropFilesHere": "Dateien hier ablegen",
     "clickToUpload": "Klicken Sie, um Dateien hochzuladen",

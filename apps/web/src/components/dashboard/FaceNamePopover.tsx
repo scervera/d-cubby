@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { XMarkIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import { Button, IconButton } from '@/components/ui/Button';
+import { inputClass } from '@/components/forms/fields';
 import type { FaceDetectionData } from './FaceOverlay';
 
 export interface FacePersonOption {
@@ -68,22 +70,17 @@ export default function FaceNamePopover({
 
   return (
     <div
-      className="absolute z-[1001] min-w-[240px] rounded-xl border border-white/20 bg-slate-900/95 p-3 shadow-xl backdrop-blur dark:border-white/10 dark:bg-slate-800/95"
+      className="absolute min-w-[240px] max-w-[calc(100vw-3rem)] rounded-card border bg-raised p-3 shadow-overlay"
       role="dialog"
       aria-label="Identify face"
     >
-      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
-        <span className="text-sm font-medium text-slate-200">
+      <div className="flex items-center justify-between gap-2 border-b border-line pb-2">
+        <span className="text-sm font-semibold text-fg">
           {face.person_name ? 'Change name' : 'Who is this?'}
         </span>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded p-1 text-slate-400 hover:bg-white/10 hover:text-slate-200"
-          aria-label="Close"
-        >
-          <XMarkIcon className="h-4 w-4" />
-        </button>
+        <IconButton size="sm" onClick={onClose} aria-label="Close">
+          <XMarkIcon className="h-4 w-4" aria-hidden />
+        </IconButton>
       </div>
 
       <div className="mt-2">
@@ -96,16 +93,22 @@ export default function FaceNamePopover({
             setCreateNew(e.target.value.trim().length > 0 && filteredPeople.length === 0);
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Escape') onClose();
+            if (e.key === 'Escape') {
+              // Consumed here: must not reach the dialog behind, which would close.
+              e.preventDefault();
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
+              onClose();
+            }
           }}
           placeholder="Enter name or select below"
-          className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-slate-100 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className={inputClass}
           disabled={loading || saving}
         />
 
         {suggestedMatches.length > 0 && (
           <div className="mt-2">
-            <p className="text-xs font-medium text-slate-400">Suggested</p>
+            <p className="text-xs font-medium text-subtle">Suggested</p>
             <div ref={listRef} className="mt-1 max-h-32 space-y-0.5 overflow-y-auto">
               {suggestedMatches.map((m) => (
                 <button
@@ -113,10 +116,10 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={() => handleSaveExisting(m.person_id)}
                   disabled={saving}
-                  className="flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-sm text-slate-200 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center justify-between rounded-thumb px-2 py-1.5 text-left text-sm text-fg hover:bg-hover disabled:opacity-50"
                 >
                   <span>{m.person_name}</span>
-                  <span className="text-xs text-slate-400">
+                  <span className="font-mono text-xs text-subtle">
                     {Math.round(m.confidence * 100)}%
                   </span>
                 </button>
@@ -127,7 +130,7 @@ export default function FaceNamePopover({
 
         {showSuggestions && (
           <div className="mt-2">
-            <p className="text-xs font-medium text-slate-400">Existing people</p>
+            <p className="text-xs font-medium text-subtle">Existing people</p>
             <div className="mt-1 max-h-32 space-y-0.5 overflow-y-auto">
               {filteredPeople.slice(0, 10).map((p) => (
                 <button
@@ -135,7 +138,7 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={() => handleSaveExisting(p.id)}
                   disabled={saving}
-                  className="flex w-full items-center rounded px-2 py-1.5 text-left text-sm text-slate-200 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center rounded-thumb px-2 py-1.5 text-left text-sm text-fg hover:bg-hover disabled:opacity-50"
                 >
                   {p.name}
                 </button>
@@ -145,7 +148,7 @@ export default function FaceNamePopover({
                   type="button"
                   onClick={handleCreateAndSave}
                   disabled={saving}
-                  className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-indigo-300 hover:bg-white/10 disabled:opacity-50"
+                  className="flex w-full items-center gap-2 rounded-thumb px-2 py-1.5 text-left text-sm text-accent-text hover:bg-hover disabled:opacity-50"
                 >
                   <UserPlusIcon className="h-4 w-4" />
                   Create &quot;{inputValue.trim()}&quot;
@@ -156,15 +159,10 @@ export default function FaceNamePopover({
         )}
 
         {!showSuggestions && inputValue.trim() && (
-          <button
-            type="button"
-            onClick={handleCreateAndSave}
-            disabled={saving}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
-          >
-            <UserPlusIcon className="h-4 w-4" />
+          <Button onClick={handleCreateAndSave} loading={saving} className="mt-2 w-full">
+            <UserPlusIcon className="h-4 w-4" aria-hidden />
             {saving ? 'Saving…' : 'Create and tag'}
-          </button>
+          </Button>
         )}
       </div>
     </div>

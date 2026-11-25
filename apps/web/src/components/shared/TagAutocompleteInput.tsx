@@ -1,9 +1,11 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { X } from 'lucide-react'
-import { TagIcon } from '@heroicons/react/24/outline'
+import React, { useId, useRef, useState } from 'react'
+
+import { inputClass, labelClass } from '@/components/forms/fields'
 import { normalizeTagName, useTagSearch } from '@/components/shared/useTagSearch'
+import Badge from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 
 export interface TagAutocompleteInputProps {
   tags: string[]
@@ -23,6 +25,7 @@ export default function TagAutocompleteInput({
   addButtonLabel = 'Add',
 }: TagAutocompleteInputProps) {
   const tagInputRef = useRef<HTMLInputElement | null>(null)
+  const inputId = useId()
   const [tagInput, setTagInput] = useState('')
   const [tagInputFocused, setTagInputFocused] = useState(false)
   const [showTagSuggestions, setShowTagSuggestions] = useState(false)
@@ -69,18 +72,18 @@ export default function TagAutocompleteInput({
   return (
     <div>
       {label ? (
-        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-          <TagIcon className="mr-1 inline h-4 w-4" />
+        <label htmlFor={inputId} className={labelClass}>
           {label}
         </label>
       ) : null}
       {hint ? (
-        <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">{hint}</p>
+        <p className="-mt-0.5 mb-2 text-xs text-subtle">{hint}</p>
       ) : null}
 
-      <div className="mb-3 flex space-x-2">
+      <div className="flex gap-2">
         <div className="relative flex-1">
           <input
+            id={inputId}
             type="text"
             ref={tagInputRef}
             value={tagInput}
@@ -110,53 +113,38 @@ export default function TagAutocompleteInput({
                 firstSuggestion?.focus()
               }
             }}
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className={inputClass}
             placeholder={placeholder}
           />
 
           {visibleSuggestions ? (
-            <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
+            <div className="absolute z-dropdown mt-1 max-h-60 w-full overflow-y-auto rounded-card border bg-raised p-1 shadow-overlay">
               {tagSuggestions.map((tag) => (
                 <button
                   key={tag.id}
                   type="button"
-                  className="tag-suggestion-item w-full px-3 py-2 text-left text-sm text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:outline-none dark:text-white dark:hover:bg-blue-900/20 dark:focus:bg-blue-900/20"
+                  className="tag-suggestion-item w-full rounded-thumb px-2 py-1.5 text-left text-sm text-fg hover:bg-hover focus:bg-hover"
                   onClick={() => handleTagSuggestionClick(tag.name)}
                   onMouseDown={(e) => e.preventDefault()}
                 >
-                  <span className="font-medium">{tag.name}</span>
+                  {tag.name}
                 </button>
               ))}
             </div>
           ) : null}
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddTag}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
-        >
+        <Button variant="secondary" onClick={handleAddTag}>
           {addButtonLabel}
-        </button>
+        </Button>
       </div>
 
       {tags.length > 0 ? (
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {tags.map((tag) => (
-            <span
-              key={tag}
-              className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-            >
+            <Badge key={tag} tone="accent" onRemove={() => handleRemoveTag(tag)} removeLabel={`Remove tag ${tag}`}>
               {tag}
-              <button
-                type="button"
-                onClick={() => handleRemoveTag(tag)}
-                className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
-                aria-label={`Remove tag ${tag}`}
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </span>
+            </Badge>
           ))}
         </div>
       ) : null}

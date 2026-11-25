@@ -5,7 +5,8 @@ import { useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
 import AuthCard from '@/components/auth/AuthCard'
-import { Button, FormError, TextField } from '@/components/forms/fields'
+import { FormError, TextField } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
 import { api, apiErrorMessage } from '@/lib/api'
 import { API_ENDPOINTS } from '@/lib/config'
 
@@ -33,7 +34,7 @@ export default function ForgotPasswordPage() {
   return (
     <AuthCard title={t('forgotTitle')} subtitle={sent ? undefined : t('forgotSubtitle')}>
       {sent ? (
-        <p className="text-sm text-slate-700 dark:text-slate-300" role="status">{t('forgotSent', { email })}</p>
+        <p className="text-sm text-muted" role="status">{t('forgotSent', { email })}</p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
           <FormError message={error} />
@@ -44,7 +45,7 @@ export default function ForgotPasswordPage() {
         </form>
       )}
       <p className="mt-4 text-center text-sm">
-        <Link href="/login" className="font-medium text-[#2C3A47] hover:underline dark:text-[#F6DAA9]">
+        <Link href="/login" className="font-medium text-fg underline-offset-2 hover:underline">
           {t('backToSignIn')}
         </Link>
       </p>

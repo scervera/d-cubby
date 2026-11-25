@@ -23,7 +23,6 @@ import {
   VideoCameraIcon,
 } from '@heroicons/react/24/outline'
 
-import ThemeToggle from '@/components/ui/ThemeToggle'
 import { useAuth } from '@/hooks/useAuth'
 import { isAdmin } from '@/lib/auth/permissions'
 import { smartFoldersApi, type SmartFolder } from '@/lib/smartFoldersApi'
@@ -57,16 +56,13 @@ interface NavLink {
 /** Fired by pages that pin or unpin smart folders so the sidebar reloads its list. */
 export const SMART_FOLDERS_CHANGED_EVENT = 'smartFoldersChanged'
 
+// The current item is marked with a neutral fill; the accent is kept for actions.
 const itemClass = (active: boolean) =>
-  `flex w-full items-center gap-2 rounded-lg border px-2 py-1.5 text-left text-sm font-medium transition-all ${
-    active
-      ? 'border-[#B8C5D1] bg-[#D8DFE6] text-[#2C3A47] shadow-sm dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE]'
-      : 'border-transparent text-slate-600 hover:border-[#B8C5D1] hover:bg-[#D8DFE6] hover:text-[#2C3A47] dark:text-slate-400 dark:hover:border-[#263541] dark:hover:bg-[#121F27]/50 dark:hover:text-[#F6DAA9]'
+  `flex h-8 w-full items-center gap-2.5 rounded-control px-2 text-left text-sm transition-colors duration-100 ${
+    active ? 'bg-hover font-medium text-fg' : 'text-muted hover:bg-hover hover:text-fg'
   }`
-const iconClass = (active: boolean) =>
-  `h-4 w-4 shrink-0 ${active ? 'text-[#D4A574] dark:text-[#F6DAA9]' : 'text-slate-400'}`
-const sectionLabelClass =
-  'mb-1 px-2 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500'
+const iconClass = (active: boolean) => `h-4 w-4 shrink-0 ${active ? 'text-fg' : 'text-subtle'}`
+const sectionLabelClass = 'mb-1 px-2 text-xs font-medium text-subtle'
 
 export default function SharedSidebar({
   currentPage = 'assets',
@@ -161,7 +157,7 @@ export default function SharedSidebar({
   )
 
   return (
-    <nav className="flex flex-col gap-5" aria-label={t('mainNavigation')}>
+    <nav className="flex min-h-full flex-col gap-5" aria-label={t('mainNavigation')}>
       {showAssetCategories && (
         <section>
           <div className={sectionLabelClass}>{t('library')}</div>
@@ -177,13 +173,11 @@ export default function SharedSidebar({
               const active = isCategoryActive(`smart_folder_${folder.id}`)
               return (
                 <li key={folder.id}>
-                  <button type="button" onClick={() => goSmartFolder(folder)} className={itemClass(active)}>
+                  <button type="button" onClick={() => goSmartFolder(folder)} className={itemClass(active)} aria-current={active ? 'page' : undefined}>
                     <CpuChipIcon className={iconClass(active)} style={folder.color ? { color: folder.color } : undefined} />
                     <span className="truncate">{folder.name}</span>
                     {folder.asset_count > 0 && (
-                      <span className="ml-auto rounded-full border border-[#B8C5D1] px-1.5 py-0.5 text-[0.65rem] font-semibold text-slate-500 dark:border-[#263541] dark:text-[#F6DAA9]">
-                        {folder.asset_count}
-                      </span>
+                      <span className="text-meta ml-auto">{folder.asset_count}</span>
                     )}
                   </button>
                 </li>
@@ -205,14 +199,10 @@ export default function SharedSidebar({
         </section>
       )}
 
-      <section className="space-y-1 rounded-2xl border border-[#B8C5D1] bg-[#D8DFE6] p-3 dark:border-[#263541] dark:bg-[#121F27]">
-        <div className="flex items-center justify-between px-2 lg:hidden">
-          <span className="text-sm font-medium text-[#2C3A47] dark:text-slate-300">{t('theme')}</span>
-          <ThemeToggle />
-        </div>
+      <section className="mt-auto space-y-0.5 border-t pt-3">
         {user && (
           <>
-            <div className="truncate px-2 text-xs text-slate-500 dark:text-slate-400">{user.email}</div>
+            <div className="truncate px-2 pb-1 text-xs text-subtle">{user.email}</div>
             <button type="button" onClick={() => router.push('/account')} className={itemClass(pathname === '/account')}>
               <UserCircleIcon className={iconClass(pathname === '/account')} />
               <span>{t('account')}</span>

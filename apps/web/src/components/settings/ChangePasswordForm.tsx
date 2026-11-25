@@ -3,7 +3,8 @@
 import { useState, type FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 
-import { Button, FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, TextField } from '@/components/forms/fields'
+import { FormError, MIN_PASSWORD_LENGTH, PasswordStrengthMeter, TextField } from '@/components/forms/fields'
+import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/hooks/useAuth'
 import { api, apiErrorMessage } from '@/lib/api'
 import { API_ENDPOINTS } from '@/lib/config'

@@ -1,6 +1,9 @@
 import { api } from './api'
 import { API_ENDPOINTS } from './config'
 
+/** Colour of a new smart folder: the interface accent. Folder colours are user data. */
+export const DEFAULT_SMART_FOLDER_COLOR = '#2460DB' // palette-ok
+
 export type SmartFolderVisibility = 'personal' | 'group' | 'global'
 
 export interface SmartFolder {

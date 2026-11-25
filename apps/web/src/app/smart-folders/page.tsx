@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { FolderIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { EllipsisHorizontalIcon, FolderIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid'
 
@@ -12,7 +12,12 @@ import SharedLayout from '@/components/shared/SharedLayout'
 import { SMART_FOLDERS_CHANGED_EVENT } from '@/components/shared/SharedSidebar'
 import SmartFolderForm from '@/components/smart-folders/SmartFolderForm'
 import SmartFolderIcon from '@/components/smart-folders/SmartFolderIcon'
+import Badge from '@/components/ui/Badge'
+import { Button, IconButton, buttonClass } from '@/components/ui/Button'
+import { Menu, MenuItem } from '@/components/ui/Menu'
+import { EmptyState, PageHeader } from '@/components/ui/Panel'
 import PageSpinner from '@/components/ui/PageSpinner'
+import { LoadingBlock } from '@/components/ui/Spinner'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { apiErrorMessage } from '@/lib/api'
 import { canWrite, isAdmin } from '@/lib/auth/permissions'
@@ -102,112 +107,88 @@ export default function SmartFoldersPage() {
 
   return (
     <SharedLayout currentPage="smart-folders">
-      <div className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
-            <p className="mt-1 text-slate-600 dark:text-slate-200">{t('subtitle')}</p>
-          </div>
-          {writer && (
-            <button
-              type="button"
-              onClick={() => setShowCreateForm(true)}
-              className="flex w-full items-center justify-center rounded-xl bg-[#2E7CF6] px-4 py-2 text-sm text-white transition-colors hover:bg-[#2563eb] sm:w-auto sm:text-base"
-            >
-              <PlusIcon className="mr-2 h-5 w-5" />
+      <PageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        actions={
+          writer && (
+            <Button onClick={() => setShowCreateForm(true)}>
+              <PlusIcon className="h-4 w-4" aria-hidden />
               {t('createButton')}
-            </button>
-          )}
-        </div>
-      </div>
+            </Button>
+          )
+        }
+      />
 
       {loading ? (
-        <div className="flex min-h-[300px] items-center justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[#2E7CF6]" />
-        </div>
+        <LoadingBlock />
       ) : smartFolders.length === 0 ? (
-        <div className="py-12 text-center">
-          <FolderIcon className="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-slate-300" />
-          <h3 className="mb-2 text-lg font-medium text-slate-900 dark:text-slate-100">{t('emptyTitle')}</h3>
-          <p className="text-slate-600 dark:text-slate-200">{writer ? t('emptyBody') : t('emptyBodyReadOnly')}</p>
-        </div>
+        <EmptyState
+          icon={<FolderIcon />}
+          title={t('emptyTitle')}
+          description={writer ? t('emptyBody') : t('emptyBodyReadOnly')}
+        />
       ) : (
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {smartFolders.map((folder) => (
-            <div key={folder.id} className="group relative">
+            <li key={folder.id} className="group relative flex flex-col rounded-card border bg-surface transition-colors duration-100 hover:bg-hover">
               <button
                 type="button"
-                className="block w-full text-center"
+                className="flex w-full flex-1 flex-col gap-3 rounded-card p-4 text-left"
                 onClick={() => router.push(`/assets?smart_folder=${folder.id}`)}
               >
-                <div className="relative mx-auto mb-4 h-24 w-32 rotate-3 transform transition-transform duration-200 group-hover:rotate-0">
-                  <SmartFolderIcon />
+                <div className="flex items-center gap-3 pr-16">
+                  <span className="shrink-0 text-subtle" style={folder.color ? { color: folder.color } : undefined}>
+                    <SmartFolderIcon className="h-9 w-9" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="truncate text-sm font-semibold text-fg">{folder.name}</h3>
+                    <p className="text-meta">{t('assetCount', { count: folder.asset_count })}</p>
+                  </div>
                 </div>
-                <h3 className="mb-1 text-lg font-semibold text-slate-900 transition-colors group-hover:text-purple-700 dark:text-slate-100 dark:group-hover:text-purple-300">
-                  {folder.name}
-                </h3>
-                <p className="mb-3 text-sm text-slate-500 dark:text-slate-200">{t('assetCount', { count: folder.asset_count })}</p>
                 {folder.tag_names.length > 0 && (
-                  <div className="mb-3 flex flex-wrap justify-center gap-1">
+                  <div className="flex flex-wrap gap-1">
                     {folder.tag_names.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/30 dark:text-purple-200"
-                      >
+                      <Badge key={tag} tone="accent">
                         {tag}
-                      </span>
+                      </Badge>
                     ))}
-                    {folder.tag_names.length > 3 && (
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                        +{folder.tag_names.length - 3}
-                      </span>
-                    )}
+                    {folder.tag_names.length > 3 && <Badge>+{folder.tag_names.length - 3}</Badge>}
                   </div>
                 )}
               </button>
 
               {writer && (
-                <div className="flex justify-center space-x-2 opacity-100 transition-opacity lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
-                  <button
-                    type="button"
+                <div className="absolute right-2 top-2 flex items-center">
+                  <IconButton
+                    size="sm"
                     onClick={() => handleTogglePin(folder)}
-                    className={`p-1 transition-colors ${
-                      folder.pinned_to_sidebar
-                        ? 'text-purple-600 hover:text-purple-700 dark:text-purple-300 dark:hover:text-purple-200'
-                        : 'text-slate-400 hover:text-purple-600 dark:text-slate-300 dark:hover:text-purple-300'
-                    }`}
+                    className={folder.pinned_to_sidebar ? 'text-accent-text' : ''}
                     title={folder.pinned_to_sidebar ? t('unpinFromSidebar') : t('pinToSidebar')}
                     aria-label={folder.pinned_to_sidebar ? t('unpinFromSidebar') : t('pinToSidebar')}
+                    aria-pressed={!!folder.pinned_to_sidebar}
                   >
                     {folder.pinned_to_sidebar ? <BookmarkIconSolid className="h-4 w-4" /> : <BookmarkIconOutline className="h-4 w-4" />}
-                  </button>
+                  </IconButton>
                   {canManage(folder) && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setEditingFolder(folder)}
-                        className="p-1 text-slate-400 transition-colors hover:text-purple-600 dark:text-slate-300 dark:hover:text-purple-300"
-                        title={t('editFolder')}
-                        aria-label={t('editFolder')}
-                      >
-                        <PencilIcon className="h-4 w-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeletingFolder(folder)}
-                        className="p-1 text-slate-400 transition-colors hover:text-red-600 dark:text-slate-300 dark:hover:text-red-300"
-                        title={t('deleteFolder')}
-                        aria-label={t('deleteFolder')}
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
-                    </>
+                    <Menu
+                      label={folder.name}
+                      buttonClassName={buttonClass({ variant: 'ghost', size: 'sm', icon: true })}
+                      button={<EllipsisHorizontalIcon className="h-4 w-4" aria-hidden />}
+                    >
+                      <MenuItem icon={<PencilIcon />} onClick={() => setEditingFolder(folder)}>
+                        {t('editFolder')}
+                      </MenuItem>
+                      <MenuItem icon={<TrashIcon />} danger onClick={() => setDeletingFolder(folder)}>
+                        {t('deleteFolder')}
+                      </MenuItem>
+                    </Menu>
                   )}
                 </div>
               )}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {(showCreateForm || editingFolder) && (

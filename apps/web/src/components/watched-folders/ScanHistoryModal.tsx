@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-import ModalShell from '@/components/groups/ModalShell'
+import Modal from '@/components/ui/Modal'
 import { watchedFoldersApi, watchedFolderErrors, type FolderScan, type WatchedFolder } from '@/lib/watchedFoldersApi'
 
 const statusClass: Record<FolderScan['status'], string> = {
-  completed: 'text-green-400',
-  failed: 'text-red-400',
-  running: 'text-yellow-300',
+  completed: 'text-success-text',
+  failed: 'text-danger-text',
+  running: 'text-warning-text',
 }
 
 function formatErrorDetails(details: string): string {
@@ -43,27 +43,27 @@ export default function ScanHistoryModal({ folder, onClose }: { folder: WatchedF
   }
 
   return (
-    <ModalShell title={`${t('history.title')} — ${folder.name}`} onClose={onClose} wide>
-      <div className="p-6">
-        <div className="max-h-96 overflow-y-auto rounded-lg bg-gray-900 p-4 font-mono text-sm text-green-400">
+    <Modal title={`${t('history.title')} — ${folder.name}`} onClose={onClose} size="lg">
+      <div>
+        <div className="max-h-96 overflow-y-auto rounded-control bg-sunken p-4 font-mono text-xs leading-5 text-fg">
           {error ? (
-            <p className="text-red-400">{error}</p>
+            <p className="text-danger-text">{error}</p>
           ) : scans === null ? (
-            <p className="text-gray-400">…</p>
+            <p className="text-subtle">…</p>
           ) : scans.length === 0 ? (
             <div className="py-8 text-center">
-              <p className="text-gray-400">{t('history.empty')}</p>
-              <p className="mt-2 text-xs text-gray-500">{t('history.emptyHint')}</p>
+              <p className="text-subtle">{t('history.empty')}</p>
+              <p className="mt-2 text-xs text-subtle">{t('history.emptyHint')}</p>
             </div>
           ) : (
             scans.map((scan) => (
               <div key={scan.id} className="mb-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-gray-500">{new Date(scan.started_at).toLocaleString()}</span>
-                  <span className={statusClass[scan.status] ?? 'text-white'}>[{t(`history.status.${scan.status}`)}]</span>
-                  <span className="text-gray-300">{summary(scan)}</span>
+                  <span className="text-subtle">{new Date(scan.started_at).toLocaleString()}</span>
+                  <span className={statusClass[scan.status] ?? 'text-muted'}>[{t(`history.status.${scan.status}`)}]</span>
+                  <span className="text-fg">{summary(scan)}</span>
                 </div>
-                <div className="ml-4 text-xs text-gray-500">
+                <div className="ml-4 text-muted">
                   {t('history.counts', {
                     found: scan.files_found,
                     processed: scan.files_processed,
@@ -73,13 +73,13 @@ export default function ScanHistoryModal({ folder, onClose }: { folder: WatchedF
                   {scan.duration != null && ` · ${t('history.duration', { seconds: Math.round(scan.duration) })}`}
                 </div>
                 {scan.error_details && (
-                  <pre className="ml-4 mt-1 whitespace-pre-wrap text-xs text-red-400">{formatErrorDetails(scan.error_details)}</pre>
+                  <pre className="ml-4 mt-1 whitespace-pre-wrap text-xs text-danger-text">{formatErrorDetails(scan.error_details)}</pre>
                 )}
               </div>
             ))
           )}
         </div>
       </div>
-    </ModalShell>
+    </Modal>
   )
 }

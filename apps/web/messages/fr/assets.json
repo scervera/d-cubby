@@ -43,6 +43,7 @@
     "fullDesc": "Hauteur complète, largeur recadrée"
   },
   "upload": {
+    "removeFile": "Retirer le fichier",
     "modalTitle": "Télécharger des fichiers",
     "dropFilesHere": "Déposez les fichiers ici",
     "clickToUpload": "Cliquez pour télécharger des fichiers",

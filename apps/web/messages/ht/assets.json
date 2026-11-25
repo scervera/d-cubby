@@ -211,6 +211,7 @@
     }
   },
   "upload": {
+    "removeFile": "Retire fichye a",
     "uploadFiles": "Telechaje fichye",
     "dropFilesHere": "Lage fichye yo isit la",
     "clickToUpload": "Klike pou telechaje fichye",

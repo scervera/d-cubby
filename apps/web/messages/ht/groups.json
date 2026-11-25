@@ -19,6 +19,7 @@
     "descriptionLabel": "Deskripsyon",
     "descriptionPlaceholder": "Ekri deskripsyon (opsyonèl)",
     "activeLabel": "Aktif",
+    "inactiveLabel": "Inaktif",
     "create": "Kreye",
     "update": "Mete ajou"
   },

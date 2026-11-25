@@ -7,7 +7,11 @@ import { CheckIcon, MagnifyingGlassIcon, PlusIcon, TagIcon, TrashIcon } from '@h
 
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import SharedLayout from '@/components/shared/SharedLayout'
+import { Button, IconButton } from '@/components/ui/Button'
+import { EmptyState, PageHeader, Panel } from '@/components/ui/Panel'
 import PageSpinner from '@/components/ui/PageSpinner'
+import { LoadingBlock } from '@/components/ui/Spinner'
+import { TextField } from '@/components/forms/fields'
 import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { apiErrorMessage } from '@/lib/api'
 import { canWrite, isAdmin } from '@/lib/auth/permissions'
@@ -116,141 +120,104 @@ export default function TagsPage() {
 
   return (
     <SharedLayout currentPage="tags">
-      <div className="flex h-full flex-col">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-[#E3E1CE]">{t('title')}</h1>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              {t('subtitle')}
-              {!loading && tags.length > 0 ? ` · ${tags.length}` : ''}
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {selectedTagIds.size > 0 && (
-              <span className="text-sm text-slate-500 dark:text-slate-400">{t('selectedCount', { count: selectedTagIds.size })}</span>
-            )}
-            <button
-              type="button"
-              onClick={goToAssetsWithTags}
-              disabled={selectedTagIds.size === 0}
-              className="flex items-center gap-2 rounded-xl border border-indigo-500 bg-white px-4 py-2 text-sm font-semibold text-indigo-600 transition-transform hover:-translate-y-0.5 hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-400 dark:bg-transparent dark:text-indigo-400 dark:hover:bg-indigo-950/50"
-            >
-              <MagnifyingGlassIcon className="h-5 w-5" />
-              {t('searchButton')}
-            </button>
-            {writer && (
-              <button
-                type="button"
+      <PageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        actions={
+          <>
+            {selectedTagIds.size > 0 && <span className="text-meta">{t('selectedCount', { count: selectedTagIds.size })}</span>}
+            {writer && !showCreateForm && (
+              <Button
+                variant={selectedTagIds.size > 0 ? 'secondary' : 'primary'}
                 onClick={() => {
                   setShowCreateForm(true)
                   setNewTagName('')
                 }}
-                className="flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-indigo-600"
               >
-                <PlusIcon className="h-5 w-5" />
+                <PlusIcon className="h-4 w-4" aria-hidden />
                 {t('createButton')}
-              </button>
+              </Button>
             )}
-          </div>
-        </div>
-
-        {showCreateForm && (
-          <div className="mb-6 rounded-2xl border border-white/20 bg-white/15 p-6 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{t('form.createTitle')}</h2>
-            <form onSubmit={handleCreateTag} className="space-y-4">
-              <div>
-                <label htmlFor="tag-name" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {t('form.nameLabel')}
-                </label>
-                <input
-                  id="tag-name"
-                  type="text"
-                  value={newTagName}
-                  onChange={(e) => setNewTagName(e.target.value)}
-                  placeholder={t('form.namePlaceholder')}
-                  className="mt-1 w-full rounded-xl border border-white/30 bg-white/70 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-100"
-                  autoFocus
-                />
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  disabled={creating}
-                  className="rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 disabled:opacity-50"
-                >
-                  {t('form.createButton')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowCreateForm(false)}
-                  className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
-                >
-                  {tCommon('cancel')}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {loading ? (
-          <div className="flex h-64 items-center justify-center">
-            <div className="text-slate-500 dark:text-slate-400">{tCommon('loading')}</div>
-          </div>
-        ) : tags.length === 0 ? (
-          <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-white/20 bg-white/15 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <TagIcon className="mb-4 h-12 w-12 text-slate-400 dark:text-slate-500" />
-            <p className="text-lg font-medium text-slate-600 dark:text-slate-400">{t('emptyTitle')}</p>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-500">{t('emptyBody')}</p>
-          </div>
-        ) : (
-          <>
-            <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">{t('selectTagsHint')}</p>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {tags.map((tag) => {
-                const isSelected = selectedTagIds.has(tag.id)
-                return (
-                  <div
-                    key={tag.id}
-                    className={`group relative rounded-2xl border backdrop-blur transition-all hover:shadow-lg dark:bg-slate-800/50 ${
-                      isSelected
-                        ? 'border-indigo-500 bg-indigo-50/80 ring-2 ring-indigo-500 dark:border-indigo-400 dark:bg-indigo-950/40 dark:ring-indigo-400'
-                        : 'border-white/20 bg-white/15 hover:border-indigo-300 dark:border-white/10 dark:hover:border-indigo-600'
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      aria-pressed={isSelected}
-                      onClick={() => toggleTagSelection(tag.id)}
-                      className="flex w-full items-center gap-2 p-6 pr-20 text-left"
-                    >
-                      <TagIcon className="h-5 w-5 shrink-0 text-indigo-500 dark:text-indigo-400" />
-                      <span className="truncate text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{tag.name}</span>
-                    </button>
-                    <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
-                      {isSelected && (
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500 text-white">
-                          <CheckIcon className="h-4 w-4" />
-                        </span>
-                      )}
-                      {admin && (
-                        <button
-                          type="button"
-                          onClick={() => setDeletingTag(tag)}
-                          className="rounded-lg p-1.5 text-slate-400 opacity-100 transition-opacity hover:text-red-500 lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100 dark:text-slate-500 dark:hover:text-red-400"
-                          title={t('deleteTooltip')}
-                          aria-label={t('deleteTooltip')}
-                        >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+            {(selectedTagIds.size > 0 || !writer) && (
+              <Button onClick={goToAssetsWithTags} disabled={selectedTagIds.size === 0}>
+                <MagnifyingGlassIcon className="h-4 w-4" aria-hidden />
+                {t('searchButton')}
+              </Button>
+            )}
           </>
-        )}
-      </div>
+        }
+      />
+
+      {showCreateForm && (
+        <Panel title={t('form.createTitle')}>
+          <form onSubmit={handleCreateTag} className="flex flex-wrap items-end gap-2">
+            <TextField
+              id="tag-name"
+              label={t('form.nameLabel')}
+              value={newTagName}
+              onChange={(e) => setNewTagName(e.target.value)}
+              placeholder={t('form.namePlaceholder')}
+              className="min-w-56 flex-1"
+              autoFocus
+            />
+            <Button type="submit" loading={creating}>
+              {t('form.createButton')}
+            </Button>
+            <Button variant="secondary" onClick={() => setShowCreateForm(false)}>
+              {tCommon('cancel')}
+            </Button>
+          </form>
+        </Panel>
+      )}
+
+      {loading ? (
+        <LoadingBlock />
+      ) : tags.length === 0 ? (
+        <EmptyState icon={<TagIcon />} title={t('emptyTitle')} description={t('emptyBody')} />
+      ) : (
+        <>
+          <p className="text-sm text-muted">{t('selectTagsHint')}</p>
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {tags.map((tag) => {
+              const isSelected = selectedTagIds.has(tag.id)
+              return (
+                <li
+                  key={tag.id}
+                  className={`flex items-center rounded-card border transition-colors duration-100 ${
+                    isSelected ? 'border-accent bg-accent-subtle text-accent-text' : 'bg-surface text-fg hover:bg-hover'
+                  }`}
+                >
+                  <button
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => toggleTagSelection(tag.id)}
+                    className="flex min-w-0 flex-1 items-center gap-2 rounded-card px-3 py-2.5 text-left text-sm font-medium"
+                  >
+                    {isSelected ? (
+                      <CheckIcon className="h-4 w-4 shrink-0" aria-hidden />
+                    ) : (
+                      <TagIcon className="h-4 w-4 shrink-0 text-subtle" aria-hidden />
+                    )}
+                    <span className="truncate">{tag.name}</span>
+                  </button>
+                  {admin && (
+                    <IconButton
+                      variant="danger-ghost"
+                      size="sm"
+                      className="mr-1.5"
+                      onClick={() => setDeletingTag(tag)}
+                      title={t('deleteTooltip')}
+                      aria-label={t('deleteTooltip')}
+                    >
+                      <TrashIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )}
 
       <ConfirmDialog
         open={!!deletingTag}

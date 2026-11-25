@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
 import type { ImageDerivativeRequest } from '@/lib/assetsApi'
+import Modal from '@/components/ui/Modal'
+import { Button } from '@/components/ui/Button'
+import { CheckField, TextAreaField, TextField, inputClassSm } from '@/components/forms/fields'
 
 interface ImageEditorAsset {
   id: string
@@ -418,314 +420,269 @@ export default function ImageEditorModal({ asset, isOpen, isSaving, onClose, onS
     return null
   }
 
-  if (typeof document === 'undefined') {
-    return null
-  }
+  const numberLabel = 'block text-xs text-subtle'
+  const groupHeading = 'mb-2 text-sm font-semibold text-fg'
 
-  return createPortal(
-    <div className="fixed inset-0 z-[1300] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm" onClick={onClose}>
-      <div
-        className="glass-panel w-full max-h-[94vh] max-w-[1320px] overflow-y-auto border border-white/25 px-4 py-4 dark:border-white/10"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-[#E3E1CE]">{tAssets('editor.title')}</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-300">{asset.attributes.name}</p>
-          </div>
-          <button
-            onClick={onClose}
-            className="rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-white/40 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200"
-          >
+  return (
+    <Modal
+      title={tAssets('editor.title')}
+      onClose={onClose}
+      size="full"
+      dismissable={!isSaving}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose} disabled={isSaving}>
             {tAssets('editor.actions.cancel')}
-          </button>
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.9fr)_320px]">
-          <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-              {tAssets('editor.preview')}
-            </p>
-            <div className="space-y-3">
-              <div
-                ref={cropStageRef}
-                className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-slate-100/80 p-2 dark:border-white/10 dark:bg-slate-900/60"
-              >
-                {sourceUrl ? (
-                  <>
-                    {/* eslint-disable-next-line @next/next/no-img-element -- measured for cropping */}
-                    <img
-                      ref={cropImageRef}
-                      src={sourceUrl}
-                      alt={asset.attributes.name}
-                      className="max-h-[410px] max-w-full select-none rounded border border-white/20 shadow"
-                      onLoad={() => {
-                        if (!cropStageRef.current || !cropImageRef.current) {
-                          return
-                        }
-                        const stageRect = cropStageRef.current.getBoundingClientRect()
-                        const imageRect = cropImageRef.current.getBoundingClientRect()
-                        setImageDisplayRect({
-                          left: imageRect.left - stageRect.left,
-                          top: imageRect.top - stageRect.top,
-                          width: imageRect.width,
-                          height: imageRect.height
-                        })
-                      }}
-                      draggable={false}
-                    />
-
-                    {displayCropRect && (
-                      <div
-                        className="absolute border-2 border-indigo-400 bg-indigo-400/10"
-                        style={{
-                          left: displayCropRect.left,
-                          top: displayCropRect.top,
-                          width: displayCropRect.width,
-                          height: displayCropRect.height,
-                          cursor: 'move'
-                        }}
-                        onPointerDown={(event) => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          beginCropInteraction({ mode: 'move' }, event.clientX, event.clientY)
-                        }}
-                      >
-                        {(['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as ResizeHandle[]).map((handle) => (
-                          <button
-                            key={handle}
-                            type="button"
-                            className="absolute h-3 w-3 rounded-full border border-white bg-indigo-500 shadow"
-                            style={{
-                              ...HANDLE_STYLES[handle],
-                              cursor: HANDLE_CURSORS[handle]
-                            }}
-                            onPointerDown={(event) => {
-                              event.preventDefault()
-                              event.stopPropagation()
-                              beginCropInteraction({ mode: 'resize', handle }, event.clientX, event.clientY)
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <p className="text-sm text-slate-500 dark:text-slate-300">{tAssets('editor.previewUnavailable')}</p>
-                )}
-              </div>
-
-              <div className="flex min-h-[320px] items-center justify-center rounded-xl border border-white/20 bg-slate-100/80 p-2 dark:border-white/10 dark:bg-slate-900/60">
-                {sourceImage ? (
-                  <canvas ref={canvasRef} className="max-h-full max-w-full rounded border border-white/20 shadow" />
-                ) : (
-                  <p className="text-sm text-slate-500 dark:text-slate-300">{tAssets('editor.previewUnavailable')}</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-                {tAssets('editor.output')}
-              </p>
-              <div className="space-y-2.5">
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {tAssets('editor.fields.name')}
-                  <input
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100"
-                  />
-                </label>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {tAssets('editor.fields.description')}
-                  <textarea
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    rows={1}
-                    className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100"
-                  />
-                </label>
-                <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
-                  <input
-                    type="checkbox"
-                    checked={copyTags}
-                    onChange={(event) => setCopyTags(event.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 text-indigo-500"
-                  />
-                  {tAssets('editor.fields.copyTags')}
-                </label>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/20 bg-white/20 p-3 backdrop-blur dark:border-white/10 dark:bg-slate-800/50">
-              <div className="space-y-3">
-                <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-                    {tAssets('editor.crop')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      X
-                      <input type="number" value={cropX} onChange={(event) => setCropX(Number(event.target.value || 0))} className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60" />
-                    </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      Y
-                      <input type="number" value={cropY} onChange={(event) => setCropY(Number(event.target.value || 0))} className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60" />
-                    </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      {tAssets('editor.fields.width')}
-                      <input
-                        type="number"
-                        value={cropWidth}
-                        onChange={(event) => {
-                          const next = Number(event.target.value || 1)
-                          setCropWidth(next)
-                          if (lockAspect) {
-                            setCropHeight(clamp(Math.round(next / cropAspect), 1, sourceDimensions.height))
-                          }
-                        }}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                      />
-                    </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      {tAssets('editor.fields.height')}
-                      <input
-                        type="number"
-                        value={cropHeight}
-                        onChange={(event) => {
-                          const next = Number(event.target.value || 1)
-                          setCropHeight(next)
-                          if (lockAspect) {
-                            setCropWidth(clamp(Math.round(next * cropAspect), 1, sourceDimensions.width))
-                          }
-                        }}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/20 pt-3 dark:border-white/10">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
-                    {tAssets('editor.resize')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      {tAssets('editor.fields.width')}
-                      <input
-                        type="number"
-                        value={resizeWidth}
-                        onChange={(event) => onResizeWidthChange(Number(event.target.value || 1))}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                      />
-                    </label>
-                    <label className="text-xs text-slate-700 dark:text-slate-200">
-                      {tAssets('editor.fields.height')}
-                      <input
-                        type="number"
-                        value={resizeHeight}
-                        onChange={(event) => onResizeHeightChange(Number(event.target.value || 1))}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                      />
-                    </label>
-                  </div>
-
-                  <div className="mt-2 space-y-2">
-                    <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        checked={autoSyncResizeToCrop}
-                        onChange={(event) => setAutoSyncResizeToCrop(event.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-indigo-500"
-                      />
-                      Auto-match resize to crop
-                    </label>
-                    <label className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200">
-                      <input
-                        type="checkbox"
-                        checked={lockAspect}
-                        onChange={(event) => setLockAspect(event.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-indigo-500"
-                      />
-                      {tAssets('editor.fields.lockAspectRatio')}
-                    </label>
-                    <label className="block text-xs text-slate-700 dark:text-slate-200">
-                      {tAssets('editor.fields.resizeMode')}
-                      <select
-                        value={resizeMode}
-                        onChange={(event) => setResizeMode(event.target.value as 'exact' | 'limit' | 'fill')}
-                        className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                      >
-                        <option value="exact">{tAssets('editor.resizeModes.exact')}</option>
-                        <option value="limit">{tAssets('editor.resizeModes.limit')}</option>
-                        <option value="fill">{tAssets('editor.resizeModes.fill')}</option>
-                      </select>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 border-t border-white/20 pt-3 dark:border-white/10">
-                  <label className="text-xs text-slate-700 dark:text-slate-200">
-                    {tAssets('editor.fields.degrees')}
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={rotationDegrees}
-                      onChange={(event) => setRotationDegrees(Number(event.target.value || 0))}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                    />
-                  </label>
-                  <label className="text-xs text-slate-700 dark:text-slate-200">
-                    {tAssets('editor.fields.outputFormat')}
-                    <select
-                      value={outputFormat}
-                      onChange={(event) => setOutputFormat(event.target.value as 'keep' | 'jpg' | 'png' | 'webp')}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                    >
-                      <option value="keep">{tAssets('editor.formats.keep')}</option>
-                      <option value="jpg">JPEG</option>
-                      <option value="png">PNG</option>
-                      <option value="webp">WebP</option>
-                    </select>
-                  </label>
-                  <label className="text-xs text-slate-700 dark:text-slate-200 col-span-2">
-                    {tAssets('editor.fields.quality')}
-                    <input
-                      type="number"
-                      min={1}
-                      max={100}
-                      value={outputQuality}
-                      onChange={(event) => setOutputQuality(clamp(Number(event.target.value || 90), 1, 100))}
-                      className="mt-1 w-full rounded-lg border border-white/30 bg-white/75 px-2 py-1.5 text-sm dark:border-white/10 dark:bg-slate-900/60"
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-4 flex justify-end gap-3">
-          <button
-            onClick={onClose}
-            className="rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-white/40 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200"
-            disabled={isSaving}
-          >
-            {tAssets('editor.actions.cancel')}
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={isSaving || !sourceUrl}
-            className="rounded-xl bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
-          >
+          </Button>
+          <Button onClick={handleSubmit} disabled={!sourceUrl} loading={isSaving}>
             {isSaving ? tAssets('editor.actions.saving') : tAssets('editor.actions.saveAsNew')}
-          </button>
+          </Button>
+        </>
+      }
+    >
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.9fr)_320px]">
+        <div className="min-w-0">
+          <div className="mb-2 flex items-baseline gap-2">
+            <h3 className="text-sm font-semibold text-fg">{tAssets('editor.preview')}</h3>
+            <p className="min-w-0 truncate text-meta">{asset.attributes.name}</p>
+          </div>
+          <div className="space-y-3">
+            <div
+              ref={cropStageRef}
+              className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-card bg-sunken p-2"
+            >
+              {sourceUrl ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- measured for cropping */}
+                  <img
+                    ref={cropImageRef}
+                    src={sourceUrl}
+                    alt={asset.attributes.name}
+                    className="max-h-[410px] max-w-full select-none"
+                    onLoad={() => {
+                      if (!cropStageRef.current || !cropImageRef.current) {
+                        return
+                      }
+                      const stageRect = cropStageRef.current.getBoundingClientRect()
+                      const imageRect = cropImageRef.current.getBoundingClientRect()
+                      setImageDisplayRect({
+                        left: imageRect.left - stageRect.left,
+                        top: imageRect.top - stageRect.top,
+                        width: imageRect.width,
+                        height: imageRect.height
+                      })
+                    }}
+                    draggable={false}
+                  />
+
+                  {displayCropRect && (
+                    <div
+                      className="absolute border-2 border-accent ring-1 ring-inset ring-on-scrim"
+                      style={{
+                        left: displayCropRect.left,
+                        top: displayCropRect.top,
+                        width: displayCropRect.width,
+                        height: displayCropRect.height,
+                        cursor: 'move'
+                      }}
+                      onPointerDown={(event) => {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        beginCropInteraction({ mode: 'move' }, event.clientX, event.clientY)
+                      }}
+                    >
+                      {(['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as ResizeHandle[]).map((handle) => (
+                        <button
+                          key={handle}
+                          type="button"
+                          tabIndex={-1}
+                          aria-hidden
+                          className="absolute h-3 w-3 rounded-full border border-on-scrim bg-accent"
+                          style={{
+                            ...HANDLE_STYLES[handle],
+                            cursor: HANDLE_CURSORS[handle]
+                          }}
+                          onPointerDown={(event) => {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            beginCropInteraction({ mode: 'resize', handle }, event.clientX, event.clientY)
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p className="text-sm text-subtle">{tAssets('editor.previewUnavailable')}</p>
+              )}
+            </div>
+
+            <div className="flex min-h-[320px] items-center justify-center rounded-card bg-sunken p-2">
+              {sourceImage ? (
+                <canvas ref={canvasRef} className="max-h-full max-w-full" />
+              ) : (
+                <p className="text-sm text-subtle">{tAssets('editor.previewUnavailable')}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="min-w-0 divide-y divide-line [&>*]:py-4 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
+          <section>
+            <h3 className={groupHeading}>{tAssets('editor.output')}</h3>
+            <div className="space-y-3">
+              <TextField
+                id="editor-name"
+                label={tAssets('editor.fields.name')}
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+              <TextAreaField
+                id="editor-description"
+                label={tAssets('editor.fields.description')}
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                rows={2}
+              />
+              <CheckField
+                label={tAssets('editor.fields.copyTags')}
+                checked={copyTags}
+                onChange={(event) => setCopyTags(event.target.checked)}
+              />
+            </div>
+          </section>
+
+          <section>
+            <h3 className={groupHeading}>{tAssets('editor.crop')}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <label className={numberLabel}>
+                X
+                <input type="number" value={cropX} onChange={(event) => setCropX(Number(event.target.value || 0))} className={`mt-1 ${inputClassSm}`} />
+              </label>
+              <label className={numberLabel}>
+                Y
+                <input type="number" value={cropY} onChange={(event) => setCropY(Number(event.target.value || 0))} className={`mt-1 ${inputClassSm}`} />
+              </label>
+              <label className={numberLabel}>
+                {tAssets('editor.fields.width')}
+                <input
+                  type="number"
+                  value={cropWidth}
+                  onChange={(event) => {
+                    const next = Number(event.target.value || 1)
+                    setCropWidth(next)
+                    if (lockAspect) {
+                      setCropHeight(clamp(Math.round(next / cropAspect), 1, sourceDimensions.height))
+                    }
+                  }}
+                  className={`mt-1 ${inputClassSm}`}
+                />
+              </label>
+              <label className={numberLabel}>
+                {tAssets('editor.fields.height')}
+                <input
+                  type="number"
+                  value={cropHeight}
+                  onChange={(event) => {
+                    const next = Number(event.target.value || 1)
+                    setCropHeight(next)
+                    if (lockAspect) {
+                      setCropWidth(clamp(Math.round(next * cropAspect), 1, sourceDimensions.width))
+                    }
+                  }}
+                  className={`mt-1 ${inputClassSm}`}
+                />
+              </label>
+            </div>
+          </section>
+
+          <section>
+            <h3 className={groupHeading}>{tAssets('editor.resize')}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <label className={numberLabel}>
+                {tAssets('editor.fields.width')}
+                <input
+                  type="number"
+                  value={resizeWidth}
+                  onChange={(event) => onResizeWidthChange(Number(event.target.value || 1))}
+                  className={`mt-1 ${inputClassSm}`}
+                />
+              </label>
+              <label className={numberLabel}>
+                {tAssets('editor.fields.height')}
+                <input
+                  type="number"
+                  value={resizeHeight}
+                  onChange={(event) => onResizeHeightChange(Number(event.target.value || 1))}
+                  className={`mt-1 ${inputClassSm}`}
+                />
+              </label>
+            </div>
+
+            <div className="mt-3 space-y-2">
+              <CheckField
+                label="Auto-match resize to crop"
+                checked={autoSyncResizeToCrop}
+                onChange={(event) => setAutoSyncResizeToCrop(event.target.checked)}
+              />
+              <CheckField
+                label={tAssets('editor.fields.lockAspectRatio')}
+                checked={lockAspect}
+                onChange={(event) => setLockAspect(event.target.checked)}
+              />
+              <label className={`block ${numberLabel}`}>
+                {tAssets('editor.fields.resizeMode')}
+                <select
+                  value={resizeMode}
+                  onChange={(event) => setResizeMode(event.target.value as 'exact' | 'limit' | 'fill')}
+                  className={`mt-1 ${inputClassSm}`}
+                >
+                  <option value="exact">{tAssets('editor.resizeModes.exact')}</option>
+                  <option value="limit">{tAssets('editor.resizeModes.limit')}</option>
+                  <option value="fill">{tAssets('editor.resizeModes.fill')}</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section className="grid grid-cols-2 gap-2">
+            <label className={numberLabel}>
+              {tAssets('editor.fields.degrees')}
+              <input
+                type="number"
+                step="0.1"
+                value={rotationDegrees}
+                onChange={(event) => setRotationDegrees(Number(event.target.value || 0))}
+                className={`mt-1 ${inputClassSm}`}
+              />
+            </label>
+            <label className={numberLabel}>
+              {tAssets('editor.fields.outputFormat')}
+              <select
+                value={outputFormat}
+                onChange={(event) => setOutputFormat(event.target.value as 'keep' | 'jpg' | 'png' | 'webp')}
+                className={`mt-1 ${inputClassSm}`}
+              >
+                <option value="keep">{tAssets('editor.formats.keep')}</option>
+                <option value="jpg">JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WebP</option>
+              </select>
+            </label>
+            <label className={`col-span-2 ${numberLabel}`}>
+              {tAssets('editor.fields.quality')}
+              <input
+                type="number"
+                min={1}
+                max={100}
+                value={outputQuality}
+                onChange={(event) => setOutputQuality(clamp(Number(event.target.value || 90), 1, 100))}
+                className={`mt-1 ${inputClassSm}`}
+              />
+            </label>
+          </section>
         </div>
       </div>
-    </div>,
-    document.body
+    </Modal>
   )
 }

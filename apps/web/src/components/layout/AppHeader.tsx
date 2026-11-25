@@ -4,11 +4,12 @@ import Link from 'next/link'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import { useTranslations } from 'next-intl'
 
+import { ButtonLink, IconButton } from '@/components/ui/Button'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 import { useAppConfig } from '@/hooks/useAppConfig'
 import { useAuth } from '@/hooks/useAuth'
 
-/** Fixed top bar (h-16). SharedLayout offsets its content and the mobile sidebar below it. */
+/** Fixed top bar (h-14). SharedLayout offsets its content and the sidebar below it. */
 export default function AppHeader() {
   const t = useTranslations('nav')
   const { config } = useAppConfig()
@@ -16,49 +17,37 @@ export default function AppHeader() {
   const org = config?.organization
 
   return (
-    <header className="glass-surface shell-nav fixed inset-x-0 top-0 z-[80] h-16 border-b border-[#B8C5D1] dark:border-[#263541]">
-      <div className="flex h-full items-center gap-3 px-3 sm:px-4 lg:px-10">
-        <button
+    <header className="fixed inset-x-0 top-0 z-header h-14 border-b bg-surface">
+      <div className="flex h-full items-center gap-2 px-2 sm:px-4">
+        <IconButton
           id="hamburger-menu-button"
-          type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#B8C5D1] bg-[#D8DFE6] text-[#2C3A47] lg:hidden dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE]"
+          className="lg:hidden"
           aria-label={t('toggleMenu')}
           onClick={() => window.dispatchEvent(new Event('toggleSidebar'))}
         >
-          <Bars3Icon className="h-5 w-5" />
-        </button>
+          <Bars3Icon className="h-5 w-5" aria-hidden />
+        </IconButton>
 
-        <Link href="/assets" className="flex min-w-0 items-center gap-3">
+        <Link href="/assets" className="flex min-w-0 items-center gap-2.5 rounded-control px-1 py-1">
           {org?.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={org.logo_url} alt="" className="h-9 w-9 shrink-0 rounded-lg object-contain" />
+            <img src={org.logo_url} alt="" className="h-7 w-7 shrink-0 rounded-thumb object-contain" />
           ) : (
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2C3A47] font-heading text-sm font-bold text-[#F6DAA9] dark:bg-[#F6DAA9] dark:text-[#121F27]">
-              D³
-            </span>
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-thumb bg-fg text-xs font-semibold text-canvas">D³</span>
           )}
-          <span className="min-w-0">
-            <span className="block truncate font-heading text-sm font-semibold text-[#2C3A47] dark:text-[#E3E1CE]">
-              {org?.name ?? 'D-cubby'}
-            </span>
-            <span className="block text-[0.65rem] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-              {t('assetLibrary')}
-            </span>
-          </span>
+          <span className="truncate text-sm font-semibold text-fg">{org?.name ?? 'D-cubby'}</span>
+          <span className="hidden truncate text-sm text-subtle sm:inline">{t('assetLibrary')}</span>
         </Link>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1">
           {user && (
-            <Link
-              href="/account"
-              className="hidden max-w-[16rem] truncate rounded-xl border border-[#B8C5D1] bg-[#D8DFE6] px-3 py-2 text-sm font-medium text-[#2C3A47] sm:block dark:border-[#263541] dark:bg-[#121F27] dark:text-[#E3E1CE]"
-            >
-              {user.name}
-            </Link>
+            <div className="hidden sm:block">
+              <ButtonLink href="/account" variant="ghost" className="max-w-[16rem]">
+                <span className="truncate">{user.name}</span>
+              </ButtonLink>
+            </div>
           )}
-          <div className="hidden lg:block">
-            <ThemeToggle variant="toolbar" />
-          </div>
+          <ThemeToggle />
         </div>
       </div>
     </header>

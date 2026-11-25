@@ -245,6 +245,7 @@
     }
   },
   "upload": {
+    "removeFile": "Remover arquivo",
     "uploadFiles": "Enviar arquivos",
     "dropFilesHere": "Solte arquivos aqui",
     "clickToUpload": "Clique para enviar arquivos",

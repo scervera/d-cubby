@@ -19,6 +19,7 @@
     "descriptionLabel": "Description",
     "descriptionPlaceholder": "Optional description",
     "activeLabel": "Active",
+    "inactiveLabel": "Inactif",
     "update": "Update",
     "create": "Create"
   },

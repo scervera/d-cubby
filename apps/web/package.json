@@ -8,14 +8,15 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint:tokens": "node scripts/check-design-tokens.mjs",
+    "shots": "playwright test"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
     "axios": "^1.21.1",
     "exif-js": "^2.3.0",
-    "lucide-react": "^0.542.0",
     "next": "15.5.29",
     "next-intl": "^4.16.1",
     "react": "19.1.0",
@@ -23,6 +24,7 @@
     "react-hot-toast": "^2.6.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",

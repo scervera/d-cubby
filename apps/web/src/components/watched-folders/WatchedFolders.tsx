@@ -18,6 +18,10 @@ import {
 } from '@heroicons/react/24/outline'
 
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
+import Badge from '@/components/ui/Badge'
+import { Button, IconButton } from '@/components/ui/Button'
+import { EmptyState, PageHeader } from '@/components/ui/Panel'
+import { LoadingBlock } from '@/components/ui/Spinner'
 import { toast } from '@/lib/toast'
 import {
   watchedFolderErrors,
@@ -28,8 +32,6 @@ import {
 import NotificationsModal from './NotificationsModal'
 import ScanHistoryModal from './ScanHistoryModal'
 import WatchedFolderForm from './WatchedFolderForm'
-
-const iconButton = 'rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700'
 
 /**
  * Folders on the server that D-cubby scans for new files to import. The API container sees
@@ -126,193 +128,145 @@ export default function WatchedFolders() {
   }
 
   const status = (folder: WatchedFolder) => {
-    if (!folder.active) return { icon: <PauseIcon className="h-5 w-5 text-gray-400" />, text: t('status.inactive'), className: 'text-gray-500' }
+    if (!folder.active) return { icon: <PauseIcon className="h-5 w-5 text-subtle" aria-hidden />, text: t('status.inactive'), tone: 'neutral' as const }
     if (!folder.can_scan)
-      return { icon: <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />, text: t('status.inaccessible'), className: 'text-red-500' }
-    return { icon: <CheckCircleIcon className="h-5 w-5 text-green-500" />, text: t('status.active'), className: 'text-green-500' }
+      return { icon: <ExclamationTriangleIcon className="h-5 w-5 text-danger-text" aria-hidden />, text: t('status.inaccessible'), tone: 'danger' as const }
+    return { icon: <CheckCircleIcon className="h-5 w-5 text-success-text" aria-hidden />, text: t('status.active'), tone: 'success' as const }
   }
 
-  if (loading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
-      </div>
-    )
-  }
+  if (loading) return <LoadingBlock />
 
   return (
     <div className="space-y-6">
-      <div className="glass-panel-soft rounded-2xl border border-white/30 p-6 dark:border-white/10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
-            <p className="text-slate-600 dark:text-slate-200">{t('subtitle')}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={loadFolders}
-              className="flex items-center gap-2 rounded-lg bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700"
-            >
-              <ArrowPathIcon className="h-5 w-5" />
+      <PageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        actions={
+          <>
+            <Button variant="secondary" onClick={loadFolders}>
+              <ArrowPathIcon className="h-4 w-4" aria-hidden />
               {t('refresh')}
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormFolder('new')}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
-            >
-              <PlusIcon className="h-5 w-5" />
+            </Button>
+            <Button onClick={() => setFormFolder('new')}>
+              <PlusIcon className="h-4 w-4" aria-hidden />
               {t('addFolder')}
-            </button>
-          </div>
-        </div>
-      </div>
+            </Button>
+          </>
+        }
+      />
 
-      <div className="flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-200">
-        <InformationCircleIcon className="h-5 w-5 shrink-0" />
+      <div className="flex gap-3 rounded-card bg-accent-subtle p-4 text-sm text-fg">
+        <InformationCircleIcon className="h-5 w-5 shrink-0 text-accent-text" aria-hidden />
         <p>{t('containerHint')}</p>
       </div>
 
       {folders.length === 0 ? (
-        <div className="py-12 text-center">
-          <FolderIcon className="mx-auto mb-4 h-12 w-12 text-slate-400 dark:text-slate-300" />
-          <h3 className="mb-2 text-lg font-medium text-slate-900 dark:text-slate-100">{t('emptyTitle')}</h3>
-          <p className="mb-4 text-slate-600 dark:text-slate-200">{t('emptyBody')}</p>
-          <button
-            type="button"
-            onClick={() => setFormFolder('new')}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
-          >
-            {t('addFolder')}
-          </button>
-        </div>
+        <EmptyState
+          icon={<FolderIcon aria-hidden />}
+          title={t('emptyTitle')}
+          description={t('emptyBody')}
+          action={<Button onClick={() => setFormFolder('new')}>{t('addFolder')}</Button>}
+        />
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-3">
           {folders.map((folder) => {
             const s = status(folder)
             const isScanning = scanning.has(folder.id)
             return (
-              <li key={folder.id} className="glass-panel-soft rounded-xl border border-white/30 p-6 dark:border-white/10">
+              <li key={folder.id} className="rounded-card border bg-surface p-4">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div className="min-w-0 flex-1">
-                    <div className="mb-2 flex flex-wrap items-center gap-3">
-                      <FolderIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{folder.name}</h3>
-                      <span className="flex items-center gap-1">
-                        {s.icon}
-                        <span className={`text-sm font-medium ${s.className}`}>{s.text}</span>
-                      </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {s.icon}
+                      <h3 className="text-sm font-semibold text-fg">{folder.name}</h3>
+                      <Badge tone={s.tone}>{s.text}</Badge>
                     </div>
-                    <p className="mb-3 break-all font-mono text-sm text-slate-600 dark:text-slate-200">{folder.path}</p>
-                    {folder.active && !folder.can_scan && (
-                      <p className="mb-3 text-sm text-red-600 dark:text-red-400">{t('inaccessibleHint')}</p>
-                    )}
+                    <p className="mt-1 break-all font-mono text-xs text-muted">{folder.path}</p>
+                    {folder.active && !folder.can_scan && <p className="mt-2 text-sm text-danger-text">{t('inaccessibleHint')}</p>}
 
-                    <dl className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
+                    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-4">
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.frequency')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.scan_frequency_display}</dd>
+                        <dt className="text-xs text-subtle">{t('stats.frequency')}</dt>
+                        <dd className="text-meta !text-fg">{folder.scan_frequency_display}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.maxFileSize')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.max_file_size_display}</dd>
+                        <dt className="text-xs text-subtle">{t('stats.maxFileSize')}</dt>
+                        <dd className="text-meta !text-fg">{folder.max_file_size_display}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.processed')}</dt>
-                        <dd className="font-medium text-slate-900 dark:text-slate-100">{folder.total_files_processed}</dd>
+                        <dt className="text-xs text-subtle">{t('stats.processed')}</dt>
+                        <dd className="text-meta !text-fg">{folder.total_files_processed}</dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500 dark:text-slate-400">{t('stats.errors')}</dt>
-                        <dd className="font-medium text-red-600 dark:text-red-400">{folder.total_errors}</dd>
+                        <dt className="text-xs text-subtle">{t('stats.errors')}</dt>
+                        <dd className={`text-meta ${folder.total_errors > 0 ? '!text-danger-text' : '!text-fg'}`}>{folder.total_errors}</dd>
                       </div>
                     </dl>
 
                     {folder.auto_tag_names.length > 0 && (
-                      <div className="mt-3">
-                        <span className="text-sm text-slate-500 dark:text-slate-400">{t('stats.autoTags')}</span>
-                        <div className="mt-1 flex flex-wrap gap-1">
-                          {folder.auto_tag_names.map((tag) => (
-                            <span
-                              key={tag}
-                              className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="mt-3 flex flex-wrap items-center gap-1">
+                        <span className="mr-1 text-xs text-subtle">{t('stats.autoTags')}</span>
+                        {folder.auto_tag_names.map((tag) => (
+                          <Badge key={tag} tone="accent">
+                            {tag}
+                          </Badge>
+                        ))}
                       </div>
                     )}
 
-                    <div className="mt-3 space-y-0.5 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-meta mt-3 space-y-0.5">
                       {folder.last_scanned_at && <p>{t('lastScanned', { time: new Date(folder.last_scanned_at).toLocaleString() })}</p>}
-                      {folder.active && folder.next_scan_at && (
-                        <p>{t('nextScan', { time: new Date(folder.next_scan_at).toLocaleString() })}</p>
-                      )}
+                      {folder.active && folder.next_scan_at && <p>{t('nextScan', { time: new Date(folder.next_scan_at).toLocaleString() })}</p>}
                     </div>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-1">
                     {folder.unread_notifications_count > 0 && (
-                      <button
-                        type="button"
+                      <IconButton
+                        size="sm"
                         onClick={() => setNotificationsFolder(folder)}
-                        className={`${iconButton} relative hover:text-red-600`}
                         title={t('actions.notifications', { count: folder.unread_notifications_count })}
                         aria-label={t('actions.notifications', { count: folder.unread_notifications_count })}
+                        className="relative"
                       >
-                        <ExclamationTriangleIcon className="h-5 w-5" />
-                        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                        <ExclamationTriangleIcon className="h-4 w-4" aria-hidden />
+                        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 font-mono text-[10px] text-on-accent">
                           {folder.unread_notifications_count}
                         </span>
-                      </button>
+                      </IconButton>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => setHistoryFolder(folder)}
-                      className={`${iconButton} hover:text-blue-600`}
-                      title={t('actions.history')}
-                      aria-label={t('actions.history')}
-                    >
-                      <ClockIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      type="button"
+                    <IconButton size="sm" onClick={() => setHistoryFolder(folder)} title={t('actions.history')} aria-label={t('actions.history')}>
+                      <ClockIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
+                    <IconButton
+                      size="sm"
                       onClick={() => !isScanning && handleScanNow(folder)}
                       disabled={!folder.can_scan || isScanning}
-                      className={`${iconButton} hover:text-green-600 disabled:cursor-not-allowed disabled:opacity-50`}
                       title={isScanning ? t('actions.scanning') : t('actions.scanNow')}
                       aria-label={isScanning ? t('actions.scanning') : t('actions.scanNow')}
                     >
-                      <ArrowPathIcon className={`h-5 w-5 ${isScanning ? 'animate-spin text-green-600' : ''}`} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFormFolder(folder)}
-                      className={`${iconButton} hover:text-blue-600`}
-                      title={t('actions.edit')}
-                      aria-label={t('actions.edit')}
-                    >
-                      <Cog6ToothIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      type="button"
+                      <ArrowPathIcon className={`h-4 w-4 ${isScanning ? 'animate-spin' : ''}`} aria-hidden />
+                    </IconButton>
+                    <IconButton size="sm" onClick={() => setFormFolder(folder)} title={t('actions.edit')} aria-label={t('actions.edit')}>
+                      <Cog6ToothIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
+                    <IconButton
+                      size="sm"
                       onClick={() => handleToggleActive(folder)}
-                      className={`${iconButton} ${folder.active ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'}`}
                       title={folder.active ? t('actions.deactivate') : t('actions.activate')}
                       aria-label={folder.active ? t('actions.deactivate') : t('actions.activate')}
                     >
-                      {folder.active ? <StopIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
-                    </button>
-                    <button
-                      type="button"
+                      {folder.active ? <StopIcon className="h-4 w-4" aria-hidden /> : <PlayIcon className="h-4 w-4" aria-hidden />}
+                    </IconButton>
+                    <IconButton
+                      size="sm"
+                      variant="danger-ghost"
                       onClick={() => setDeletingFolder(folder)}
-                      className={`${iconButton} hover:text-red-600`}
                       title={t('actions.delete')}
                       aria-label={t('actions.delete')}
                     >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
+                      <TrashIcon className="h-4 w-4" aria-hidden />
+                    </IconButton>
                   </div>
                 </div>
               </li>
