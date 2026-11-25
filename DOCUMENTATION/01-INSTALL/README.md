@@ -63,12 +63,46 @@ changed in the app.
 
 ## Upgrading
 
+Back up first (below). Then, in the install folder (the one with your `.env`):
+
 ```bash
 ./install.sh --reconfigure --version 0.2.0    # or set APP_VERSION in .env
 ```
 
 or, keeping your settings: `docker compose pull && docker compose up -d`. Database
-changes are applied automatically when the new version starts. Back up first (below).
+changes are applied automatically when the new version starts.
+
+To upgrade with a newer release download instead, run the install command from the folder
+**above** your install folder, not inside it. It unpacks over the `d-cubby` folder,
+updating the installer and Compose files and leaving your `.env` alone:
+
+```bash
+cd ..        # the folder that contains your d-cubby/ install folder
+curl -fsSL https://github.com/scervera/d-cubby/releases/latest/download/d-cubby.tar.gz | tar xz
+cd d-cubby && ./install.sh --reconfigure
+```
+
+If your install folder has another name (e.g. `d-cubby-0.1.0`), copy its `.env` into the
+new `d-cubby` folder before running the installer.
+
+Your data lives in Docker volumes (`d-cubby_pgdata`, `d-cubby_storage`), not in the folder,
+so every install folder on a server uses the same data. If the installer finds that data
+but no `.env` that opens it, it stops and asks what to do: use the earlier `.env`, reset
+the database password (your data stays; settings are asked again and everyone signs in
+again), delete the data and start fresh, or stop.
+
+## Starting over
+
+```bash
+./install.sh --reset
+```
+
+deletes this server's D-cubby data (the database, uploaded files in the Docker volume and
+the HTTPS certificates), moves `.env` aside, and runs a fresh install. It first lists what
+will be deleted, offers to back up the database (and the files), and only deletes after you
+type `delete`. Folders you chose for files, attached folders and S3 buckets are never
+touched. For scripts: `./install.sh --reset --non-interactive --yes` (it still backs up
+the database to the install folder first).
 
 ## Backups
 
@@ -115,5 +149,9 @@ DAM_AI_PROVIDER=anthropic DAM_AI_API_KEY=sk-ant-… \
   `sudo chown -R 1000:1000 /your/folder`.
 - **A local AI model can't be reached:** use the server's network address, not
   `localhost` (inside a container that means the container itself).
+- **"dependency failed to start: container d-cubby-api-1 is unhealthy" with
+  `password authentication failed` in `docker compose logs api`:** the database was created
+  by an earlier install with a different `.env`. Run `./install.sh` again (without a `.env`
+  in the folder) and pick one of the options it offers; see Upgrading.
 - **Lost the setup token:** it's `SETUP_TOKEN` in `.env`. It stops working once the
   first account exists.

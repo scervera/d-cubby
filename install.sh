@@ -13,7 +13,15 @@
 #   --no-start        write .env but don't start the stack
 #   --skip-tests      don't run live integration tests
 #   --test-email ADDR address for the SMTP test email (--check / --non-interactive)
+#   --reset           delete this server's D-cubby data (database, uploaded files in the
+#                     Docker volume, certificates) and install fresh; asks before deleting
+#   --yes             with --reset --non-interactive: delete without asking
 #   -h, --help
+#
+# If D-cubby data already exists on this server (from an earlier install, perhaps in another
+# folder) and this folder's settings can't open it, the installer stops and offers to reuse
+# the earlier .env, reset the database password, or delete the data. It never deletes
+# anything without asking, and never touches folders you gave it or S3 buckets.
 #
 # --non-interactive reads the .env variable names from the environment (see .env.example),
 # plus APP_DOMAIN (domain for HTTPS) or APP_HOST (address for plain HTTP). Example:
@@ -46,12 +54,17 @@ info() { echo -e "${BLUE}$*${NC}"; }
 ok()   { echo -e "${GREEN}✓ $*${NC}"; }
 step() { echo ""; echo -e "${BOLD}── $* ──${NC}"; }
 
-trap 'rm -f "$PENDING_FILE"' EXIT
+PROBE_FILE="$ROOT/.env.probe"
+# Compose project name, from `name:` in docker-compose.yml. Volumes are named <project>_<volume>.
+PROJECT=d-cubby
+
+trap 'rm -f "$PENDING_FILE" "$PROBE_FILE"' EXIT
 
 # ---------------------------------------------------------------------------------------
 # Options
 # ---------------------------------------------------------------------------------------
 MODE=install; INTERACTIVE=true; BUILD=false; START=true; RUN_TESTS=true; TEST_EMAIL=""; VERSION_OPT=""
+RESET=false; ASSUME_YES=false
 while [ $# -gt 0 ]; do
     case "$1" in
         --reconfigure) MODE=reconfigure ;;
@@ -62,12 +75,15 @@ while [ $# -gt 0 ]; do
         --no-start) START=false ;;
         --skip-tests) RUN_TESTS=false ;;
         --test-email) [ -n "${2:-}" ] || die "--test-email needs an address"; TEST_EMAIL="$2"; shift ;;
-        -h|--help) sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        --reset) RESET=true ;;
+        --yes) ASSUME_YES=true ;;
+        -h|--help) sed -n '2,/^$/p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) die "unknown option: $1 (see --help)" ;;
     esac
     shift
 done
 [ -t 0 ] || [ "$MODE" = check ] || INTERACTIVE=false
+[ "$RESET" = true ] && [ "$MODE" != install ] && die "--reset can't be combined with --reconfigure or --check"
 
 # ---------------------------------------------------------------------------------------
 # Settings storage: every setting is a shell variable named like its .env key.
@@ -571,6 +587,236 @@ setup_needed() {
 }
 
 # ---------------------------------------------------------------------------------------
+# Existing data: an earlier install's volumes (the project name is fixed, so any folder
+# on this server shares them), and wiping them.
+# ---------------------------------------------------------------------------------------
+DATA_VOLUMES="pgdata storage caddy_data caddy_config"
+
+volume_exists() { docker volume inspect "${PROJECT}_$1" >/dev/null 2>&1; }
+
+# Prints one line per existing volume: name, creation date, size (when measurable quickly).
+describe_volumes() {
+    local v name created size can_measure=false
+    docker image inspect postgres:17 >/dev/null 2>&1 && can_measure=true
+    for v in $DATA_VOLUMES; do
+        volume_exists "$v" || continue
+        name="${PROJECT}_$v"
+        created="$(docker volume inspect -f '{{.CreatedAt}}' "$name" 2>/dev/null | cut -c1-16 | tr T ' ')"
+        size=""
+        if [ "$can_measure" = true ]; then
+            size="$(docker run --rm -v "$name:/v:ro" postgres:17 du -sh /v 2>/dev/null | cut -f1 || true)"
+        fi
+        printf "  %-24s created %s UTC%s\n" "$name" "$created" "${size:+, $size}"
+    done
+    return 0
+}
+
+PG_ID=""
+RESET_DB_PASSWORD=false
+# Starts (if needed) the existing database container and waits until it accepts connections.
+start_existing_postgres() {
+    PG_ID="$(docker ps -q --filter "label=com.docker.compose.project=$PROJECT" --filter "label=com.docker.compose.service=postgres" | head -1)"
+    if [ -z "$PG_ID" ]; then
+        info "Starting the existing database…"
+        # Only the password is interpolated into the postgres service; an existing database
+        # ignores it, so any value works here.
+        printf "POSTGRES_PASSWORD='%s'\nAPP_VERSION='%s'\n" "${POSTGRES_PASSWORD:-probe}" "${APP_VERSION:-latest}" > "$PROBE_FILE"
+        chmod 600 "$PROBE_FILE"
+        dc "$PROBE_FILE" up -d --wait postgres >/dev/null 2>&1 || return 1
+        PG_ID="$(docker ps -q --filter "label=com.docker.compose.project=$PROJECT" --filter "label=com.docker.compose.service=postgres" | head -1)"
+        [ -n "$PG_ID" ] || return 1
+    fi
+    local i=0
+    while [ $i -lt 30 ]; do
+        docker exec "$PG_ID" pg_isready -q -U d_cubby && return 0
+        sleep 1; i=$((i + 1))
+    done
+    return 1
+}
+
+# Tries a password login over the network, the way the app connects. (Connections from
+# inside the container's own localhost are trusted without a password, so they prove nothing.)
+db_password_works() {
+    PGPASSWORD="$1" docker exec -e PGPASSWORD "$PG_ID" \
+        psql -h postgres -U d_cubby -d postgres -Atqc 'select 1' >/dev/null 2>&1
+}
+
+# Sets the database role's password to POSTGRES_PASSWORD, over the trusted local socket.
+reset_db_password() {
+    printf "ALTER ROLE d_cubby WITH PASSWORD '%s';\n" "$POSTGRES_PASSWORD" |
+        docker exec -i "$PG_ID" psql -U d_cubby -d postgres -v ON_ERROR_STOP=1 -q >/dev/null
+}
+
+backup_database() {
+    local file
+    file="$ROOT/d-cubby-db-$(date +%Y%m%d-%H%M%S).dump"
+    start_existing_postgres || die "Couldn't start the database to back it up. Nothing deleted."
+    info "Backing up the database to $file…"
+    if docker exec "$PG_ID" pg_dump -U d_cubby -Fc d_cubby > "$file" && [ -s "$file" ]; then
+        chmod 600 "$file"
+        ok "Database backed up: $file"
+        echo "  Restore it later with the commands under Backups in DOCUMENTATION/01-INSTALL/README.md."
+    else
+        rm -f "$file"
+        die "The database backup failed. Nothing deleted."
+    fi
+}
+
+backup_files() {
+    local file
+    file="d-cubby-files-$(date +%Y%m%d-%H%M%S).tar.gz"
+    info "Backing up uploaded files to $ROOT/$file (this can take a while)…"
+    if docker run --rm -v "${PROJECT}_storage:/data:ro" -v "$ROOT:/backup" postgres:17 \
+        sh -c "tar czf /backup/$file -C /data . && chown $(id -u):$(id -g) /backup/$file"; then
+        ok "Files backed up: $ROOT/$file"
+    else
+        rm -f "$ROOT/$file"
+        die "The file backup failed. Nothing deleted."
+    fi
+}
+
+# wipe_existing [host storage folder] [attached folders] — deletes containers and volumes
+# after showing what goes, offering backups, and asking for a typed confirmation.
+wipe_existing() {
+    local host_storage="${1:-}" mounts="${2:-}" containers answer v
+    step "Delete the existing D-cubby data"
+    containers="$(docker ps -aq --filter "label=com.docker.compose.project=$PROJECT")"
+    local found=false
+    for v in $DATA_VOLUMES; do volume_exists "$v" && found=true; done
+    if [ "$found" = false ] && [ -z "$containers" ]; then
+        ok "No D-cubby data on this server; nothing to delete."
+        return 0
+    fi
+    echo -e "${RED}${BOLD}This permanently deletes:${NC}"
+    describe_volumes
+    echo "  That is the database (the organization, every user, album, tag and file record),"
+    echo "  uploaded files kept in the Docker volume, and the HTTPS certificates."
+    echo ""
+    echo "Not deleted:"
+    if [ -n "$host_storage" ]; then echo "  - files in $host_storage (the folder you chose for files)"
+    else echo "  - folders on this server you gave the installer for files"; fi
+    if [ -n "$mounts" ]; then echo "$mounts" | tr ',' '\n' | sed -e 's/^[^=]*=/  - attached folder /'
+    else echo "  - attached (watched) folders and the originals in them"; fi
+    echo "  - S3 buckets (empty the bucket yourself if you used one)"
+    echo ""
+    if [ "$INTERACTIVE" != true ] && [ "$ASSUME_YES" != true ]; then
+        die "Refusing to delete data without --yes (non-interactive mode). Nothing deleted."
+    fi
+
+    if volume_exists pgdata; then
+        if yes_no "Back up the database first?" y; then backup_database; fi
+    fi
+    if volume_exists storage && [ "$INTERACTIVE" = true ]; then
+        if yes_no "Back up the uploaded files in the Docker volume too?" n; then backup_files; fi
+    fi
+
+    if [ "$INTERACTIVE" = true ]; then
+        read -r -p "$(echo -e "${BOLD}Type ${RED}delete${NC}${BOLD} to delete it all, or anything else to stop${NC}: ")" answer
+        [ "$answer" = delete ] || die "Nothing deleted."
+    fi
+
+    info "Deleting…"
+    # shellcheck disable=SC2086
+    [ -n "$containers" ] && docker rm -f $containers >/dev/null
+    for v in $DATA_VOLUMES; do
+        volume_exists "$v" && docker volume rm "${PROJECT}_$v" >/dev/null
+    done
+    docker network rm "${PROJECT}_default" >/dev/null 2>&1 || true
+    ok "Deleted the existing D-cubby data."
+}
+
+# Called with --reset: wipe, then set this folder's .env aside so a fresh install follows.
+reset_install() {
+    local host_storage="" mounts=""
+    if [ -f "$ENV_FILE" ]; then
+        # Read only what the summary needs, without loading the old settings into this shell.
+        host_storage="$(load_env_file "$ENV_FILE"; printf '%s' "${STORAGE_HOST_PATH:-}")"
+        mounts="$(load_env_file "$ENV_FILE"; printf '%s' "${WATCHED_MOUNTS:-}")"
+    fi
+    wipe_existing "$host_storage" "$mounts"
+    if [ -f "$ENV_FILE" ]; then
+        local aside
+        aside="$ENV_FILE.before-reset-$(date +%Y%m%d-%H%M%S)"
+        mv "$ENV_FILE" "$aside"
+        rm -f "$OVERRIDE_FILE"
+        ok "Old settings moved to $aside (delete it once you no longer need them)."
+    fi
+}
+
+# An earlier install's database exists. Make sure this install's password opens it, or
+# let the user choose what to do. Runs before the questions, so nothing is asked twice.
+check_existing_data() {
+    volume_exists pgdata || return 0
+    start_existing_postgres || die "Found an existing D-cubby database, but couldn't start it. See: docker compose logs postgres"
+    if [ -n "${POSTGRES_PASSWORD:-}" ] && db_password_works "$POSTGRES_PASSWORD"; then
+        return 0
+    fi
+
+    echo ""
+    if [ -f "$ENV_FILE" ]; then
+        warn "This server has an existing D-cubby database, but the password in .env doesn't open it."
+    else
+        warn "This server already has D-cubby data from an earlier install (perhaps in another folder),"
+        warn "but there are no settings (.env) here. Its database only opens with that install's password."
+    fi
+    describe_volumes
+
+    if [ "$INTERACTIVE" != true ]; then
+        die "Can't open the existing database. Either put the earlier install's .env in $ROOT (or pass its
+  POSTGRES_PASSWORD), or delete the old data with: ./install.sh --reset --non-interactive --yes"
+    fi
+
+    local action="" path
+    while true; do
+        choose action "What should the installer do?" \
+            "adopt|Keep the data: use the earlier install's .env (recommended; keeps every setting)" \
+            "password|Keep the data: I don't have that .env, so reset the database password" \
+            "wipe|Delete the existing data and start fresh" \
+            "quit|Stop and change nothing"
+        case "$action" in
+            adopt)
+                path=""
+                ask path "Path to the earlier .env (e.g. /opt/d-cubby/.env)" ""
+                path="${path/#\~/$HOME}"
+                [ -f "$path" ] || { warn "$path isn't a file."; continue; }
+                local candidate
+                candidate="$(load_env_file "$path"; printf '%s' "${POSTGRES_PASSWORD:-}")"
+                if [ -z "$candidate" ] || ! db_password_works "$candidate"; then
+                    warn "The password in $path doesn't open this database either."
+                    continue
+                fi
+                # Keep the version this bundle (or --version) asked for; the old file names the old one.
+                local version="$APP_VERSION"
+                load_env_file "$path"
+                APP_VERSION="$version"
+                FRESH_INSTALL=false
+                ok "Using the settings from $path. Check them on the next screens; they'll be saved to $ENV_FILE."
+                return 0 ;;
+            password)
+                if [ "$FRESH_INSTALL" = true ]; then
+                    echo "Your organization, users and files stay. The earlier install's other settings"
+                    echo "(address, storage, email…) are asked again, and everyone has to sign in again."
+                else
+                    echo "Your data and the settings in .env stay; the database is set to .env's password."
+                fi
+                yes_no "Reset the database password?" y || continue
+                generate_secrets
+                # Done after the settings are saved, so stopping at the review changes nothing.
+                RESET_DB_PASSWORD=true
+                ok "The database password will be reset when you save the settings."
+                return 0 ;;
+            wipe)
+                wipe_existing "${STORAGE_HOST_PATH:-}" "${WATCHED_MOUNTS:-}"
+                return 0 ;;
+            quit)
+                echo "Nothing changed. To upgrade an existing install, run the new installer from that"
+                echo "install's folder, or copy its .env here first."
+                exit 0 ;;
+        esac
+    done
+}
+
+# ---------------------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------------------
 echo -e "${BOLD}D-cubby installer${NC}"
@@ -597,6 +843,7 @@ if [ "$MODE" = check ]; then
 fi
 
 preflight
+[ "$RESET" = true ] && reset_install
 
 FRESH_INSTALL=true
 [ -f "$ENV_FILE" ] && FRESH_INSTALL=false
@@ -642,6 +889,7 @@ if [ "$INTERACTIVE" != true ] && [ -z "${APP_DOMAIN:-}${APP_HOST:-}${APP_URL:-}"
     die "--non-interactive needs APP_DOMAIN (HTTPS) or APP_HOST (plain HTTP)"
 fi
 
+check_existing_data
 generate_secrets
 configure_address
 configure_uploads
@@ -655,6 +903,13 @@ configure_faces
 write_env_file "$ENV_FILE"
 write_override
 ok "Settings saved to .env (private: only this user can read it)."
+
+if [ "$RESET_DB_PASSWORD" = true ]; then
+    start_existing_postgres || die "Couldn't start the existing database to reset its password."
+    reset_db_password || die "Couldn't reset the database password."
+    db_password_works "$POSTGRES_PASSWORD" || die "The database still rejects the new password."
+    ok "The existing database now uses the password in .env."
+fi
 
 if [ "$START" != true ]; then
     info "Start D-cubby with: docker compose up -d"
