@@ -14,7 +14,8 @@ cd d-cubby && ./install.sh
 ```
 
 The installer asks for your address, storage, and optional email, AI and face detection,
-tests each one, starts D-cubby and prints a one-time setup link. Full guide, upgrades and
+tests each one, starts D-cubby and prints a one-time setup link. To upgrade, run the same
+command from the folder *above* your install, not inside it. Full guide, upgrades and
 backups: [DOCUMENTATION/01-INSTALL/README.md](DOCUMENTATION/01-INSTALL/README.md).
 
 ## Development
