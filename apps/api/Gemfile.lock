@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/scervera/dam.git
-  revision: c978c37b246b64e38d616d6bc0e154c7729b8978
-  tag: v0.3.2
+  revision: 9dea0369e08bf456b91a6058130846363a0ec735
+  tag: v0.3.3
   specs:
-    dam (0.3.2)
+    dam (0.3.3)
       aws-sdk-rekognition (~> 1.0)
       exifr (~> 1.3)
       image_processing (~> 1.2)
